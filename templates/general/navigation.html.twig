@@ -1,15 +1,21 @@
 <div class="base-navigation">
-{#    <div class="nav-section">#}
-        <a class="logo" href="{{ path('app_home') }}">SFT</a>
-{#    </div>#}
+    {#    <div class="nav-section"> #}
+    <a class="logo" href="{{ path('app_home') }}">SFT</a>
+    {#    </div> #}
 
     <div class="nav-section">
-        <a class="nav-link" href="{{ path('app_home') }}">Send File</a>
-        <a class="nav-link" href="{{ path('app_home') }}">Send Email</a>
-        <a class="nav-link" href="{{ path('app_home') }}">Transfer History</a>
+        {% if app.user %}
+            <a class="nav-link" href="{{ path('app_home') }}">Send File</a>
+            <a class="nav-link" href="{{ path('app_home') }}">Send Email</a>
+            <a class="nav-link" href="{{ path('app_home') }}">Transfer History</a>
+        {% endif %}
     </div>
 
     <div class="nav-section">
-        <a class="button nav-button button-blue" href="{{ path('app_logout') }}">Logout</a>
+        {% if app.user %}
+            <a class="button nav-button button-blue" href="{{ path('app_logout') }}">Logout</a>
+        {% else %}
+            <a class="button nav-button button-blue" href="{{ path('app_login') }}">Login</a>
+        {% endif %}
     </div>
 </div>

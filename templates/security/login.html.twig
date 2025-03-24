@@ -11,7 +11,7 @@
             SFT
         </div>
         <div class="right-panel">
-            <form method="post">
+            <form method="post" action="{{ path('app_login') }}">
                 {% if error %}
                     <div class="alert alert-danger">
                         {{ error.messageKey|trans(error.messageData, 'security') }}

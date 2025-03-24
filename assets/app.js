@@ -12,7 +12,7 @@ import './bootstrap.js';
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.flash-message__close').forEach((btn) => {
         btn.addEventListener('click', () => {
-            const flash = btn.closest('.flash-message');
+            const flash = btn.closest('.flash-message__close');
             flash.classList.add('is-hidden');
             setTimeout(() => flash.remove(), 300); // дождаться анимации
         });

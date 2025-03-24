@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Email Sender{% endblock %}
+
+{% block body %}
+    <div class="send-container">
+        <!-- Левая часть с формой -->
+        <div class="left-side">
+            <div class="form-container">
+                <div class="form-header">
+                    <h1>Отправка Email</h1>
+                    <p>Заполните форму ниже для отправки сообщения</p>
+                </div>
+                {{ form_start(form) }}
+                <div class="form-group">
+                    {{ form_label(form.recipientEmail) }}
+                    {{ form_widget(form.recipientEmail, { attr: { class: 'form-control' } }) }}
+                    {{ form_errors(form.recipientEmail) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.subject) }}
+                    {{ form_widget(form.subject, { attr: { class: 'form-control' } }) }}
+                    {{ form_errors(form.subject) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.message) }}
+                    {{ form_widget(form.message, { attr: { class: 'form-control' } }) }}
+                    {{ form_errors(form.message) }}
+                </div>
+
+                <button type="submit" class="submit-btn">Отправить</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        <!-- Правая часть с логотипом -->
+        <div class="right-side">
+            <div class="logo-container">
+                SFT
+            </div>
+        </div>
+    </div>
+{% endblock %}

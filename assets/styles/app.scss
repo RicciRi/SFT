@@ -1,6 +1,9 @@
 // Components
 @use "_variables.scss";
 @use "flash.scss";
+@use "navigation.scss";
+@use "footer.scss";
+
 
 // Pages
 @use "login.scss";
@@ -15,5 +18,40 @@ body {
 
 * {
     box-sizing: border-box;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  main {
+    flex-grow: 1;
+  }
+}
+
+
+
+
+h1 {
+  margin: 40px;
+    color: white;
+}
+
+a {
+  text-decoration: none;
+}
+
+.button {
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: white;
+  transition: all 0.3s;
+  background: var(--color-secondary);
+
+  &:hover {
+    background: var(--color-secondary-hover);
+    scale: 1.1;
+  }
 }
 

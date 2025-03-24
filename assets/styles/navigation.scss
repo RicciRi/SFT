@@ -1,0 +1,41 @@
+.base-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px;
+  background: var(--color-panel);
+
+  .logo {
+    color: var(--color-primary);
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .nav-section {
+    padding-left: 10px;
+
+    .nav-link {
+      color: var(--color-primary);
+      margin: 0 8px;
+      font-size: 20px;
+
+      &:hover{
+        color: var(--color-primary-hover);
+      }
+    }
+  }
+
+
+  .nav-button {
+    background: var(--color-primary);
+
+    &:hover {
+      background: var(--color-primary-hover);
+    }
+  }
+
+  .button-blue {
+
+  }
+
+}

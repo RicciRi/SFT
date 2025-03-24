@@ -1,0 +1,15 @@
+.base-footer-container {
+  padding: 40px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  a {
+    text-decoration: none;
+    color: var(--color-secondary);
+
+    &:hover {
+      color: var(--color-secondary-hover);
+    }
+  }
+}

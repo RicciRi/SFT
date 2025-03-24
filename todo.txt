@@ -1,3 +1,14 @@
 1. After register make Flash
 2. After register render template that you need to accept email list ...
 
+✅ Поля для FileTransfer Entity:
+user – отправитель (связь с сущностью User)
+recipientEmail – email получателя
+message – сообщение от отправителя
+expirationAt – дата и время окончания действия ссылки
+originalFilename – оригинальное имя файла
+storedFilename – имя/путь сохранённого файла
+fileSize – размер файла (в байтах)
+mimeType – MIME-тип файла
+createdAt – дата и время создания записи
+status – статус отправки (например: pending, downloaded, expired)

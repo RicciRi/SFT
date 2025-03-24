@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -35,6 +37,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isVerified = false;
+
+    /**
+     * @var Collection<int, FileTransfer>
+     */
+    #[ORM\OneToMany(targetEntity: FileTransfer::class, mappedBy: 'user')]
+    private Collection $fileTransfers;
+
+    /**
+     * @var Collection<int, EmailTransfer>
+     */
+    #[ORM\OneToMany(targetEntity: EmailTransfer::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $emailTransfers;
+
+    public function __construct()
+    {
+        $this->fileTransfers = new ArrayCollection();
+        $this->emailTransfers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -119,6 +139,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FileTransfer>
+     */
+    public function getFileTransfers(): Collection
+    {
+        return $this->fileTransfers;
+    }
+
+    public function addFileTransfer(FileTransfer $fileTransfer): static
+    {
+        if (!$this->fileTransfers->contains($fileTransfer)) {
+            $this->fileTransfers->add($fileTransfer);
+            $fileTransfer->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFileTransfer(FileTransfer $fileTransfer): static
+    {
+        if ($this->fileTransfers->removeElement($fileTransfer)) {
+            // set the owning side to null (unless already changed)
+            if ($fileTransfer->getUser() === $this) {
+                $fileTransfer->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EmailTransfer>
+     */
+    public function getEmailTransfers(): Collection
+    {
+        return $this->emailTransfers;
+    }
+
+    public function addEmailTransfer(EmailTransfer $emailTransfer): static
+    {
+        if (!$this->emailTransfers->contains($emailTransfer)) {
+            $this->emailTransfers->add($emailTransfer);
+            $emailTransfer->setг�user($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmailTransfer(EmailTransfer $emailTransfer): static
+    {
+        if ($this->emailTransfers->removeElement($emailTransfer)) {
+            // set the owning side to null (unless already changed)
+            if ($emailTransfer->getг�user() === $this) {
+                $emailTransfer->setг�user(null);
+            }
+        }
 
         return $this;
     }

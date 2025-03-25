@@ -36,9 +36,18 @@ final class SendFileController extends AbstractController
         ]);
     }
 
-    /**
-     * Сбрасывает список файлов в сессии при загрузке страницы.
-     */
+    #[Route('/transfers', name: 'app_send_transfers')]
+    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
+    public function index(): Response
+    {
+        $user = $this->getUser();
+        $transfers = $this->fileTransferRepository->findBy(['user' => $user]);
+
+        return $this->render('send/index.html.twig', [
+            'transfers' => $transfers,
+        ]);
+    }
+
     #[Route('/api/reset-files', name: 'api_reset_files', methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function resetFiles(Request $request): JsonResponse
@@ -53,9 +62,6 @@ final class SendFileController extends AbstractController
         ]);
     }
 
-    /**
-     * Удаляет конкретный файл из сессии по его токену.
-     */
     #[Route('/api/remove-file/{token}', name: 'api_remove_file', methods: ['DELETE'])]
     #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function removeFile(string $token, Request $request): JsonResponse
@@ -63,9 +69,9 @@ final class SendFileController extends AbstractController
         $session = $request->getSession();
         $filesData = $session->get('temp_file_data', []);
 
-        $this->logger->info('Запрос на удаление файла', [
+        $this->logger->info('Request to delete files', [
             'token' => $token,
-            'количество_файлов_до_удаления' => count($filesData),
+            'count_of_files_to_delete' => count($filesData),
         ]);
 
         // Фильтруем список файлов, исключая файл с указанным токеном
@@ -89,13 +95,6 @@ final class SendFileController extends AbstractController
         ]);
     }
 
-    #[Route('/transfers', name: 'app_send_transfers')]
-    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
-    public function index(): Response
-    {
-        return $this->render('send/index.html.twig', []);
-    }
-
     #[Route('/api/upload-files', name: 'api_upload_files', methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function uploadFiles(Request $request): JsonResponse
@@ -107,18 +106,14 @@ final class SendFileController extends AbstractController
         }
 
         try {
-            // Получаем сессию
             $session = $request->getSession();
 
-            // Получаем существующие данные о файлах из сессии
             $existingFilesData = $session->get('temp_file_data', []);
 
-            // Логируем количество существующих файлов
-            $this->logger->info('Существующие файлы в сессии', [
-                'количество' => count($existingFilesData),
+            $this->logger->info('Files in session:', [
+                'count' => count($existingFilesData),
             ]);
 
-            // Обрабатываем новые файлы и сохраняем во временное хранилище
             $newFilesData = $this->fileUploadService->processTemporaryFiles($files);
 
             // Объединяем существующие и новые данные о файлах
@@ -150,7 +145,7 @@ final class SendFileController extends AbstractController
                 'total_files' => count($allFilesData),
             ]);
         } catch (\Exception $e) {
-            $this->logger->error('Ошибка загрузки файлов', [
+            $this->logger->error('Error to upload files', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
@@ -250,9 +245,6 @@ final class SendFileController extends AbstractController
         }
     }
 
-    /**
-     * Форматирует размер файла в удобочитаемый формат
-     */
     private function formatFileSize(int $bytes): string
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
@@ -266,9 +258,6 @@ final class SendFileController extends AbstractController
         return round($bytes, 2).' '.$units[$pow];
     }
 
-    /**
-     * Получает максимальный размер загружаемого файла из настроек PHP.
-     */
     private function getMaxUploadSize(): string
     {
         $postMaxSize = $this->parseSize(ini_get('post_max_size'));
@@ -277,9 +266,6 @@ final class SendFileController extends AbstractController
         return $this->formatFileSize(min($postMaxSize, $uploadMaxFilesize));
     }
 
-    /**
-     * Парсит строку размера (например, "8M") в байты.
-     */
     private function parseSize(string $size): int
     {
         $unit = preg_replace('/[^a-zA-Z]/', '', $size);

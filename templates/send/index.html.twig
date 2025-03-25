@@ -1,8 +1,67 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Transfers {% endblock %}
-
+{% block title %}{{ parent() }} Transfers{% endblock %}
 
 {% block body %}
+    <div class="transfers-container">
+        <div class="page-header">
+            <h1>Your File Transfers</h1>
+            <p>Manage and track your secure file transfers</p>
+        </div>
 
+        <div class="divider-style"></div>
+
+        {% if transfers|length > 0 %}
+            <div class="transfers-grid">
+                {% for transfer in transfers %}
+                    <div class="transfer-card">
+                        <div class="transfer-header">
+                            <div class="transfer-id">ID: {{ transfer.uuid|slice(0, 8) }}</div>
+                            <div class="transfer-status {{ transfer.status }}">{{ transfer.status }}</div>
+                        </div>
+                        <div class="transfer-body">
+                            <div class="recipient">
+                                <div class="label">Recipient</div>
+                                <div class="value">{{ transfer.recipientEmail }}</div>
+                            </div>
+                            <div class="subject">
+                                <div class="label">Subject</div>
+                                <div class="value">{{ transfer.subject }}</div>
+                            </div>
+                            <div class="message">
+                                <div class="label">Message</div>
+                                <div class="value">{{ transfer.message }}</div>
+                            </div>
+                            <div class="dates">
+                                <div class="created">
+                                    <div class="label">Created</div>
+                                    <div class="value">{{ transfer.createdAt|date('d M Y') }}</div>
+                                </div>
+                                <div class="expires">
+                                    <div class="label">Expires</div>
+                                    <div class="value">{{ transfer.expirationAt|date('d M Y') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transfer-footer">
+                            <div class="file-count">
+                                {{ transfer.transferredFiles|length }} file{% if transfer.transferredFiles|length != 1 %}s{% endif %}
+                            </div>
+                            <div class="actions">
+                                <a href="{{ path('app_home', {uuid: transfer.uuid}) }}" class="btn">Deactivate</a>
+                                <a href="{{ path('app_home', {uuid: transfer.uuid}) }}" class="btn btn-primary">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="icon">📁</div>
+                <h2>No transfers yet</h2>
+                <p>You haven't sent any file transfers yet. Create your first transfer now.</p>
+                <a href="{{ path('app_send_files') }}" class="btn-primary">Send Files</a>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

@@ -1,0 +1,392 @@
+{# templates/file_transfer/send.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Отправка файлов{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}
+
+{% block body %}
+    <div class="send-file-container-wrap">
+        <div class="send-file-container left-side">
+            <div class="upload-section">
+                <div id="dropzone" class="dropzone">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <p>Перетащите файлы сюда или <span id="browse-files">выберите файлы</span></p>
+                    <p class="small-text">или перетащите целую папку</p>
+                    <input type="file" id="file-input" multiple style="display: none">
+                </div>
+
+                <div id="upload-progress" class="progress" style="display: none;">
+                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                </div>
+
+                <div id="file-list-container" class="file-list" style="display: none;">
+                    <h3>Загруженные файлы <span class="badge" id="file-count">0</span></h3>
+                    <ul id="file-list"></ul>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <form id="transfer-form">
+                    <div class="form-group">
+                        <label for="recipient-email">Email получателя</label>
+                        <input type="email" id="recipient-email" name="recipientEmail" class="form-control" placeholder="email@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Тема</label>
+                        <input type="text" id="subject" name="subject" class="form-control" placeholder="Тема сообщения" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Сообщение</label>
+                        <textarea id="message" name="message" class="form-control" rows="5" placeholder="Введите текст сообщения..." required></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" id="submit-btn" class="btn-submit" disabled>
+                            Отправить файлы <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="error-message" class="message message-error" style="display: none;"></div>
+            <div id="success-message" class="message message-success" style="display: none;"></div>
+        </div>
+        <div class="right-side"></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropzone = document.getElementById('dropzone');
+            const fileInput = document.getElementById('file-input');
+            const browseFiles = document.getElementById('browse-files');
+            const fileList = document.getElementById('file-list');
+            const fileListContainer = document.getElementById('file-list-container');
+            const fileCount = document.getElementById('file-count');
+            const uploadProgress = document.getElementById('upload-progress');
+            const progressBar = uploadProgress.querySelector('.progress-bar');
+            const transferForm = document.getElementById('transfer-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+
+            // Массив для хранения информации о загруженных файлах
+            let uploadedFiles = [];
+
+            // Обработчик клика по кнопке выбора файлов
+            browseFiles.addEventListener('click', function(e) {
+                e.preventDefault();
+                fileInput.click();
+            });
+
+            // Обработчик выбора файлов через input
+            fileInput.addEventListener('change', function() {
+                handleFiles(Array.from(this.files));
+            });
+
+            // Обработчики перетаскивания файлов
+            dropzone.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                dropzone.classList.add('active');
+            });
+
+            dropzone.addEventListener('dragleave', function() {
+                dropzone.classList.remove('active');
+            });
+
+            dropzone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropzone.classList.remove('active');
+
+                const items = e.dataTransfer.items;
+                const files = e.dataTransfer.files;
+
+                // Если перетаскиваются файлы напрямую
+                if (files.length > 0 && (!items[0].webkitGetAsEntry)) {
+                    handleFiles(Array.from(files));
+                    return;
+                }
+
+                // Обработка каталогов (только для поддерживаемых браузеров)
+                if (items.length > 0 && items[0].webkitGetAsEntry) {
+                    const entries = [];
+                    for (let i = 0; i < items.length; i++) {
+                        const entry = items[i].webkitGetAsEntry();
+                        if (entry) {
+                            entries.push(entry);
+                        }
+                    }
+
+                    processEntries(entries);
+                }
+            });
+
+            // Рекурсивная функция для обработки каталогов
+            function processEntries(entries) {
+                const allFiles = [];
+                let pendingDirectories = entries.length;
+
+                const allEntriesProcessed = () => {
+                    if (allFiles.length > 0) {
+                        handleFiles(allFiles);
+                    }
+                };
+
+                const processEntry = (entry) => {
+                    if (entry.isFile) {
+                        entry.file(file => {
+                            allFiles.push(file);
+
+                            if (--pendingDirectories === 0) {
+                                allEntriesProcessed();
+                            }
+                        });
+                    } else if (entry.isDirectory) {
+                        const reader = entry.createReader();
+
+                        // Чтение всех элементов в директории
+                        const readEntries = () => {
+                            reader.readEntries(entries => {
+                                if (entries.length) {
+                                    pendingDirectories += entries.length - 1;
+                                    entries.forEach(processEntry);
+                                    readEntries(); // Продолжаем чтение, так как API может возвращать по частям
+                                } else if (--pendingDirectories === 0) {
+                                    allEntriesProcessed();
+                                }
+                            });
+                        };
+
+                        readEntries();
+                    }
+                };
+
+                entries.forEach(processEntry);
+            }
+
+            // Обработка файлов для загрузки
+            function handleFiles(files) {
+                if (files.length === 0) return;
+
+                uploadFiles(files);
+            }
+
+            // Функция загрузки файлов на сервер
+            async function uploadFiles(files) {
+                hideMessages();
+                uploadProgress.style.display = 'block';
+
+                const formData = new FormData();
+                for (let i = 0; i < files.length; i++) {
+                    formData.append('files[]', files[i]);
+                }
+
+                try {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', '{{ path('api_upload_files') }}');
+
+                    xhr.upload.addEventListener('progress', function(e) {
+                        if (e.lengthComputable) {
+                            const percentComplete = (e.loaded / e.total) * 100;
+                            progressBar.style.width = percentComplete + '%';
+                        }
+                    });
+
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            const response = JSON.parse(xhr.responseText);
+
+                            if (response.success) {
+                                uploadedFiles = [...uploadedFiles, ...response.files];
+                                updateFileList();
+                                submitBtn.disabled = uploadedFiles.length === 0;
+                            } else {
+                                showError(response.error || 'Ошибка при загрузке файлов');
+                            }
+                        } else {
+                            showError('Ошибка сервера: ' + xhr.status);
+                        }
+
+                        uploadProgress.style.display = 'none';
+                    };
+
+                    xhr.onerror = function() {
+                        showError('Ошибка соединения с сервером');
+                        uploadProgress.style.display = 'none';
+                    };
+
+                    xhr.send(formData);
+                } catch (error) {
+                    showError('Ошибка при отправке запроса на сервер');
+                    uploadProgress.style.display = 'none';
+                }
+            }
+
+            // Обновление списка загруженных файлов
+            function updateFileList() {
+                if (uploadedFiles.length > 0) {
+                    fileListContainer.style.display = 'block';
+                    fileCount.textContent = uploadedFiles.length;
+
+                    fileList.innerHTML = '';
+                    uploadedFiles.forEach((file, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'file-item fade-in';
+
+                        li.innerHTML = `
+                            <div class="file-icon">
+                                <i class="${getFileIcon(file.mimeType)}"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">${file.originalFilename}</div>
+                                <div class="file-meta">${file.fileSize} &middot; ${getFileType(file.mimeType)}</div>
+                            </div>
+                            <button type="button" class="remove-btn" data-index="${index}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+
+                        fileList.appendChild(li);
+                    });
+
+                    // Добавляем обработчики для кнопок удаления
+                    document.querySelectorAll('.remove-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const index = parseInt(this.dataset.index);
+                            removeFile(index);
+                        });
+                    });
+                } else {
+                    fileListContainer.style.display = 'none';
+                }
+            }
+
+            // Удаление файла из списка
+            function removeFile(index) {
+                uploadedFiles.splice(index, 1);
+                updateFileList();
+                submitBtn.disabled = uploadedFiles.length === 0;
+            }
+
+            // Отправка формы с данными о файлах
+            transferForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                if (uploadedFiles.length === 0) {
+                    showError('Необходимо загрузить хотя бы один файл');
+                    return;
+                }
+
+                const formData = {
+                    recipientEmail: document.getElementById('recipient-email').value,
+                    subject: document.getElementById('subject').value,
+                    message: document.getElementById('message').value
+                };
+
+                if (!formData.recipientEmail || !formData.subject || !formData.message) {
+                    showError('Заполните все обязательные поля формы');
+                    return;
+                }
+
+                hideMessages();
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'Отправка... <i class="fas fa-spinner fa-spin"></i>';
+
+                try {
+                    const response = await fetch('{{ path('api_file_transfer_create') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        showSuccess('Файлы успешно отправлены! Получатель будет уведомлен по электронной почте.');
+                        uploadedFiles = [];
+                        updateFileList();
+                        transferForm.reset();
+                    } else {
+                        showError(result.error || 'Ошибка при создании передачи файлов');
+                        submitBtn.disabled = false;
+                    }
+                } catch (error) {
+                    showError('Ошибка при отправке запроса на сервер');
+                    submitBtn.disabled = false;
+                } finally {
+                    submitBtn.innerHTML = 'Отправить файлы <i class="fas fa-paper-plane"></i>';
+                    submitBtn.disabled = uploadedFiles.length === 0;
+                }
+            });
+
+            // Вспомогательные функции
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                errorMessage.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                successMessage.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            function hideMessages() {
+                errorMessage.style.display = 'none';
+                successMessage.style.display = 'none';
+            }
+
+            function getFileIcon(mimeType) {
+                if (mimeType.startsWith('image/')) return 'fas fa-file-image';
+                if (mimeType.startsWith('video/')) return 'fas fa-file-video';
+                if (mimeType.startsWith('audio/')) return 'fas fa-file-audio';
+                if (mimeType === 'application/pdf') return 'fas fa-file-pdf';
+                if (mimeType.includes('spreadsheet') || mimeType.includes('excel')) return 'fas fa-file-excel';
+                if (mimeType.includes('document') || mimeType.includes('word')) return 'fas fa-file-word';
+                if (mimeType.includes('presentation') || mimeType.includes('powerpoint')) return 'fas fa-file-powerpoint';
+                if (mimeType === 'application/zip' || mimeType === 'application/x-zip-compressed') return 'fas fa-file-archive';
+
+                return 'fas fa-file';
+            }
+
+            function getFileType(mimeType) {
+                const types = {
+                    'image/': 'Изображение',
+                    'video/': 'Видео',
+                    'audio/': 'Аудио',
+                    'application/pdf': 'PDF',
+                    'application/zip': 'Архив',
+                    'application/x-zip-compressed': 'Архив',
+                    'application/msword': 'Word',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Word',
+                    'application/vnd.ms-excel': 'Excel',
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'Excel',
+                    'application/vnd.ms-powerpoint': 'PowerPoint',
+                    'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'PowerPoint'
+                };
+
+                for (const [key, value] of Object.entries(types)) {
+                    if (mimeType === key || mimeType.startsWith(key)) {
+                        return value;
+                    }
+                }
+
+                return 'Файл';
+            }
+        });
+    </script>
+{% endblock %}

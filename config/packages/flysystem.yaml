@@ -1,0 +1,12 @@
+# config/packages/flysystem.yaml
+flysystem:
+    storages:
+        temp.storage:
+            adapter: 'local'
+            options:
+                directory: '/tmp/temp_uploads'
+
+        permanent.storage:
+            adapter: 'local'
+            options:
+                directory: '/tmp/uploads'

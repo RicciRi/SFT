@@ -9,14 +9,14 @@ use Twig\Environment;
 class MessageService
 {
     public function __construct(
-        private MailerInterface $mailer,
         private Environment $twig,
+        private MailerInterface $mailer,
     ) {
     }
 
     public function sendEmail($from, $to, $subject, $message)
     {
-        $html = $this->twig->render('email/send_email.html.twig', [
+        $html = $this->twig->render('email/send_file.html.twig', [
             'from' => $from,
             'message' => $message,
         ]);

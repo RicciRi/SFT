@@ -5,7 +5,7 @@
 
     <div class="nav-section">
         {% if app.user %}
-            <a class="nav-link" href="{{ path('app_home') }}">Send File</a>
+            <a class="nav-link" href="{{ path('app_send_file') }}">Send File</a>
             <a class="nav-link" href="{{ path('app_send_email') }}">Send Email</a>
             <a class="nav-link" href="{{ path('app_home') }}">Transfer History</a>
         {% endif %}

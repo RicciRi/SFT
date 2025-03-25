@@ -6,6 +6,7 @@ use App\Repository\FileTransferRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: FileTransferRepository::class)]
 class FileTransfer
@@ -18,6 +19,9 @@ class FileTransfer
     #[ORM\ManyToOne(inversedBy: 'fileTransfers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\Column(type: 'uuid', unique: true)]
+    private ?Uuid $uuid = null;
 
     #[ORM\Column(length: 255)]
     private ?string $recipientEmail = null;
@@ -46,6 +50,8 @@ class FileTransfer
     public function __construct()
     {
         $this->transferredFiles = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->uuid = Uuid::v4();
     }
 
     public function getId(): ?int
@@ -164,5 +170,10 @@ class FileTransfer
         }
 
         return $this;
+    }
+
+    public function getUuid(): ?Uuid
+    {
+        return $this->uuid;
     }
 }

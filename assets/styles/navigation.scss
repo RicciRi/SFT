@@ -2,13 +2,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30px;
-  //background: var(--color-panel);
+  padding: 30px 50px;
+  font-size: 12px;
+  font-family: var(--font-family-base);
 
   .logo {
-    color: var(--color-primary);
-    font-size: 28px;
+    color: var(--color-text);
+    font-size: 16px;
     font-weight: bold;
+
+    svg {
+      height: 10px;
+      * {
+        fill: var(--color-text);
+
+      }
+    }
   }
 
   .nav-section {
@@ -17,7 +26,6 @@
     .nav-link {
       color: var(--color-primary);
       margin: 0 8px;
-      font-size: 20px;
 
       &:hover{
         color: var(--color-primary-hover);
@@ -25,17 +33,66 @@
     }
   }
 
-
   .nav-button {
-    background: var(--color-primary);
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: var(--body-bg);
+    background: var(--color-text);
+    border-radius: var(--base-border-radius);
 
     &:hover {
-      background: var(--color-primary-hover);
+      background: #bbb;
     }
   }
 
-  .button-blue {
+}
 
+
+.sticky-wrap {
+  left: 0;
+  top: 0;
+  height: 0;
+  width: 100vw;
+  z-index: 100;
+  display: flex;
+  position: sticky;
+  align-items: center;
+  pointer-events: none;
+  justify-content: center;
+  font-family: var(--font-family-base);
+
+  .navigation-menu {
+    font-size: 12px;
+    background: var(--background-navbar);
+    gap: 4px;
+    padding: 8px;
+    display: flex;
+    margin: 76px 0 0;
+    align-items: center;
+    line-height: 1;
+    list-style: none;
+    pointer-events: all;
+    height: 40px;
+    border-radius: 20px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 0 0 1px hsla(0, 0%, 100%, .1), 0 2px 8px rgba(0, 0, 0, .3);
+
+
+    a {
+      color: var(--color-text);
+      height: 24px;
+      padding: 0 12px;
+      border: 0.5px solid transparent;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      transition: background .3s;
+
+      &:hover {
+        border: 0.5px solid var(--link-border-hover-color);
+        background: var(--link-hover-color);
+      }
+    }
   }
-
 }

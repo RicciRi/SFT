@@ -1,21 +1,11 @@
-<div class="base-navigation">
-    {#    <div class="nav-section"> #}
-    <a class="logo" href="{{ path('app_home') }}">SFT</a>
-    {#    </div> #}
-
-    <div class="nav-section">
+<div class="sticky-wrap">
+    <div class="navigation-menu">
         {% if app.user %}
-            <a class="nav-link" href="{{ path('app_send_file') }}">Send File</a>
-            <a class="nav-link" href="{{ path('app_send_email') }}">Send Email</a>
-            <a class="nav-link" href="{{ path('app_home') }}">Transfer History</a>
-        {% endif %}
-    </div>
-
-    <div class="nav-section">
-        {% if app.user %}
-            <a class="button nav-button button-blue" href="{{ path('app_logout') }}">Logout</a>
-        {% else %}
-            <a class="button nav-button button-blue" href="{{ path('app_login') }}">Login</a>
+            <a class="nav-link" href="{{ path('app_home') }}">Home</a>
+            <a class="nav-link" href="{{ path('app_send_file') }}">Send</a>
+            <a class="nav-link" href="{{ path('app_send_file_history') }}">History</a>
+            <a class="nav-link" href="{{ path('app_home') }}">Account</a>
+            <a class="nav-link" href="{{ path('app_home') }}">Setting</a>
         {% endif %}
     </div>
 </div>

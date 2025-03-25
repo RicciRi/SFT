@@ -1,13 +1,22 @@
 :root {
   --color-bg: #0d0d0d;
+  --body-bg: #000;
   --color-panel: #1a1a1a;
   --color-primary: #7c3aed;
   --color-secondary: #3b82f6;
-  --color-text: #ffffff;
+  --color-text: #fff;
   --color-muted: #aaaaaa;
   --color-error: #ef4444;
   --color-primary-hover: #5b21b6;
   --color-secondary-hover: #1e3a8a;
+  --color-pink: #b88cff;
+  --base-box-shadow-color: inset 0 0 0 1px hsla(0, 0%, 100%, .12), 0 0 0 1px rgba(0, 0, 0, .04);
+  --link-hover-color: rgba(255, 255, 255, 0.12);
+  --link-border-hover-color: rgba(207, 207, 220, 0.12);
+  --background-navbar: rgba(23, 24, 37, .75);
+  --base-border-radius: 20px;
+  --system-fonts: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue";
+  --font-family-base: "__Inter_d65c78", "__Inter_Fallback_d65c78", var(--system-fonts);
 }
 
 .flash-message {
@@ -133,12 +142,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30px;
+  padding: 30px 50px;
+  font-size: 12px;
+  font-family: var(--font-family-base);
 }
 .base-navigation .logo {
-  color: var(--color-primary);
-  font-size: 28px;
+  color: var(--color-text);
+  font-size: 16px;
   font-weight: bold;
+}
+.base-navigation .logo svg {
+  height: 10px;
+}
+.base-navigation .logo svg * {
+  fill: var(--color-text);
 }
 .base-navigation .nav-section {
   padding-left: 10px;
@@ -146,17 +163,66 @@
 .base-navigation .nav-section .nav-link {
   color: var(--color-primary);
   margin: 0 8px;
-  font-size: 20px;
 }
 .base-navigation .nav-section .nav-link:hover {
   color: var(--color-primary-hover);
 }
 .base-navigation .nav-button {
-  background: var(--color-primary);
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: var(--body-bg);
+  background: var(--color-text);
+  border-radius: var(--base-border-radius);
 }
 .base-navigation .nav-button:hover {
-  background: var(--color-primary-hover);
+  background: #bbb;
 }
+
+.sticky-wrap {
+  left: 0;
+  top: 0;
+  height: 0;
+  width: 100vw;
+  z-index: 100;
+  display: flex;
+  position: sticky;
+  align-items: center;
+  pointer-events: none;
+  justify-content: center;
+  font-family: var(--font-family-base);
+}
+.sticky-wrap .navigation-menu {
+  font-size: 12px;
+  background: var(--background-navbar);
+  gap: 4px;
+  padding: 8px;
+  display: flex;
+  margin: 76px 0 0;
+  align-items: center;
+  line-height: 1;
+  list-style: none;
+  pointer-events: all;
+  height: 40px;
+  border-radius: 20px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 0 1px hsla(0, 0%, 100%, 0.1), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+.sticky-wrap .navigation-menu a {
+  color: var(--color-text);
+  height: 24px;
+  padding: 0 12px;
+  border: 0.5px solid transparent;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  transition: background 0.3s;
+}
+.sticky-wrap .navigation-menu a:hover {
+  border: 0.5px solid var(--link-border-hover-color);
+  background: var(--link-hover-color);
+}
+
 .base-footer-container {
   padding: 40px;
   display: flex;
@@ -494,32 +560,33 @@
   text-align: center;
 }
 .send-file-container .upload-section {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 .send-file-container .upload-section .dropzone {
-  border: 2px dashed var(--color-panel);
+  background: radial-gradient(120% 120% at 50% 100%, transparent 40%, #63e 80%, #fff 130%);
+  border: 2px solid var(--color-panel);
   border-radius: 12px;
-  padding: 2.5rem 1.5rem;
+  padding: 1.6rem 1rem;
   text-align: center;
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
+  font-size: 14px;
 }
 .send-file-container .upload-section .dropzone.active {
-  border-color: var(--primary-color, #0C7040);
+  border-color: var(--color-pink);
   background-color: rgba(12, 112, 64, 0.05);
 }
 .send-file-container .upload-section .dropzone .upload-icon {
-  font-size: 3rem;
-  color: var(--text-muted, #888);
+  color: #eee;
   margin-bottom: 1rem;
 }
 .send-file-container .upload-section .dropzone p {
   margin: 0.5rem 0;
-  color: var(--text-secondary, #666);
+  color: #eee;
 }
 .send-file-container .upload-section .dropzone p span {
-  color: var(--primary-color, #0C7040);
+  color: var(--color-pink);
   font-weight: 600;
   cursor: pointer;
   text-decoration: underline;
@@ -528,8 +595,8 @@
   opacity: 0.8;
 }
 .send-file-container .upload-section .dropzone .small-text {
-  font-size: 0.85rem;
-  color: var(--text-muted, #888);
+  font-size: 10px;
+  color: #ddd;
   margin-top: 0.5rem;
 }
 .send-file-container .upload-section .progress {
@@ -541,95 +608,8 @@
 }
 .send-file-container .upload-section .progress-bar {
   height: 100%;
-  background-color: var(--primary-color, #0C7040);
+  background-color: var(--color-pink);
   transition: width 0.3s ease;
-}
-.send-file-container .upload-section .file-list {
-  margin-top: 2rem;
-}
-.send-file-container .upload-section .file-list h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--color-primary);
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-}
-.send-file-container .upload-section .file-list h3 .badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 24px;
-  height: 24px;
-  border-radius: 12px;
-  background-color: var(--primary-color, #0C7040);
-  color: white;
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-  padding: 0 0.5rem;
-}
-.send-file-container .upload-section .file-list ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.send-file-container .upload-section .file-list .file-item {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  border: 1px solid var(--border-color, #eee);
-  border-radius: 8px;
-  margin-bottom: 0.75rem;
-  color: white;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.send-file-container .upload-section .file-list .file-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-}
-.send-file-container .upload-section .file-list .file-item .file-icon {
-  font-size: 1.5rem;
-  color: var(--primary-color, #0C7040);
-  margin-right: 1rem;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(12, 112, 64, 0.1);
-  border-radius: 8px;
-}
-.send-file-container .upload-section .file-list .file-item .file-info {
-  flex: 1;
-}
-.send-file-container .upload-section .file-list .file-item .file-info .file-name {
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-  color: var(--text-color);
-  word-break: break-all;
-}
-.send-file-container .upload-section .file-list .file-item .file-info .file-meta {
-  font-size: 0.8rem;
-  color: var(--text-muted, #888);
-}
-.send-file-container .upload-section .file-list .file-item .remove-btn {
-  background: none;
-  border: none;
-  color: white;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s;
-}
-.send-file-container .upload-section .file-list .file-item .remove-btn:hover {
-  background-color: rgba(199, 44, 65, 0.1);
-}
-.send-file-container .upload-section .file-list .file-item .remove-btn i {
-  font-size: 1rem;
 }
 .send-file-container .form-section {
   border: 2px dashed var(--color-panel);
@@ -641,7 +621,7 @@
 .send-file-container .form-section form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 .send-file-container .form-section .form-group {
   margin-bottom: 0.5rem;
@@ -651,7 +631,7 @@
   margin-bottom: 0.5rem;
   font-weight: 600;
   color: var(--text-color);
-  font-size: 0.95rem;
+  font-size: 12px;
 }
 .send-file-container .form-section .form-group .form-control {
   width: 100%;
@@ -659,12 +639,12 @@
   border: 1px solid #222222;
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 12px;
   color: var(--text-color);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .send-file-container .form-section .form-group .form-control:focus {
-  border-color: var(--primary-color, #0C7040);
+  border-color: var(--color-pink);
   box-shadow: 0 0 0 3px rgba(12, 112, 64, 0.1);
   outline: none;
 }
@@ -676,29 +656,30 @@
   min-height: 120px;
 }
 .send-file-container .form-section .form-actions {
-  margin-top: 1rem;
   display: flex;
   justify-content: flex-end;
 }
 .send-file-container .form-section .form-actions .btn-submit {
-  background-color: var(--primary-color, #0C7040);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-pink);
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
-  display: inline-flex;
-  align-items: center;
+  transition: all 0.2s, transform 0.1s;
 }
 .send-file-container .form-section .form-actions .btn-submit i {
   margin-left: 0.5rem;
 }
 .send-file-container .form-section .form-actions .btn-submit:hover:not(:disabled) {
-  background-color: #0C7040;
-  transform: translateY(-2px);
+  scale: 1.01;
+  background-color: var(--color-pink);
 }
 .send-file-container .form-section .form-actions .btn-submit:active:not(:disabled) {
   transform: translateY(0);
@@ -720,8 +701,100 @@
 }
 .send-file-container .message-success {
   background-color: rgba(12, 112, 64, 0.1);
-  color: var(--primary-color, #0C7040);
+  color: var(--color-pink);
   border: 1px solid rgba(12, 112, 64, 0.2);
+}
+.send-file-container .file-list {
+  height: 100%;
+  border-radius: 12px;
+  padding: 2rem;
+  background: radial-gradient(140% 107.13% at 50% 8%, transparent 55.41%, rgb(102, 51, 238) 84.27%, rgb(255, 255, 255) 127%);
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.25), 0 4px 8px -2px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(190, 167, 255, 0.24);
+}
+.send-file-container .file-list .file-count {
+  color: white;
+  font-size: 14px;
+  font-weight: 100;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+.send-file-container .file-list .file-count .badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  background-color: var(--color-pink);
+  color: white;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+  padding: 0 0.5rem;
+}
+.send-file-container .file-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.send-file-container .file-list .file-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  border: 1px solid var(--border-color, #eee);
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  color: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.send-file-container .file-list .file-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+.send-file-container .file-list .file-item .file-icon {
+  font-size: 1rem;
+  color: var(--color-pink);
+  margin-right: 1rem;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(12, 112, 64, 0.1);
+  border-radius: 8px;
+}
+.send-file-container .file-list .file-item .file-info {
+  font-size: 10px;
+  flex: 1;
+}
+.send-file-container .file-list .file-item .file-info .file-name {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--text-color);
+  word-break: break-all;
+}
+.send-file-container .file-list .file-item .file-info .file-meta {
+  font-size: 10px;
+  color: var(--text-muted, #888);
+}
+.send-file-container .file-list .file-item .remove-btn {
+  background: none;
+  border: none;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+.send-file-container .file-list .file-item .remove-btn:hover {
+  color: var(--color-pink);
+}
+.send-file-container .file-list .file-item .remove-btn i {
+  font-size: 10px;
 }
 @keyframes fadeIn {
   from {

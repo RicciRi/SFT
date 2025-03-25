@@ -15,43 +15,38 @@
             <div class="upload-section">
                 <div id="dropzone" class="dropzone">
                     <div class="upload-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 640 512" height="40px" width="40px" xmlns="http://www.w3.org/2000/svg"><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128l-368 0zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39L296 392c0 13.3 10.7 24 24 24s24-10.7 24-24l0-134.1 39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"></path></svg>
                     </div>
-                    <p>Перетащите файлы сюда или <span id="browse-files">выберите файлы</span></p>
-                    <p class="small-text">или перетащите целую папку</p>
+                    <p>Drag and drop files here or <span id="browse-files">browse files</span></p>
+                    <p class="small-text">or drag an entire folder</p>
                     <input type="file" id="file-input" multiple style="display: none">
                 </div>
 
                 <div id="upload-progress" class="progress" style="display: none;">
                     <div class="progress-bar" role="progressbar" style="width: 0%"></div>
                 </div>
-
-                <div id="file-list-container" class="file-list" style="display: none;">
-                    <h3>Загруженные файлы <span class="badge" id="file-count">0</span></h3>
-                    <ul id="file-list"></ul>
-                </div>
             </div>
 
             <div class="form-section">
                 <form id="transfer-form">
                     <div class="form-group">
-                        <label for="recipient-email">Email получателя</label>
+                        <label for="recipient-email">Recipient Email</label>
                         <input type="email" id="recipient-email" name="recipientEmail" class="form-control" placeholder="email@example.com" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="subject">Тема</label>
-                        <input type="text" id="subject" name="subject" class="form-control" placeholder="Тема сообщения" required>
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-control" placeholder="Email subject" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="message">Сообщение</label>
-                        <textarea id="message" name="message" class="form-control" rows="5" placeholder="Введите текст сообщения..." required></textarea>
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" class="form-control" rows="5" placeholder="Enter your message..." required></textarea>
                     </div>
 
                     <div class="form-actions">
                         <button type="submit" id="submit-btn" class="btn-submit" disabled>
-                            Отправить файлы <i class="fas fa-paper-plane"></i>
+                            Send Files <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
                 </form>
@@ -60,7 +55,12 @@
             <div id="error-message" class="message message-error" style="display: none;"></div>
             <div id="success-message" class="message message-success" style="display: none;"></div>
         </div>
-        <div class="right-side"></div>
+        <div class="right-side send-file-container">
+            <div id="file-list-container" class="file-list" style="display: none;">
+                <div class="file-count">Uploaded Files <span class="badge" id="file-count">0</span></div>
+                <ul id="file-list"></ul>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -78,10 +78,7 @@
             const progressBar = uploadProgress.querySelector('.progress-bar');
             const transferForm = document.getElementById('transfer-form');
             const submitBtn = document.getElementById('submit-btn');
-            const errorMessage = document.getElementById('error-message');
-            const successMessage = document.getElementById('success-message');
 
-            // Массив для хранения информации о загруженных файлах
             let uploadedFiles = [];
 
             // Обработчик клика по кнопке выбора файлов
@@ -184,7 +181,6 @@
 
             // Функция загрузки файлов на сервер
             async function uploadFiles(files) {
-                hideMessages();
                 uploadProgress.style.display = 'block';
 
                 const formData = new FormData();
@@ -212,23 +208,23 @@
                                 updateFileList();
                                 submitBtn.disabled = uploadedFiles.length === 0;
                             } else {
-                                showError(response.error || 'Ошибка при загрузке файлов');
+                                showFlash('error', response.error || 'Error uploading files')
                             }
                         } else {
-                            showError('Ошибка сервера: ' + xhr.status);
+                            showFlash('error', 'Server error: ' + xhr.status)
                         }
 
                         uploadProgress.style.display = 'none';
                     };
 
                     xhr.onerror = function() {
-                        showError('Ошибка соединения с сервером');
+                        showFlash('error', 'Connection error')
                         uploadProgress.style.display = 'none';
                     };
 
                     xhr.send(formData);
                 } catch (error) {
-                    showError('Ошибка при отправке запроса на сервер');
+                    showFlash('error', 'Error sending request to server')
                     uploadProgress.style.display = 'none';
                 }
             }
@@ -284,7 +280,7 @@
                 e.preventDefault();
 
                 if (uploadedFiles.length === 0) {
-                    showError('Необходимо загрузить хотя бы один файл');
+                    showFlash('error', 'At least one file must be uploaded')
                     return;
                 }
 
@@ -295,13 +291,11 @@
                 };
 
                 if (!formData.recipientEmail || !formData.subject || !formData.message) {
-                    showError('Заполните все обязательные поля формы');
+                    showFlash('error', 'Please fill in all required form fields')
                     return;
                 }
-
-                hideMessages();
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = 'Отправка... <i class="fas fa-spinner fa-spin"></i>';
+                submitBtn.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
 
                 try {
                     const response = await fetch('{{ path('api_file_transfer_create') }}', {
@@ -315,40 +309,22 @@
                     const result = await response.json();
 
                     if (response.ok) {
-                        showSuccess('Файлы успешно отправлены! Получатель будет уведомлен по электронной почте.');
+                        showFlash('success', 'Files sent successfully! The recipient will be notified via email.')
                         uploadedFiles = [];
                         updateFileList();
                         transferForm.reset();
                     } else {
-                        showError(result.error || 'Ошибка при создании передачи файлов');
+                        showFlash('error', result.error || 'Error creating file transfer')
                         submitBtn.disabled = false;
                     }
                 } catch (error) {
-                    showError('Ошибка при отправке запроса на сервер');
+                    showFlash('error', 'Error sending request to server')
                     submitBtn.disabled = false;
                 } finally {
-                    submitBtn.innerHTML = 'Отправить файлы <i class="fas fa-paper-plane"></i>';
+                    submitBtn.innerHTML = 'Send Files <i class="fas fa-paper-plane"></i>';
                     submitBtn.disabled = uploadedFiles.length === 0;
                 }
             });
-
-            // Вспомогательные функции
-            function showError(message) {
-                errorMessage.textContent = message;
-                errorMessage.style.display = 'block';
-                errorMessage.scrollIntoView({ behavior: 'smooth' });
-            }
-
-            function showSuccess(message) {
-                successMessage.textContent = message;
-                successMessage.style.display = 'block';
-                successMessage.scrollIntoView({ behavior: 'smooth' });
-            }
-
-            function hideMessages() {
-                errorMessage.style.display = 'none';
-                successMessage.style.display = 'none';
-            }
 
             function getFileIcon(mimeType) {
                 if (mimeType.startsWith('image/')) return 'fas fa-file-image';
@@ -365,12 +341,12 @@
 
             function getFileType(mimeType) {
                 const types = {
-                    'image/': 'Изображение',
-                    'video/': 'Видео',
-                    'audio/': 'Аудио',
+                    'image/': 'Image',
+                    'video/': 'Video',
+                    'audio/': 'Audio',
                     'application/pdf': 'PDF',
-                    'application/zip': 'Архив',
-                    'application/x-zip-compressed': 'Архив',
+                    'application/zip': 'Archive',
+                    'application/x-zip-compressed': 'Archive',
                     'application/msword': 'Word',
                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Word',
                     'application/vnd.ms-excel': 'Excel',
@@ -385,7 +361,7 @@
                     }
                 }
 
-                return 'Файл';
+                return 'File';
             }
         });
     </script>

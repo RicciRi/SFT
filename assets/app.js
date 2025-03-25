@@ -9,7 +9,12 @@ import './bootstrap.js';
 // import './styles/app.scss';
 // import './styles/_variables.scss';
 
+function testings() {
+    console.log('test')
+}
 document.addEventListener('DOMContentLoaded', () => {
+
+
     document.querySelectorAll('.flash-message__close').forEach((btn) => {
         btn.addEventListener('click', () => {
             const flash = btn.closest('.flash-message__close');

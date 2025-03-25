@@ -80,12 +80,12 @@ final class SendFileController extends AbstractController
 
             return $this->json([
                 'success' => true,
-                'message' => 'Файлы успешно загружены во временное хранилище',
+                'message' => 'Files successfully saved!',
                 'files' => $response,
             ]);
         } catch (\Exception $e) {
             return $this->json([
-                'error' => 'Ошибка при загрузке файлов: '.$e->getMessage(),
+                'error' => 'Error upload files: '.$e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

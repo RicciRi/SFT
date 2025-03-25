@@ -12,16 +12,20 @@
 {% block body %}
     <div class="send-file-container-wrap">
         <div class="send-file-container left-side">
-            <div class="upload-section">
+            <div id="upload-section" class="upload-section">
                 <div id="dropzone" class="dropzone">
-                    <div class="upload-icon">
-                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 640 512" height="40px" width="40px" xmlns="http://www.w3.org/2000/svg"><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128l-368 0zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39L296 392c0 13.3 10.7 24 24 24s24-10.7 24-24l0-134.1 39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"></path></svg>
-                    </div>
-                    <p>Drag and drop files here or <span id="browse-files">browse files</span></p>
-                    <p class="small-text">or drag an entire folder</p>
+                    <label for="file-input">
+                        <div class="upload-icon">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 640 512"
+                                 height="40px" width="40px" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128l-368 0zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39L296 392c0 13.3 10.7 24 24 24s24-10.7 24-24l0-134.1 39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"></path>
+                            </svg>
+                        </div>
+                        <p>Drag and drop files here or <span class="browse-text">browse files</span></p>
+                        <p class="small-text">or drag an entire folder</p>
+                    </label>
                     <input type="file" id="file-input" multiple style="display: none">
                 </div>
-
                 <div id="upload-progress" class="progress" style="display: none;">
                     <div class="progress-bar" role="progressbar" style="width: 0%"></div>
                 </div>
@@ -31,17 +35,20 @@
                 <form id="transfer-form">
                     <div class="form-group">
                         <label for="recipient-email">Recipient Email</label>
-                        <input type="email" id="recipient-email" name="recipientEmail" class="form-control" placeholder="email@example.com" required>
+                        <input type="email" id="recipient-email" name="recipientEmail" class="form-control"
+                               placeholder="email@example.com" required>
                     </div>
 
                     <div class="form-group">
                         <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" class="form-control" placeholder="Email subject" required>
+                        <input type="text" id="subject" name="subject" class="form-control" placeholder="Email subject"
+                               required>
                     </div>
 
                     <div class="form-group">
                         <label for="message">Message</label>
-                        <textarea id="message" name="message" class="form-control" rows="5" placeholder="Enter your message..." required></textarea>
+                        <textarea id="message" name="message" class="form-control" rows="5"
+                                  placeholder="Enter your message..." required></textarea>
                     </div>
 
                     <div class="form-actions">
@@ -67,10 +74,9 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const dropzone = document.getElementById('dropzone');
             const fileInput = document.getElementById('file-input');
-            const browseFiles = document.getElementById('browse-files');
             const fileList = document.getElementById('file-list');
             const fileListContainer = document.getElementById('file-list-container');
             const fileCount = document.getElementById('file-count');
@@ -81,28 +87,22 @@
 
             let uploadedFiles = [];
 
-            // Обработчик клика по кнопке выбора файлов
-            browseFiles.addEventListener('click', function(e) {
-                e.preventDefault();
-                fileInput.click();
-            });
-
             // Обработчик выбора файлов через input
-            fileInput.addEventListener('change', function() {
+            fileInput.addEventListener('change', function () {
                 handleFiles(Array.from(this.files));
             });
 
             // Обработчики перетаскивания файлов
-            dropzone.addEventListener('dragover', function(e) {
+            dropzone.addEventListener('dragover', function (e) {
                 e.preventDefault();
                 dropzone.classList.add('active');
             });
 
-            dropzone.addEventListener('dragleave', function() {
+            dropzone.addEventListener('dragleave', function () {
                 dropzone.classList.remove('active');
             });
 
-            dropzone.addEventListener('drop', function(e) {
+            dropzone.addEventListener('drop', function (e) {
                 e.preventDefault();
                 dropzone.classList.remove('active');
 
@@ -192,14 +192,14 @@
                     const xhr = new XMLHttpRequest();
                     xhr.open('POST', '{{ path('api_upload_files') }}');
 
-                    xhr.upload.addEventListener('progress', function(e) {
+                    xhr.upload.addEventListener('progress', function (e) {
                         if (e.lengthComputable) {
                             const percentComplete = (e.loaded / e.total) * 100;
                             progressBar.style.width = percentComplete + '%';
                         }
                     });
 
-                    xhr.onload = function() {
+                    xhr.onload = function () {
                         if (xhr.status === 200) {
                             const response = JSON.parse(xhr.responseText);
 
@@ -217,7 +217,7 @@
                         uploadProgress.style.display = 'none';
                     };
 
-                    xhr.onerror = function() {
+                    xhr.onerror = function () {
                         showFlash('error', 'Connection error')
                         uploadProgress.style.display = 'none';
                     };
@@ -258,7 +258,7 @@
 
                     // Добавляем обработчики для кнопок удаления
                     document.querySelectorAll('.remove-btn').forEach(btn => {
-                        btn.addEventListener('click', function() {
+                        btn.addEventListener('click', function () {
                             const index = parseInt(this.dataset.index);
                             removeFile(index);
                         });
@@ -276,7 +276,7 @@
             }
 
             // Отправка формы с данными о файлах
-            transferForm.addEventListener('submit', async function(e) {
+            transferForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
 
                 if (uploadedFiles.length === 0) {

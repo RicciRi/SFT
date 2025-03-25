@@ -7,6 +7,7 @@ use App\Repository\FileTransferRepository;
 use App\Service\FileUploadService;
 use App\Service\MessageService;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/send/file')]
+#[Route('/send')]
 final class SendFileController extends AbstractController
 {
     public function __construct(
@@ -22,31 +23,24 @@ final class SendFileController extends AbstractController
         private readonly EntityManagerInterface $entityManager,
         private readonly FileTransferRepository $fileTransferRepository,
         private readonly MessageService $messageService,
+        private LoggerInterface $logger,
     ) {
     }
 
-    #[Route('/', name: 'app_send_file')]
+    #[Route('/', name: 'app_send')]
     #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function new(): Response
     {
-        return $this->render('send_file/new.html.twig', [
+        return $this->render('send/new.html.twig', [
             'max_file_size' => $this->getMaxUploadSize(),
         ]);
     }
 
-    #[Route('/history', name: 'app_send_file_history')]
+    #[Route('/transfers', name: 'app_send_transfers')]
     #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function index(): Response
     {
-        $user = $this->getUser();
-        $fileTransfers = $this->fileTransferRepository->findBy(
-            ['user' => $user],
-            ['createdAt' => 'DESC']
-        );
-
-        return $this->render('send_file/index.html.twig', [
-            'fileTransfers' => $fileTransfers,
-        ]);
+        return $this->render('send/index.html.twig', []);
     }
 
     #[Route('/api/upload-files', name: 'api_upload_files', methods: ['POST'])]
@@ -60,16 +54,34 @@ final class SendFileController extends AbstractController
         }
 
         try {
-            // Обрабатываем файлы и сохраняем во временное хранилище
-            $filesData = $this->fileUploadService->processTemporaryFiles($files);
-
-            // Сохраняем данные о файлах в сессии
+            // Получаем сессию
             $session = $request->getSession();
-            $session->set('temp_file_data', $filesData);
+
+            // Получаем существующие данные о файлах из сессии
+            $existingFilesData = $session->get('temp_file_data', []);
+
+            // Логируем количество существующих файлов
+            $this->logger->info('Существующие файлы в сессии', [
+                'количество' => count($existingFilesData),
+            ]);
+
+            // Обрабатываем новые файлы и сохраняем во временное хранилище
+            $newFilesData = $this->fileUploadService->processTemporaryFiles($files);
+
+            // Объединяем существующие и новые данные о файлах
+            $allFilesData = array_merge($existingFilesData, $newFilesData);
+
+            // Сохраняем обновленные данные о файлах в сессии
+            $session->set('temp_file_data', $allFilesData);
+
+            // Логируем общее количество файлов после объединения
+            $this->logger->info('Обновлено в сессии', [
+                'общее_количество' => count($allFilesData),
+            ]);
 
             // Готовим данные для ответа
             $response = [];
-            foreach ($filesData as $fileData) {
+            foreach ($newFilesData as $fileData) {
                 $response[] = [
                     'originalFilename' => $fileData['originalFilename'],
                     'fileSize' => $this->formatFileSize($fileData['fileSize']),
@@ -82,8 +94,14 @@ final class SendFileController extends AbstractController
                 'success' => true,
                 'message' => 'Files successfully saved!',
                 'files' => $response,
+                'total_files' => count($allFilesData),
             ]);
         } catch (\Exception $e) {
+            $this->logger->error('Ошибка загрузки файлов', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
             return $this->json([
                 'error' => 'Error upload files: '.$e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -103,6 +121,14 @@ final class SendFileController extends AbstractController
         $session = $request->getSession();
         $filesData = $session->get('temp_file_data', []);
 
+        // Подробное логирование данных о файлах из сессии
+        $this->logger->info('Данные о файлах из сессии', [
+            'количество_файлов' => count($filesData),
+            'имена_файлов' => array_map(function ($file) {
+                return $file['originalFilename'];
+            }, $filesData),
+        ]);
+
         if (empty($filesData)) {
             return $this->json(['error' => 'Не найдены загруженные файлы'], Response::HTTP_BAD_REQUEST);
         }
@@ -118,18 +144,26 @@ final class SendFileController extends AbstractController
             $fileTransfer->setMessage($data['message']);
             $fileTransfer->setCreatedAt(new \DateTimeImmutable());
 
+            $this->logger->info($fileTransfer->getUuid());
+
             // Устанавливаем срок действия (например, 7 дней)
             $expirationAt = new \DateTimeImmutable('+7 days');
             $fileTransfer->setExpirationAt($expirationAt);
 
             $fileTransfer->setStatus('pending');
 
-            // Перемещаем файлы из временного хранилища в постоянное
-            $this->fileUploadService->persistFiles($filesData, $fileTransfer);
-
-            // Сохраняем в базу данных
             $this->entityManager->persist($fileTransfer);
+
+            // Перемещаем файлы из временного хранилища в постоянное
+            $this->fileUploadService->persistFiles($filesData, $fileTransfer, $this->entityManager);
+
             $this->entityManager->flush();
+
+            // Дополнительно логируем информацию о сохраненных файлах
+            $this->logger->info('Файлы после сохранения', [
+                'количество_сохраненных' => count($fileTransfer->getTransferredFiles()),
+                'id_передачи' => $fileTransfer->getId(),
+            ]);
 
             // Очищаем данные о временных файлах
             $sessionTokens = array_map(function ($file) {
@@ -149,8 +183,14 @@ final class SendFileController extends AbstractController
                 'success' => true,
                 'message' => 'Файлы успешно отправлены',
                 'id' => $fileTransfer->getId(),
+                'files_count' => count($fileTransfer->getTransferredFiles()),
             ]);
         } catch (\Exception $e) {
+            $this->logger->error('Ошибка при обработке запроса', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
             return $this->json([
                 'error' => 'Ошибка при обработке запроса: '.$e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);

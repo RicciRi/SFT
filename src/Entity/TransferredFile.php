@@ -13,7 +13,7 @@ class TransferredFile
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'fileTransfer')]
+    #[ORM\ManyToOne(inversedBy: 'transferredFiles')]
     private ?FileTransfer $fileTransfer = null;
 
     #[ORM\Column(length: 255)]

@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\FileTransfer;
 use App\Entity\TransferredFile;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Uid\Uuid;
 
@@ -13,20 +14,14 @@ class FileUploadService
     private string $uploadDir;
     private LoggerInterface $logger;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(string $uploadDir, LoggerInterface $logger)
     {
-        // Используем единую директорию для временных и постоянных файлов
-        $this->tempDir = '/tmp/file_transfers';
-        $this->uploadDir = '/tmp/file_transfers';
+        $this->uploadDir = $uploadDir;
+        $this->tempDir = $uploadDir;
         $this->logger = $logger;
 
-        // Создаем директории, если они не существуют
-        if (!is_dir($this->tempDir)) {
-            mkdir($this->tempDir, 0777, true);
-        }
-
         if (!is_dir($this->uploadDir)) {
-            mkdir($this->uploadDir, 0777, true);
+            mkdir($this->uploadDir, 0775, true);
         }
     }
 
@@ -90,25 +85,24 @@ class FileUploadService
         return $fileData;
     }
 
-    /**
-     * Создает сущности TransferredFile без перемещения файлов.
-     */
-    public function persistFiles(array $fileData, FileTransfer $fileTransfer): void
+    public function persistFiles(array $fileData, FileTransfer $fileTransfer, EntityManagerInterface $entityManager): void
     {
-        foreach ($fileData as $data) {
+        $this->logger->info('Начало обработки файлов', [
+            'количество_файлов' => count($fileData),
+            'file_transfer_id' => $fileTransfer->getUuid(),
+        ]);
+
+        foreach ($fileData as $index => $data) {
             try {
                 $tempFilename = $data['tempFilename'];
                 $tempPath = $this->tempDir.'/'.$tempFilename;
 
-                // Проверяем существование файла
                 if (!file_exists($tempPath)) {
-                    throw new \Exception("Файл не найден: {$tempPath}");
+                    throw new \Exception("Can not find file:: {$tempPath}");
                 }
 
-                // Так как файл уже в постоянной директории, просто используем его
                 $storedFilename = $tempFilename;
 
-                // Создаем запись о файле в БД
                 $transferredFile = new TransferredFile();
                 $transferredFile->setFileTransfer($fileTransfer);
                 $transferredFile->setOriginalFilename($data['originalFilename']);
@@ -117,11 +111,17 @@ class FileUploadService
                 $transferredFile->setMimeType($data['mimeType']);
                 $transferredFile->setCreatedAt(new \DateTimeImmutable());
 
+                // Добавляем файл к передаче
                 $fileTransfer->addTransferredFile($transferredFile);
 
-                $this->logger->info('Файл успешно сохранен в БД', [
-                    'originalFilename' => $data['originalFilename'],
-                    'storedFilename' => $storedFilename,
+                // Явно сохраняем каждую сущность TransferredFile
+                $entityManager->persist($transferredFile);
+
+                $this->logger->info('Файл обработан и добавлен в коллекцию', [
+                    'индекс' => $index,
+                    'имя_файла' => $data['originalFilename'],
+                    'размер' => $data['fileSize'],
+                    'id_файла' => $transferredFile->getId() ?? 'нет_id',
                 ]);
             } catch (\Exception $e) {
                 $this->logger->error('Ошибка при сохранении файла', [
@@ -131,62 +131,11 @@ class FileUploadService
                 throw $e;
             }
         }
-    }
 
-    /**
-     * Метод для тестирования доступа к директориям
-     */
-    public function testDirectoryAccess(): array
-    {
-        $tempTestFile = $this->tempDir.'/test_'.uniqid().'.txt';
-        $permanentTestFile = $this->uploadDir.'/test_'.uniqid().'.txt';
-
-        // Тестируем временную директорию
-        $tempDirExists = is_dir($this->tempDir);
-        $tempDirWritable = is_writable($this->tempDir);
-        $tempFileWritten = false;
-        $tempFileContent = null;
-
-        if ($tempDirExists && $tempDirWritable) {
-            file_put_contents($tempTestFile, 'Test content');
-            $tempFileWritten = file_exists($tempTestFile);
-            if ($tempFileWritten) {
-                $tempFileContent = file_get_contents($tempTestFile);
-                unlink($tempTestFile);
-            }
-        }
-
-        // Тестируем постоянную директорию
-        $uploadDirExists = is_dir($this->uploadDir);
-        $uploadDirWritable = is_writable($this->uploadDir);
-        $permanentFileWritten = false;
-        $permanentFileContent = null;
-
-        if ($uploadDirExists && $uploadDirWritable) {
-            file_put_contents($permanentTestFile, 'Test content');
-            $permanentFileWritten = file_exists($permanentTestFile);
-            if ($permanentFileWritten) {
-                $permanentFileContent = file_get_contents($permanentTestFile);
-                unlink($permanentTestFile);
-            }
-        }
-
-        return [
-            'temp_directory' => [
-                'path' => $this->tempDir,
-                'exists' => $tempDirExists,
-                'writable' => $tempDirWritable,
-                'file_written' => $tempFileWritten,
-                'file_content_ok' => 'Test content' === $tempFileContent,
-            ],
-            'upload_directory' => [
-                'path' => $this->uploadDir,
-                'exists' => $uploadDirExists,
-                'writable' => $uploadDirWritable,
-                'file_written' => $permanentFileWritten,
-                'file_content_ok' => 'Test content' === $permanentFileContent,
-            ],
-        ];
+        // Логируем текущее состояние коллекции
+        $this->logger->info('Состояние коллекции после обработки всех файлов', [
+            'количество_файлов_в_коллекции' => count($fileTransfer->getTransferredFiles()),
+        ]);
     }
 
     /**

@@ -28,3 +28,7 @@ fix:
 watch:
 	npm run build:css
 	npm run watch:css
+
+show limits:
+	docker compose exec app php -i | grep -E "upload_max_filesize|post_max_size"
+

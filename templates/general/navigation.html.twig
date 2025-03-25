@@ -2,8 +2,8 @@
     <div class="navigation-menu">
         {% if app.user %}
             <a class="nav-link" href="{{ path('app_home') }}">Home</a>
-            <a class="nav-link" href="{{ path('app_send_file') }}">Send</a>
-            <a class="nav-link" href="{{ path('app_send_file_history') }}">History</a>
+            <a class="nav-link" href="{{ path('app_send') }}">Send</a>
+            <a class="nav-link" href="{{ path('app_send_transfers') }}">History</a>
             <a class="nav-link" href="{{ path('app_home') }}">Account</a>
             <a class="nav-link" href="{{ path('app_home') }}">Setting</a>
         {% endif %}

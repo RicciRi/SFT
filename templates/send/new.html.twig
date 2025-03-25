@@ -84,8 +84,25 @@
             const progressBar = uploadProgress.querySelector('.progress-bar');
             const transferForm = document.getElementById('transfer-form');
             const submitBtn = document.getElementById('submit-btn');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
 
             let uploadedFiles = [];
+
+            // Очищаем сессию при загрузке страницы
+            resetFilesSession();
+
+            // Функция для сброса сессии на сервере
+            function resetFilesSession() {
+                fetch('{{ path('api_reset_files') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => response.json())
+                    .catch(error => console.error('Error resetting files session:', error));
+            }
 
             // Обработчик выбора файлов через input
             fileInput.addEventListener('change', function () {
@@ -204,6 +221,7 @@
                             const response = JSON.parse(xhr.responseText);
 
                             if (response.success) {
+                                // Обновляем только массив uploadedFiles на фронтенде
                                 uploadedFiles = [...uploadedFiles, ...response.files];
                                 updateFileList();
                                 submitBtn.disabled = uploadedFiles.length === 0;
@@ -241,17 +259,17 @@
                         li.className = 'file-item fade-in';
 
                         li.innerHTML = `
-                            <div class="file-icon">
-                                <i class="${getFileIcon(file.mimeType)}"></i>
-                            </div>
-                            <div class="file-info">
-                                <div class="file-name">${file.originalFilename}</div>
-                                <div class="file-meta">${file.fileSize} &middot; ${getFileType(file.mimeType)}</div>
-                            </div>
-                            <button type="button" class="remove-btn" data-index="${index}">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        `;
+                        <div class="file-icon">
+                            <i class="${getFileIcon(file.mimeType)}"></i>
+                        </div>
+                        <div class="file-info">
+                            <div class="file-name">${file.originalFilename}</div>
+                            <div class="file-meta">${file.fileSize} &middot; ${getFileType(file.mimeType)}</div>
+                        </div>
+                        <button type="button" class="remove-btn" data-index="${index}" data-token="${file.sessionToken}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
 
                         fileList.appendChild(li);
                     });
@@ -260,7 +278,8 @@
                     document.querySelectorAll('.remove-btn').forEach(btn => {
                         btn.addEventListener('click', function () {
                             const index = parseInt(this.dataset.index);
-                            removeFile(index);
+                            const token = this.dataset.token;
+                            removeFile(index, token);
                         });
                     });
                 } else {
@@ -269,10 +288,23 @@
             }
 
             // Удаление файла из списка
-            function removeFile(index) {
+            function removeFile(index, token) {
+                // Удаляем файл из локального массива
                 uploadedFiles.splice(index, 1);
                 updateFileList();
                 submitBtn.disabled = uploadedFiles.length === 0;
+
+                // Удаляем файл из сессии на сервере
+                fetch(`/send/api/remove-file/${token}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('File removed from session', data);
+                    })
+                    .catch(error => {
+                        console.error('Error removing file from session:', error);
+                    });
             }
 
             // Отправка формы с данными о файлах

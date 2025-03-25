@@ -36,6 +36,59 @@ final class SendFileController extends AbstractController
         ]);
     }
 
+    /**
+     * Сбрасывает список файлов в сессии при загрузке страницы
+     */
+    #[Route('/api/reset-files', name: 'api_reset_files', methods: ['POST'])]
+    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
+    public function resetFiles(Request $request): JsonResponse
+    {
+        $session = $request->getSession();
+        $session->remove('temp_file_data');
+
+        $this->logger->info('Сессия очищена');
+
+        return $this->json([
+                               'success' => true
+                           ]);
+    }
+
+    /**
+     * Удаляет конкретный файл из сессии по его токену
+     */
+    #[Route('/api/remove-file/{token}', name: 'api_remove_file', methods: ['DELETE'])]
+    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
+    public function removeFile(string $token, Request $request): JsonResponse
+    {
+        $session = $request->getSession();
+        $filesData = $session->get('temp_file_data', []);
+
+        $this->logger->info('Запрос на удаление файла', [
+            'token' => $token,
+            'количество_файлов_до_удаления' => count($filesData)
+        ]);
+
+        // Фильтруем список файлов, исключая файл с указанным токеном
+        $updatedFilesData = array_filter($filesData, function($file) use ($token) {
+            return $file['sessionToken'] !== $token;
+        });
+
+        // Переиндексируем массив
+        $updatedFilesData = array_values($updatedFilesData);
+
+        // Обновляем данные в сессии
+        $session->set('temp_file_data', $updatedFilesData);
+
+        $this->logger->info('Файл удален из сессии', [
+            'количество_файлов_после_удаления' => count($updatedFilesData)
+        ]);
+
+        return $this->json([
+                               'success' => true,
+                               'remaining_files' => count($updatedFilesData)
+                           ]);
+    }
+
     #[Route('/transfers', name: 'app_send_transfers')]
     #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function index(): Response

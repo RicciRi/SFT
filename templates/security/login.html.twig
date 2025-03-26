@@ -6,7 +6,7 @@
 {% block footer %}{% endblock %}
 
 {% block body %}
-    <div class="login-page">
+    <div class="auth-page">
         <div class="left-panel">
             SFT
         </div>
@@ -17,7 +17,6 @@
                         {{ error.messageKey|trans(error.messageData, 'security') }}
                     </div>
                 {% endif %}
-
                 {% if app.user %}
                     <div class="mb-3">
                         You are logged in as {{ app.user.userIdentifier }},
@@ -26,22 +25,27 @@
                 {% endif %}
 
                 <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                <div class="redirect-link">Don't have an account? <a href="{{ path('app_register') }}">Sign up</a></div>
-
 
                 <label for="inputEmail">Email</label>
-                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus placeholder="email@example.com">
 
                 <label for="inputPassword">Password</label>
-                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required placeholder="********">
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                <div class="checkbox mb-3">
-                    <label>
-                        <input type="checkbox" name="_remember_me"> Remember me
-                    </label>
+                <div class="checkbox-wrap">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="_remember_me"> Remember me
+                        </label>
+                    </div>
+                    <div>
+                        <div class="redirect-link">Don't have an account? <a href="{{ path('app_register') }}">Sign up</a></div>
+                    </div>
                 </div>
+
+
 
                 <button class="btn btn-lg btn-primary" type="submit">
                     Sign in

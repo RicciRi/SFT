@@ -94,5 +94,16 @@
         background: var(--link-hover-color);
       }
     }
+
+    .navigation-button {
+      height: 26px;
+      color: var(--color-primary);
+      background: #fff;
+
+      &:hover {
+        color: #000;
+        background: #fff;
+      }
+    }
   }
 }

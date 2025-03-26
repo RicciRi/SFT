@@ -21,11 +21,11 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'constraints' => [
-                    new Email([
-                        'message' => 'Please, enter valid Email.',
-                    ]),
                     new NotBlank([
                         'message' => 'Please enter an Email!',
+                    ]),
+                    new Email([
+                        'message' => 'Please, enter valid Email.',
                     ]),
                     new Length([
                         'min' => 6,
@@ -33,6 +33,10 @@ class RegistrationFormType extends AbstractType
                         'max' => 250,
                         'maxMessage' => 'Your email should be max {{ limit }} characters',
                     ]),
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'email@example.com',
                 ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
@@ -47,7 +51,11 @@ class RegistrationFormType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => [
+                    'autocomplete' => 'new-password',
+                    'class' => 'form-control',
+                    'placeholder' => '********',
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',

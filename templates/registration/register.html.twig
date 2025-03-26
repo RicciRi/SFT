@@ -6,7 +6,7 @@
 {% block footer %}{% endblock %}
 
 {% block body %}
-    <div class="register-page">
+    <div class="auth-page">
         <div class="left-panel">
             SFT
         </div>
@@ -19,22 +19,28 @@
             {{ form_errors(registrationForm) }}
 
             {{ form_start(registrationForm) }}
-            <h1>Create an account</h1>
-            <div class="redirect-link">Already have an account? <a href="{{ path('app_login') }}">Log in</a></div>
+            <h1 class="h3 mb-3 font-weight-normal">Create an account</h1>
 
             {{ form_row(registrationForm.email) }}
             {{ form_errors(registrationForm.email) }}
 
-            {{ form_row(registrationForm.plainPassword, { label: 'Password' }) }}
+            {{ form_row(registrationForm.plainPassword, { label: 'Password'}) }}
             {{ form_errors(registrationForm.plainPassword) }}
 
-            <label for="registration_form_agreeTerms" class="required">
-                {{ form_widget(registrationForm.agreeTerms) }}
-                Agree terms
-            </label>
+            <div class="checkbox-wrap">
+                <div class="checkbox">
+                    <label for="registration_form_agreeTerms" class="required">
+                        {{ form_widget(registrationForm.agreeTerms) }}
+                        Agree terms
+                    </label>
+                </div>
+
+                <div class="redirect-link">Already have an account? <a href="{{ path('app_login') }}">Log in</a></div>
+            </div>
+
             {{ form_errors(registrationForm.agreeTerms) }}
 
-            <button type="submit" class="btn">Register</button>
+            <button type="submit" class="btn btn-lg btn-primary">Register</button>
             {{ form_end(registrationForm) }}
         </div>
     </div>

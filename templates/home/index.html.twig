@@ -1,134 +1,123 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Home{% endblock %}
+{% block title %}{{ parent() }} - Symfony File Transfer{% endblock %}
 
 {% block body %}
     <div class="home-container">
         <div class="home-header">
             <div class="content-sizer">
-                <h1>Accelerate your business with a secure file transfer</h1>
+                <h1>Простая, быстрая и безопасная отправка файлов для вашего бизнеса</h1>
                 <div class="services-cards-list">
                     <div class="service-card">
                         <div class="icon-wrapper">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="2"/>
-                                <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2"/>
-                                <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="lucide lucide-shield-check">
+                                <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+                                <path d="m9 12 2 2 4-4"></path>
                             </svg>
                         </div>
-                        <div class="service-name">PCI Compliance</div>
+                        <div class="service-name">Безопасное хранение</div>
                     </div>
 
                     <div class="service-card">
                         <div class="icon-wrapper">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                                      stroke="white" stroke-width="2"/>
-                                <path d="M12 8V16" stroke="white" stroke-width="2"/>
-                                <path d="M8 12H16" stroke="white" stroke-width="2"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="lucide lucide-gauge">
+                                <path d="m12 14 4-4"></path>
+                                <path d="M3.34 19a10 10 0 1 1 17.32 0"></path>
                             </svg>
                         </div>
-                        <div class="service-name">Payments Optimization</div>
+                        <div class="service-name">Высокая скорость</div>
                     </div>
 
                     <div class="service-card">
                         <div class="icon-wrapper">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="2" y="5" width="20" height="14" rx="2" stroke="white" stroke-width="2"/>
-                                <path d="M2 10H22" stroke="white" stroke-width="2"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="lucide lucide-network">
+                                <rect x="16" y="16" width="6" height="6" rx="1"></rect>
+                                <rect x="2" y="16" width="6" height="6" rx="1"></rect>
+                                <rect x="9" y="2" width="6" height="6" rx="1"></rect>
+                                <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path>
+                                <path d="M12 12V8"></path>
                             </svg>
                         </div>
-                        <div class="service-name">Card Issuing</div>
+                        <div class="service-name">Бизнес-аккаунты</div>
                     </div>
 
                     <div class="service-card">
                         <div class="icon-wrapper">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
-                                      stroke="white" stroke-width="2"/>
-                                <path d="M19 15C19.5523 15 20 14.5523 20 14C20 13.4477 19.5523 13 19 13C18.4477 13 18 13.4477 18 14C18 14.5523 18.4477 15 19 15Z"
-                                      stroke="white" stroke-width="2"/>
-                                <path d="M19 11C19.5523 11 20 10.5523 20 10C20 9.44772 19.5523 9 19 9C18.4477 9 18 9.44772 18 10C18 10.5523 18.4477 11 19 11Z"
-                                      stroke="white" stroke-width="2"/>
-                                <path d="M5 15C5.55228 15 6 14.5523 6 14C6 13.4477 5.55228 13 5 13C4.44772 13 4 13.4477 4 14C4 14.5523 4.44772 15 5 15Z"
-                                      stroke="white" stroke-width="2"/>
-                                <path d="M5 11C5.55228 11 6 10.5523 6 10C6 9.44772 5.55228 9 5 9C4.44772 9 4 9.44772 4 10C4 10.5523 4.44772 11 5 11Z"
-                                      stroke="white" stroke-width="2"/>
-                                <path d="M15 19C15 19.5523 14.5523 20 14 20C13.4477 20 13 19.5523 13 19C13 18.4477 13.4477 18 14 18C14.5523 18 15 18.4477 15 19Z"
-                                      stroke="white" stroke-width="2"/>
-                                <path d="M11 19C11 19.5523 10.5523 20 10 20C9.44772 20 9 19.5523 9 19C9 18.4477 9.44772 18 10 18C10.5523 18 11 18.4477 11 19Z"
-                                      stroke="white" stroke-width="2"/>
-                                <path d="M15 5C15 5.55228 14.5523 6 14 6C13.4477 6 13 5.55228 13 5C13 4.44772 13.4477 4 14 4C14.5523 4 15 4.44772 15 5Z"
-                                      stroke="white" stroke-width="2"/>
-                                <path d="M11 5C11 5.55228 10.5523 6 10 6C9.44772 6 9 5.55228 9 5C9 4.44772 9.44772 4 10 4C10.5523 4 11 4.44772 11 5Z"
-                                      stroke="white" stroke-width="2"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="lucide lucide-text-cursor-input">
+                                <path d="M5 4h1a3 3 0 0 1 3 3 3 3 0 0 1 3-3h1"></path>
+                                <path d="M13 20h-1a3 3 0 0 1-3-3 3 3 0 0 1-3 3H5"></path>
+                                <path d="M5 16H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h1"></path>
+                                <path d="M13 8h7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-7"></path>
+                                <path d="M9 7v10"></path>
                             </svg>
                         </div>
-                        <div class="service-name">Network Tokens</div>
+                        <div class="service-name">Мониторинг файлов</div>
                     </div>
 
                     <div class="service-card">
                         <div class="icon-wrapper">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/>
-                                <path d="M12 6V12L16 14" stroke="white" stroke-width="2"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="lucide lucide-key">
+                                <path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"></path>
+                                <path d="m21 2-9.6 9.6"></path>
+                                <circle cx="7.5" cy="15.5" r="5.5"></circle>
                             </svg>
                         </div>
-                        <div class="service-name">Card Insights</div>
+                        <div class="service-name">Статистика скачиваний</div>
                     </div>
 
                     <div class="service-card">
                         <div class="icon-wrapper">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 5L9 9.5V14.5L15 19L21 14.5V9.5L15 5Z" stroke="white" stroke-width="2"/>
-                                <path d="M9 9.5L3 5L9 0.5" stroke="white" stroke-width="2"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="lucide lucide-database">
+                                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                <path d="M3 5V19A9 3 0 0 0 21 19V5"></path>
+                                <path d="M3 12A9 3 0 0 0 21 12"></path>
                             </svg>
                         </div>
-                        <div class="service-name">Key Management</div>
+                        <div class="service-name">Большие файлы</div>
                     </div>
 
-                    <div class="service-card">
-                        <div class="icon-wrapper">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="2" y="4" width="20" height="16" rx="2" stroke="white" stroke-width="2"/>
-                                <path d="M6 12H18" stroke="white" stroke-width="2"/>
-                                <path d="M6 8H10" stroke="white" stroke-width="2"/>
-                                <path d="M6 16H10" stroke="white" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="service-name">BIN Lookup</div>
-                    </div>
-
-                    <div class="service-card">
-                        <div class="icon-wrapper">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                                      stroke="white" stroke-width="2"/>
-                                <path d="M9 10C9.55228 10 10 9.55228 10 9C10 8.44772 9.55228 8 9 8C8.44772 8 8 8.44772 8 9C8 9.55228 8.44772 10 9 10Z"
-                                      fill="white"/>
-                                <path d="M15 10C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8C14.4477 8 14 8.44772 14 9C14 9.55228 14.4477 10 15 10Z"
-                                      fill="white"/>
-                                <path d="M9 17C11.2091 17 13 15.2091 13 13H15C15 16.3137 12.3137 19 9 19C5.68629 19 3 16.3137 3 13H5C5 15.2091 6.79086 17 9 17Z"
-                                      fill="white"/>
-                            </svg>
-                        </div>
-                        <div class="service-name">3D Secure</div>
-                    </div>
                 </div>
             </div>
         </div>
+
         <div class="content-sizer">
             <div class="features-container">
+
                 <div class="feature-card feature-large">
-                    <div class="category-label">Accelerate your card product</div>
-                    <div class="feature-title">Expedite the security and compliance requirements of launching a card
-                        product
+                    <div class="category-label">Удобство бизнеса</div>
+                    <div class="feature-title">Создавайте бизнес-аккаунты и управляйте доступом сотрудников</div>
+                    <div class="feature-description">
+                        Symfony File Transfer позволяет вашему бизнесу создать основной аккаунт и до 20 дополнительных
+                        пользовательских аккаунтов для ваших сотрудников, упрощая управление файлами и безопасность
+                        внутри компании.
                     </div>
-                    <div class="feature-description">Improve your card's time-to-market from months to days, by using
-                        Evervault to tokenize cards from the issuer of your choice, store card data with minimal PCI
-                        compliance impact, and even reveal the raw card numbers to users.
+                    <div class="learn-more">
+                        Подробнее
+                        <svg width="10" height="10" viewBox="0 0 10 10" class="styles_arrow__fxWHa" aria-hidden="true">
+                            <path d="M0 5h7" class="styles_line___qSr7"></path>
+                            <path d="M1 1l4 4-4 4" class="styles_chevron__pzecF"></path>
+                        </svg>
                     </div>
-                    <div class="learn-more">Learn more</div>
+                    <div class="illustration-area">
+                        <div class="partner-logos">
+                            {% include 'components/safe_dial.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card feature-medium">
                     <div class="illustration-area">
                         <div class="card-stack">
                             <div class="card"></div>
@@ -136,68 +125,72 @@
                             <div class="card"></div>
                         </div>
                     </div>
+                    <div class="category-label">Всегда быстро и надёжно</div>
+                    <div class="feature-title">Отправляйте и отслеживайте файлы без задержек</div>
+                    <div class="feature-description">
+                        Мгновенно передавайте большие файлы партнёрам и клиентам, контролируя статус доставки и время
+                        скачивания. С нами вы всегда уверены, что ваши файлы дойдут в срок.
+                    </div>
+                    <div class="learn-more">
+                        Подробнее
+                        <svg width="10" height="10" viewBox="0 0 10 10" class="styles_arrow__fxWHa" aria-hidden="true">
+                            <path d="M0 5h7" class="styles_line___qSr7"></path>
+                            <path d="M1 1l4 4-4 4" class="styles_chevron__pzecF"></path>
+                        </svg>
+                    </div>
                 </div>
 
                 <div class="feature-card feature-medium">
-                    <div class="illustration-area">
-                        <div class="partner-logos">
-                            <div class="logo">
-                                <img src="path/to/logo1.svg" alt="Partner Logo">
-                            </div>
-                            <div class="logo">
-                                <img src="path/to/logo2.svg" alt="Partner Logo">
-                            </div>
-                            <div class="logo">
-                                <img src="path/to/logo3.svg" alt="Partner Logo">
-                            </div>
-                            <div class="logo">
-                                <img src="path/to/logo4.svg" alt="Partner Logo">
-                            </div>
-                        </div>
+                    <div class="category-label">Полный контроль за процессом</div>
+                    <div class="feature-title">Подробная аналитика и мониторинг скачиваний</div>
+                    <div class="feature-description">
+                        Отслеживайте статус каждого файла в реальном времени и получайте детализированную статистику
+                        скачиваний, чтобы всегда знать, кто, когда и как использует отправленную информацию.
                     </div>
-                    <div class="category-label">Optimize payment performance</div>
-                    <div class="feature-title">Improve payment costs & global coverage with a multi-processor payment
-                        setup
+                    <div class="learn-more">
+                        Подробнее
+                        <svg width="10" height="10" viewBox="0 0 10 10" class="styles_arrow__fxWHa" aria-hidden="true">
+                            <path d="M0 5h7" class="styles_line___qSr7"></path>
+                            <path d="M1 1l4 4-4 4" class="styles_chevron__pzecF"></path>
+                        </svg>
                     </div>
-                    <div class="feature-description">Avoid payment processor vendor lock-in, optimize payment costs and
-                        acceptance rates by selectively routing payments to different payment processors.
-                    </div>
-                    <div class="learn-more">Learn more</div>
-                </div>
-
-                <div class="feature-card feature-medium">
-                    <div class="category-label">Build complex card sharing workflows</div>
-                    <div class="feature-title">Share card data securely while keeping compliance scope to a minimum
-                    </div>
-                    <div class="feature-description">Evervault gives you flexible, compliant products for sharing card
-                        data with third-parties. For example, booking aggregators and platforms can compliantly forward
-                        card data to their partners for storing or processing.
-                    </div>
-                    <div class="learn-more">Learn more</div>
                     <div class="illustration-area">
                         <div class="card-proxy">
-                            <!-- Add card proxy illustration here -->
+                            <div class="card-stack">
+                                <div class="card"></div>
+                                <div class="card"></div>
+                                <div class="card"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="feature-card feature-large">
                     <div class="illustration-area">
-                        <div class="security-dial"></div>
+                        {% include 'components/safe_dial.html.twig' %}
                     </div>
-                    <div class="category-label">Computing for highly sensitive payment operations</div>
-                    <div class="feature-title">Easily prove to enterprise customers that their data is handled with
-                        maximum security
+                    <div class="category-label">Максимальная безопасность</div>
+                    <div class="feature-title">Храните и отправляйте конфиденциальную информацию с уверенностью</div>
+                    <div class="feature-description">
+                        Symfony File Transfer обеспечивает высокий уровень защиты данных благодаря современным методам
+                        шифрования и строгому соответствию стандартам безопасности. Ваши данные всегда остаются под
+                        вашим контролем.
                     </div>
-                    <div class="feature-description">Evervault makes it easy for developers to run sensitive payment
-                        workloads in highly-constrained compute environments using secure enclaves.
+                    <div class="learn-more">
+                        Подробнее
+                        <svg width="10" height="10" viewBox="0 0 10 10" class="styles_arrow__fxWHa" aria-hidden="true">
+                            <path d="M0 5h7" class="styles_line___qSr7"></path>
+                            <path d="M1 1l4 4-4 4" class="styles_chevron__pzecF"></path>
+                        </svg>
                     </div>
-                    <div class="learn-more">Learn more</div>
                 </div>
             </div>
         </div>
+        <div class="divider-style mt-100"></div>
+
     </div>
 {% endblock %}
 
 {% block javascripts %}
 {% endblock %}
+

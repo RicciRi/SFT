@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\TransferStatus;
 use App\Repository\FileTransferRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -38,8 +39,8 @@ class FileTransfer
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    #[ORM\Column(length: 255, enumType: TransferStatus::class)]
+    private ?TransferStatus $status = TransferStatus::UPLOADED;
 
     /**
      * @var Collection<int, TransferredFile>
@@ -131,14 +132,21 @@ class FileTransfer
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?TransferStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(TransferStatus $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function markAsDownloaded(): self
+    {
+        $this->status = TransferStatus::DOWNLOADED;
 
         return $this;
     }

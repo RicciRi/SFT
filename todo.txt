@@ -1,13 +1,15 @@
 TODO
 
+!!!!!!
+SET CORRECT SECURITY FOR PAGES !!!!!!!!!!!!!!!!!!!!!!!!
 
 FUNC:
 
 1. If files was deleted from session they should be also deleted from db
 
-2. Set types for status ( sent, download , not active maybe )
-
 3. User Entity changes ( more info )
+
+2. Download functionality ( upload id & password )
 
 4. Download info about your transfers
 
@@ -15,13 +17,23 @@ FUNC:
 
 6. Translate
 
+7. Make company
+
+8. Company employee
+
+9. Company employee activity + possibility to see ANALITICS !!!!! ( in graphic or smt like that )
+
+10. Users Role
+
+11.
+
 
 PAGES:
 1. Setting page for user
 
 2. Download page
 
-3. Home page
+3. Accounts page
 
 4. About Us
 

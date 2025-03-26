@@ -144,101 +144,75 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Выбираем элементы циферблата
         const dial = document.querySelector('.styles_dial__GKlj9');
         const inner = dial.querySelector('.styles_inner___VZ_I');
 
-        // Переменные для отслеживания состояния
         let isDragging = false;
         let currentRotation = 0;
         let startAngle = 0;
 
-        // Функция для вычисления угла между центром циферблата и позицией мыши
         function getAngle(clientX, clientY) {
-            // Получаем положение и размеры циферблата
             const dialRect = dial.getBoundingClientRect();
 
-            // Вычисляем центр циферблата
             const centerX = dialRect.left + dialRect.width / 2;
             const centerY = dialRect.top + dialRect.height / 2;
 
-            // Вычисляем угол в радианах, затем конвертируем в градусы
             const angle = Math.atan2(clientY - centerY, clientX - centerX) * (180 / Math.PI);
 
-            // Преобразуем угол, чтобы 0 градусов был сверху (как у обычного циферблата)
             return (angle + 90) % 360;
         }
 
-        // Функция для получения текущего значения вращения
         function getCurrentRotation() {
             const rotationStyle = inner.style.getPropertyValue('--rotation') || '0deg';
             return parseFloat(rotationStyle.replace('deg', '')) || 0;
         }
 
-        // Обработчик нажатия мыши
         function handleMouseDown(e) {
             isDragging = true;
 
-            // Получаем текущее вращение
             currentRotation = getCurrentRotation();
 
-            // Запоминаем начальный угол касания
             startAngle = getAngle(e.clientX, e.clientY);
 
-            // Предотвращаем выделение текста при перетаскивании
             e.preventDefault();
 
-            // Добавляем обработчики событий для перетаскивания
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('mouseup', handleMouseUp);
         }
 
-        // Обработчик движения мыши
         function handleMouseMove(e) {
             if (!isDragging) return;
 
-            // Получаем текущий угол
             const currentAngle = getAngle(e.clientX, e.clientY);
 
-            // Вычисляем разницу углов
             let angleDelta = currentAngle - startAngle;
 
-            // Нормализуем дельту, если она пересекает 0/360 градусов
             if (angleDelta > 180) angleDelta -= 360;
             if (angleDelta < -180) angleDelta += 360;
 
-            // Обновляем вращение
             const newRotation = currentRotation + angleDelta;
 
-            // Применяем новое вращение к внутреннему элементу
             inner.style.setProperty('--rotation', `${newRotation}deg`);
 
-            // Обновляем текущие значения для следующего движения
             currentRotation = newRotation;
             startAngle = currentAngle;
         }
 
-        // Обработчик отпускания мыши
         function handleMouseUp() {
             isDragging = false;
 
-            // Удаляем обработчики событий
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mouseup', handleMouseUp);
         }
 
-        // Добавляем поддержку сенсорных устройств
         function handleTouchStart(e) {
             if (e.touches.length === 1) {
                 isDragging = true;
 
-                // Получаем текущее вращение
                 currentRotation = getCurrentRotation();
 
-                // Запоминаем начальный угол касания
                 startAngle = getAngle(e.touches[0].clientX, e.touches[0].clientY);
 
-                // Предотвращаем прокрутку страницы при перетаскивании
                 e.preventDefault();
             }
         }
@@ -246,27 +220,20 @@
         function handleTouchMove(e) {
             if (!isDragging || e.touches.length !== 1) return;
 
-            // Получаем текущий угол
             const currentAngle = getAngle(e.touches[0].clientX, e.touches[0].clientY);
 
-            // Вычисляем разницу углов
             let angleDelta = currentAngle - startAngle;
 
-            // Нормализуем дельту, если она пересекает 0/360 градусов
             if (angleDelta > 180) angleDelta -= 360;
             if (angleDelta < -180) angleDelta += 360;
 
-            // Обновляем вращение
             const newRotation = currentRotation + angleDelta;
 
-            // Применяем новое вращение
             inner.style.setProperty('--rotation', `${newRotation}deg`);
 
-            // Обновляем текущие значения для следующего движения
             currentRotation = newRotation;
             startAngle = currentAngle;
 
-            // Предотвращаем прокрутку страницы
             e.preventDefault();
         }
 
@@ -274,7 +241,6 @@
             isDragging = false;
         }
 
-        // Добавляем обработчики событий
         dial.addEventListener('mousedown', handleMouseDown);
         dial.addEventListener('touchstart', handleTouchStart, { passive: false });
         dial.addEventListener('touchmove', handleTouchMove, { passive: false });

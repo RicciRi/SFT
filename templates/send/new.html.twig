@@ -7,6 +7,10 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+
 {% endblock %}
 
 {% block body %}
@@ -43,6 +47,11 @@
                         <label for="subject">Subject</label>
                         <input type="text" id="subject" name="subject" class="form-control" placeholder="Email subject"
                                required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expirationAt">Valid until</label>
+                        <input type="text" id="expirationAt" name="expirationAt" class="form-control" required>
                     </div>
 
                     <div class="form-group">
@@ -85,12 +94,18 @@
             const transferForm = document.getElementById('transfer-form');
             const submitBtn = document.getElementById('submit-btn');
 
+            flatpickr("#expirationAt", {
+                dateFormat: "Y-m-d",
+                defaultDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+                minDate: "today",
+                maxDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+            });
+
+
             let uploadedFiles = [];
 
-            // Очищаем сессию при загрузке страницы
             resetFilesSession();
 
-            // Функция для сброса сессии на сервере
             function resetFilesSession() {
                 fetch('{{ path('api_reset_files') }}', {
                     method: 'POST',
@@ -102,12 +117,10 @@
                     .catch(error => console.error('Error resetting files session:', error));
             }
 
-            // Обработчик выбора файлов через input
             fileInput.addEventListener('change', function () {
                 handleFiles(Array.from(this.files));
             });
 
-            // Обработчики перетаскивания файлов
             dropzone.addEventListener('dragover', function (e) {
                 e.preventDefault();
                 dropzone.classList.add('active');
@@ -124,13 +137,11 @@
                 const items = e.dataTransfer.items;
                 const files = e.dataTransfer.files;
 
-                // Если перетаскиваются файлы напрямую
                 if (files.length > 0 && (!items[0].webkitGetAsEntry)) {
                     handleFiles(Array.from(files));
                     return;
                 }
 
-                // Обработка каталогов (только для поддерживаемых браузеров)
                 if (items.length > 0 && items[0].webkitGetAsEntry) {
                     const entries = [];
                     for (let i = 0; i < items.length; i++) {
@@ -144,7 +155,6 @@
                 }
             });
 
-            // Рекурсивная функция для обработки каталогов
             function processEntries(entries) {
                 const allFiles = [];
                 let pendingDirectories = entries.length;
@@ -167,13 +177,12 @@
                     } else if (entry.isDirectory) {
                         const reader = entry.createReader();
 
-                        // Чтение всех элементов в директории
                         const readEntries = () => {
                             reader.readEntries(entries => {
                                 if (entries.length) {
                                     pendingDirectories += entries.length - 1;
                                     entries.forEach(processEntry);
-                                    readEntries(); // Продолжаем чтение, так как API может возвращать по частям
+                                    readEntries();
                                 } else if (--pendingDirectories === 0) {
                                     allEntriesProcessed();
                                 }
@@ -187,14 +196,12 @@
                 entries.forEach(processEntry);
             }
 
-            // Обработка файлов для загрузки
             function handleFiles(files) {
                 if (files.length === 0) return;
 
                 uploadFiles(files);
             }
 
-            // Функция загрузки файлов на сервер
             async function uploadFiles(files) {
                 uploadProgress.style.display = 'block';
 
@@ -219,7 +226,6 @@
                             const response = JSON.parse(xhr.responseText);
 
                             if (response.success) {
-                                // Обновляем только массив uploadedFiles на фронтенде
                                 uploadedFiles = [...uploadedFiles, ...response.files];
                                 updateFileList();
                                 submitBtn.disabled = uploadedFiles.length === 0;
@@ -245,7 +251,6 @@
                 }
             }
 
-            // Обновление списка загруженных файлов
             function updateFileList() {
                 if (uploadedFiles.length > 0) {
                     fileListContainer.style.display = 'block';
@@ -272,7 +277,6 @@
                         fileList.appendChild(li);
                     });
 
-                    // Добавляем обработчики для кнопок удаления
                     document.querySelectorAll('.remove-btn').forEach(btn => {
                         btn.addEventListener('click', function () {
                             const index = parseInt(this.dataset.index);
@@ -285,14 +289,11 @@
                 }
             }
 
-            // Удаление файла из списка
             function removeFile(index, token) {
-                // Удаляем файл из локального массива
                 uploadedFiles.splice(index, 1);
                 updateFileList();
                 submitBtn.disabled = uploadedFiles.length === 0;
 
-                // Удаляем файл из сессии на сервере
                 fetch(`/send/api/remove-file/${token}`, {
                     method: 'DELETE'
                 })
@@ -305,7 +306,6 @@
                     });
             }
 
-            // Отправка формы с данными о файлах
             transferForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
 
@@ -317,10 +317,11 @@
                 const formData = {
                     recipientEmail: document.getElementById('recipient-email').value,
                     subject: document.getElementById('subject').value,
-                    message: document.getElementById('message').value
+                    message: document.getElementById('message').value,
+                    expirationAt: document.getElementById('expirationAt').value
                 };
 
-                if (!formData.recipientEmail || !formData.subject || !formData.message) {
+                if (!formData.recipientEmail || !formData.subject || !formData.message || !formData.expirationAt) {
                     showFlash('error', 'Please fill in all required form fields')
                     return;
                 }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\FileTransfer;
+use App\Enum\TransferStatus;
 use App\Repository\FileTransferRepository;
 use App\Service\FileUploadService;
 use App\Service\MessageService;
@@ -74,19 +75,16 @@ final class SendFileController extends AbstractController
             'count_of_files_to_delete' => count($filesData),
         ]);
 
-        // Фильтруем список файлов, исключая файл с указанным токеном
         $updatedFilesData = array_filter($filesData, function ($file) use ($token) {
             return $file['sessionToken'] !== $token;
         });
 
-        // Переиндексируем массив
         $updatedFilesData = array_values($updatedFilesData);
 
-        // Обновляем данные в сессии
         $session->set('temp_file_data', $updatedFilesData);
 
-        $this->logger->info('Файл удален из сессии', [
-            'количество_файлов_после_удаления' => count($updatedFilesData),
+        $this->logger->info('File deleted from session', [
+            'count_files_after_deleted' => count($updatedFilesData),
         ]);
 
         return $this->json([
@@ -116,18 +114,14 @@ final class SendFileController extends AbstractController
 
             $newFilesData = $this->fileUploadService->processTemporaryFiles($files);
 
-            // Объединяем существующие и новые данные о файлах
             $allFilesData = array_merge($existingFilesData, $newFilesData);
 
-            // Сохраняем обновленные данные о файлах в сессии
             $session->set('temp_file_data', $allFilesData);
 
-            // Логируем общее количество файлов после объединения
             $this->logger->info('Обновлено в сессии', [
                 'общее_количество' => count($allFilesData),
             ]);
 
-            // Готовим данные для ответа
             $response = [];
             foreach ($newFilesData as $fileData) {
                 $response[] = [
@@ -162,23 +156,22 @@ final class SendFileController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        if (!isset($data['recipientEmail']) || !isset($data['subject']) || !isset($data['message'])) {
+        if (!isset($data['recipientEmail']) || !isset($data['subject']) || !isset($data['message']) || !isset($data['expirationAt'])) {
             return $this->json(['error' => 'Не все обязательные поля заполнены'], Response::HTTP_BAD_REQUEST);
         }
 
         $session = $request->getSession();
         $filesData = $session->get('temp_file_data', []);
 
-        // Подробное логирование данных о файлах из сессии
-        $this->logger->info('Данные о файлах из сессии', [
-            'количество_файлов' => count($filesData),
-            'имена_файлов' => array_map(function ($file) {
+        $this->logger->info('Files date info', [
+            'count_files' => count($filesData),
+            'name_files' => array_map(function ($file) {
                 return $file['originalFilename'];
             }, $filesData),
         ]);
 
         if (empty($filesData)) {
-            return $this->json(['error' => 'Не найдены загруженные файлы'], Response::HTTP_BAD_REQUEST);
+            return $this->json(['error' => 'Can not find uploaded files'], Response::HTTP_BAD_REQUEST);
         }
 
         $user = $this->getUser();
@@ -192,55 +185,59 @@ final class SendFileController extends AbstractController
             $fileTransfer->setMessage($data['message']);
             $fileTransfer->setCreatedAt(new \DateTimeImmutable());
 
+            $expDate = $data['expirationAt'];
+
+            $expDateImmutable = \DateTimeImmutable::createFromFormat('Y-m-d', $expDate);
+
+            if (!$expDateImmutable) {
+                throw new \Exception('Not valid date of expiration');
+            }
+
+            $fileTransfer->setExpirationAt($expDateImmutable);
+
             $this->logger->info($fileTransfer->getUuid());
 
-            // Устанавливаем срок действия (например, 7 дней)
-            $expirationAt = new \DateTimeImmutable('+7 days');
-            $fileTransfer->setExpirationAt($expirationAt);
-
-            $fileTransfer->setStatus('pending');
+            $fileTransfer->setStatus(TransferStatus::UPLOADED);
 
             $this->entityManager->persist($fileTransfer);
 
-            // Перемещаем файлы из временного хранилища в постоянное
             $this->fileUploadService->persistFiles($filesData, $fileTransfer, $this->entityManager);
 
             $this->entityManager->flush();
 
-            // Дополнительно логируем информацию о сохраненных файлах
-            $this->logger->info('Файлы после сохранения', [
-                'количество_сохраненных' => count($fileTransfer->getTransferredFiles()),
-                'id_передачи' => $fileTransfer->getId(),
+            $this->logger->info('Files after upload', [
+                'count_files' => count($fileTransfer->getTransferredFiles()),
+                'id_upload' => $fileTransfer->getId(),
             ]);
 
-            // Очищаем данные о временных файлах
             $sessionTokens = array_map(function ($file) {
                 return $file['sessionToken'];
             }, $filesData);
             $this->fileUploadService->cleanupTemporaryFiles($sessionTokens);
             $session->remove('temp_file_data');
 
-            // Здесь можно добавить отправку уведомления получателю
-            $this->messageService->sendEmail(
-                $user->getEmail(),
+            $this->messageService->sendFileSentNotification(
+                $user,
+                $expDateImmutable,
                 $data['recipientEmail'],
                 $data['subject'],
-                $data['message']);
+                $data['message']
+            );
 
             return $this->json([
                 'success' => true,
-                'message' => 'Файлы успешно отправлены',
+                'message' => 'Files successfully uploaded!',
                 'id' => $fileTransfer->getId(),
                 'files_count' => count($fileTransfer->getTransferredFiles()),
             ]);
         } catch (\Exception $e) {
-            $this->logger->error('Ошибка при обработке запроса', [
+            $this->logger->error('Error request', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
 
             return $this->json([
-                'error' => 'Ошибка при обработке запроса: '.$e->getMessage(),
+                'error' => 'Error: '.$e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

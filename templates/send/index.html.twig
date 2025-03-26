@@ -6,7 +6,7 @@
     <div class="transfers-container">
         <div class="page-header">
             <h1>Your File Transfers</h1>
-            <p>Manage and track your secure file transfers</p>
+            <p>Manage and track your file transfers</p>
         </div>
 
         <div class="divider-style"></div>
@@ -17,7 +17,7 @@
                     <div class="transfer-card">
                         <div class="transfer-header">
                             <div class="transfer-id">ID: {{ transfer.uuid|slice(0, 8) }}</div>
-                            <div class="transfer-status {{ transfer.status }}">{{ transfer.status }}</div>
+                            <div class="transfer-status {{ transfer.status.value }}">{{ transfer.status.name }}</div>
                         </div>
                         <div class="transfer-body">
                             <div class="recipient">

@@ -14,13 +14,20 @@ class MessageService
     ) {
     }
 
-    public function sendEmail($from, $to, $subject, $message)
+    public function sendFileSentNotification($user, $expirationAt, $to, $subject, $message): void
     {
-        $html = $this->twig->render('email/send_file.html.twig', [
-            'from' => $from,
+        $html = $this->twig->render('email/send_file_sent_notification.html.twig', [
+            'user' => $user,
+            'expirationAt' => $expirationAt,
+            'subject' => $subject,
             'message' => $message,
         ]);
 
+        $this->sendEmail($to, $subject, $html);
+    }
+
+    public function sendEmail($to, $subject, $html): void
+    {
         $email = (new Email())
             ->from('sft.mailer@gmail.com')
             ->to($to)

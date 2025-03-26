@@ -74,12 +74,12 @@
         font-weight: 600;
         text-transform: uppercase;
 
-        &.pending {
+        &.uploaded {
           background: rgba(255, 193, 7, 0.15);
           color: #ffc107;
         }
 
-        &.completed {
+        &.downloaded {
           background: rgba(40, 167, 69, 0.15);
           color: #28a745;
         }

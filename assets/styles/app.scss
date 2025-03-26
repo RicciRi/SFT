@@ -3,11 +3,13 @@
 @use "flash.scss";
 @use "navigation.scss";
 @use "footer.scss";
+@use "dial.scss";
 
 // Pages
 @use "auth.scss";
 @use "send.scss";
 @use "transfers.scss";
+@use "home.scss";
 
 
 body {

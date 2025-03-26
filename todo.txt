@@ -1,14 +1,40 @@
-1. After register make Flash
-2. After register render template that you need to accept email list ...
+TODO
 
-✅ Поля для FileTransfer Entity:
-user – отправитель (связь с сущностью User)
-recipientEmail – email получателя
-message – сообщение от отправителя
-expirationAt – дата и время окончания действия ссылки
-originalFilename – оригинальное имя файла
-storedFilename – имя/путь сохранённого файла
-fileSize – размер файла (в байтах)
-mimeType – MIME-тип файла
-createdAt – дата и время создания записи
-status – статус отправки (например: pending, downloaded, expired)
+
+FUNC:
+
+1. If files was deleted from session they should be also deleted from db
+
+2. Set types for status ( sent, download , not active maybe )
+
+3. User Entity changes ( more info )
+
+4. Download info about your transfers
+
+5. Filter your Transfers
+
+6. Translate
+
+
+PAGES:
+1. Setting page for user
+
+2. Download page
+
+3. Home page
+
+4. About Us
+
+5. Features
+
+6. Help Center
+
+7. Forgot password
+
+8. Page after register ( that you need to confirm email )
+
+9. Price
+
+10. Terms and pr
+
+

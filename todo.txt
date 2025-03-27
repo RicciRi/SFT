@@ -1,31 +1,30 @@
 TODO
 
-!!!!!!
-SET CORRECT SECURITY FOR PAGES !!!!!!!!!!!!!!!!!!!!!!!!
-
 FUNC:
 
-1. If files was deleted from session they should be also deleted from db
 
-3. User Entity changes ( more info )
+User Entity changes ( more info )
 
-2. Download functionality ( upload id & password )
+Users Role
 
-4. Download info about your transfers
+SET CORRECT SECURITY FOR PAGES
 
-5. Filter your Transfers
+Download functionality ( upload id & password )
 
-6. Translate
+Translate
 
-7. Make company
+Make company
 
-8. Company employee
+Company employee
 
-9. Company employee activity + possibility to see ANALITICS !!!!! ( in graphic or smt like that )
+Company employee activity + possibility to see ANALITICS !!!!! ( in graphic or smt like that )
 
-10. Users Role
+Download info about your transfers
 
-11.
+Filter your Transfers
+
+If files was deleted from session they should be also deleted from db
+
 
 
 PAGES:
@@ -50,3 +49,57 @@ PAGES:
 10. Terms and pr
 
 
+
+
+
+
+
+
+Ent:
+
+Company
+
+Это основная сущность, которая представляет организацию или бизнес-клиента. В ней можно хранить название, адрес, контакты и другую информацию о компании.
+
+Каждый аккаунт (user) будет связан с конкретной компанией, если он создаётся основным пользователем (main_user) или администратором.
+
+Компания может иметь одного основного администратора, а также несколько подчинённых пользователей.
+
+User
+
+Существующая сущность, которую можно расширить дополнительными полями, например, ролью (main_user, administrator, employee) и связью с Company.
+
+Это позволит разграничить права и управление файлами внутри компании.
+
+FileTransfer
+
+Сущность для сессии передачи файлов.
+
+Может быть привязана либо напрямую к пользователю, либо, если это корпоративный аккаунт, через компанию.
+
+Содержит информацию о сроках доступности, статуса передачи и т.п.
+
+TransferredFile
+
+Сущность для отдельного файла в рамках FileTransfer.
+
+Хранит метаданные файла, путь к файлу, размер, дату загрузки и прочее.
+
+Subscription
+
+Новая сущность, описывающая тарифный план или подписку компании.
+
+Содержит информацию о типе плана, стоимости, периоде подписки, ограничениях по объёму и другим параметрам.
+
+Каждая компания может быть привязана к определённому тарифному плану.
+
+Payment
+
+Сущность для учёта платёжных транзакций.
+
+Содержит данные о сумме, дате оплаты, статусе платежа и, возможно, ссылку на Subscription.
+
+Может использоваться для генерации отчётов, контроля оплаты подписки и выставления счетов.
+
+(Опционально) Invoice или Billing
+Если требуется более подробный учёт и предоставление документов для бухгалтерии, можно добавить сущность, которая будет хранить информацию об инвойсах, деталях оплаты, налогах и т.п.

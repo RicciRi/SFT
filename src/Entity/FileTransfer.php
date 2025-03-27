@@ -48,6 +48,9 @@ class FileTransfer
     #[ORM\OneToMany(targetEntity: TransferredFile::class, mappedBy: 'fileTransfer', cascade: ['persist', 'remove'])]
     private Collection $transferredFiles;
 
+    #[ORM\ManyToOne(inversedBy: 'fileTransfers')]
+    private ?Company $company = null;
+
     public function __construct()
     {
         $this->transferredFiles = new ArrayCollection();
@@ -183,5 +186,17 @@ class FileTransfer
     public function getUuid(): ?Uuid
     {
         return $this->uuid;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): static
+    {
+        $this->company = $company;
+
+        return $this;
     }
 }

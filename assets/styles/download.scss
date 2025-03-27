@@ -1,0 +1,153 @@
+.download-container {
+  font-family: var(--font-family-monospace);
+
+  h1 {
+    margin: 3rem 0;
+    font-size: 3.25rem;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .download-content {
+    display: flex;
+    gap: 40px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 100px auto;
+    padding: 20px;
+
+    .left-side {
+      width: 50%;
+
+      .transfer-info {
+        padding: 20px;
+        border-radius: var(--base-border-radius);
+        box-shadow: var(--base-box-shadow);
+
+        .transfer-info-title {
+          margin: 20px 0 40px 0;
+          text-align: center;
+          //font-family: inherit;
+          font-weight: 600;
+          font-size: 1.5rem;
+          letter-spacing: -1px;
+
+        }
+
+        .transfer-details {
+          margin-top: 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 30px;
+          font-size: 14px;
+          color: var(--color-gray-2);
+
+
+          .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--color-cherry);
+            animation: blink 1s infinite;
+            vertical-align: bottom;
+          }
+
+          @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+          }
+
+
+          .cherry-color {
+            margin-right: 8px;
+            color: var(--color-cherry);
+          }
+
+          .transfer-email, .transfer-subject, .transfer-message, .transfer-date {
+            display: flex;
+            //justify-content: space-between;
+          }
+
+          .transfer-subject {
+
+          }
+
+          .transfer-message {
+
+          }
+
+          .transfer-date {
+
+          }
+
+        }
+
+      }
+    }
+
+    .right-side {
+      width: 50%;
+
+      .files {
+        .download-all-wrap {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          .download-all-link {
+            cursor: pointer;
+            transition: 0.3s;
+
+            &:hover {
+              color: var(--color-cherry);
+            }
+          }
+        }
+
+        .file-wrap {
+          padding-top: 14px;
+          margin-top: 14px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-top: 1px solid var(--color-gray-80);
+
+          .file-left-side-wrap {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+          }
+
+          .icon-wrap {
+            width: fit-content;
+            margin-right: 8px;
+            padding: 6px;
+            box-shadow: var(--base-box-shadow);
+            border-radius: 0.4rem;
+            color: var(--color-cherry);
+          }
+
+          .file-name {
+            font-size: 14px;
+          }
+
+          .download-link {
+            box-shadow: var(--base-box-shadow);
+            border-radius: var(--base-border-radius);
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 100;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+
+            &:hover {
+              color: var(--color-cherry);
+            }
+          }
+        }
+      }
+
+    }
+  }
+}

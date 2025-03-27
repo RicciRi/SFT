@@ -10,8 +10,10 @@
   --color-secondary-hover: #1e3a8a;
   --color-primary: #63e;
   --color-pink: #b88cff;
+  --color-cherry: #e02367;
   --color-gray: #babcd2;
   --color-gray-2: #dfe1f4;
+  --color-gray-80: #2a2b3a;
   --launcher-background-color: #6633ee;
   --launcher-icon-color: #FFFFFF;
   --background-navbar: rgba(23, 24, 37, .75);
@@ -23,6 +25,7 @@
   --font-family-headings: "Roobert", sans-serif;
   --system-fonts: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue";
   --font-family-base: "__Inter_d65c78", "__Inter_Fallback_d65c78", var(--system-fonts);
+  --font-family-monospace: "__Roboto_Mono_43fb55", "__Roboto_Mono_Fallback_43fb55", monospace;
 }
 
 .flash-message {
@@ -3604,10 +3607,130 @@ body {
   box-shadow: var(--base-box-shadow);
 }
 
+.download-container {
+  font-family: var(--font-family-monospace);
+}
+.download-container h1 {
+  margin: 3rem 0;
+  font-size: 3.25rem;
+  font-weight: 500;
+  text-align: center;
+}
+.download-container .download-content {
+  display: flex;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 100px auto;
+  padding: 20px;
+}
+.download-container .download-content .left-side {
+  width: 50%;
+}
+.download-container .download-content .left-side .transfer-info {
+  padding: 20px;
+  border-radius: var(--base-border-radius);
+  box-shadow: var(--base-box-shadow);
+}
+.download-container .download-content .left-side .transfer-info .transfer-info-title {
+  margin: 20px 0 40px 0;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: -1px;
+}
+.download-container .download-content .left-side .transfer-info .transfer-details {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  font-size: 14px;
+  color: var(--color-gray-2);
+}
+.download-container .download-content .left-side .transfer-info .transfer-details .cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--color-cherry);
+  animation: blink 1s infinite;
+  vertical-align: bottom;
+}
+@keyframes blink {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.download-container .download-content .left-side .transfer-info .transfer-details .cherry-color {
+  margin-right: 8px;
+  color: var(--color-cherry);
+}
+.download-container .download-content .left-side .transfer-info .transfer-details .transfer-email, .download-container .download-content .left-side .transfer-info .transfer-details .transfer-subject, .download-container .download-content .left-side .transfer-info .transfer-details .transfer-message, .download-container .download-content .left-side .transfer-info .transfer-details .transfer-date {
+  display: flex;
+}
+.download-container .download-content .right-side {
+  width: 50%;
+}
+.download-container .download-content .right-side .files .download-all-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.download-container .download-content .right-side .files .download-all-wrap .download-all-link {
+  cursor: pointer;
+  transition: 0.3s;
+}
+.download-container .download-content .right-side .files .download-all-wrap .download-all-link:hover {
+  color: var(--color-cherry);
+}
+.download-container .download-content .right-side .files .file-wrap {
+  padding-top: 14px;
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--color-gray-80);
+}
+.download-container .download-content .right-side .files .file-wrap .file-left-side-wrap {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.download-container .download-content .right-side .files .file-wrap .icon-wrap {
+  width: fit-content;
+  margin-right: 8px;
+  padding: 6px;
+  box-shadow: var(--base-box-shadow);
+  border-radius: 0.4rem;
+  color: var(--color-cherry);
+}
+.download-container .download-content .right-side .files .file-wrap .file-name {
+  font-size: 14px;
+}
+.download-container .download-content .right-side .files .file-wrap .download-link {
+  box-shadow: var(--base-box-shadow);
+  border-radius: var(--base-border-radius);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 100;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.download-container .download-content .right-side .files .file-wrap .download-link:hover {
+  color: var(--color-cherry);
+}
+
 body {
   background: #010314;
   padding: 0;
   margin: 0;
+}
+body ::selection {
+  background-color: var(--color-primary);
+  color: #fff;
 }
 
 * {

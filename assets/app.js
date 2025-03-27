@@ -1,6 +1,6 @@
 import './bootstrap.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbo:load', () => {
     document.querySelectorAll('.flash-message__close').forEach((btn) => {
         btn.addEventListener('click', () => {
             console.log('clicked')

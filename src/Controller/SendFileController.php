@@ -221,7 +221,8 @@ final class SendFileController extends AbstractController
                 $expDateImmutable,
                 $data['recipientEmail'],
                 $data['subject'],
-                $data['message']
+                $data['message'],
+                $fileTransfer
             );
 
             return $this->json([

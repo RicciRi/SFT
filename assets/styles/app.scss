@@ -11,12 +11,18 @@
 @use "transfers.scss";
 @use "home.scss";
 @use "flatpickr.scss";
+@use "download.scss";
 
 
 body {
   background: #010314;
   padding: 0;
   margin: 0;
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: #fff;
+  }
 }
 
 * {

@@ -1,0 +1,114 @@
+{# templates/download/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% import 'macros/file_icon.html.twig' as fileIcon %}
+
+{% block title %}Download Files{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+
+{% endblock %}
+
+{% block body %}
+    <div class="download-container">
+        <h1 class="">Download Files</h1>
+        <div class="divider-style"></div>
+        <div class="download-content">
+            <div class="left-side">
+                <div class="transfer-info">
+                    <div class="transfer-info-title">
+                        Transfer information
+                    </div>
+                    <div class="transfer-details">
+                        <div class="transfer-email type-line" data-text="{{ transfer.user.email }}">
+                            <span class="cherry-color">Sender:</span>
+                            <span class="type-target"></span>
+                        </div>
+                        <div class="transfer-subject type-line" data-text="{{ transfer.subject }}">
+                            <span class="cherry-color">Subject:</span>
+                            <span class="type-target"></span>
+                        </div>
+                        <div class="transfer-message type-line" data-text="{{ transfer.message }}">
+                            <span class="cherry-color">Message:</span>
+                            <span class="type-target"></span>
+                        </div>
+                        <div class="transfer-date type-line" data-text="{{ transfer.expirationAt|date('Y-m-d') }}">
+                            <span class="cherry-color">Expiration date:</span>
+                            <span class="type-target"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="right-side">
+                <div class="download-section">
+                    <div class="files">
+                        <div class="download-all-wrap">
+                            <div>Files:</div>
+                            <div class="download-all-link">Download All</div>
+                        </div>
+                        {% for file in files %}
+                            <div class="file-wrap">
+                                <div class="file-left-side-wrap">
+                                    <div class="icon-wrap">
+                                        <i class="{{ fileIcon.iconClass(file.mimeType) }}"></i>
+                                    </div>
+                                    <div class="file-name">{{ file.originalFilename }}</div>
+                                </div>
+
+                                <div class="download-link">download</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('turbo:load', () => {
+            const lines = document.querySelectorAll(".transfer-details .type-line");
+            let lineIndex = 0;
+
+            function typeLine() {
+                if (lineIndex >= lines.length) return;
+
+                const line = lines[lineIndex];
+                const target = line.querySelector(".type-target");
+                const fullText = line.dataset.text;
+                let charIndex = 0;
+
+                const cursor = document.createElement("span");
+                cursor.classList.add("cursor");
+                target.appendChild(cursor);
+
+                const typingInterval = setInterval(() => {
+                    if (charIndex < fullText.length) {
+                        // Вставляем символ перед курсором
+                        const span = document.createElement("span");
+                        span.textContent = fullText[charIndex];
+                        target.insertBefore(span, cursor);
+                        charIndex++;
+                    } else {
+                        clearInterval(typingInterval);
+                        cursor.remove(); // Удаляем курсор после окончания строки
+                        lineIndex++;
+                        setTimeout(typeLine, 300);
+                    }
+                }, 30);
+            }
+
+            typeLine();
+        });
+    </script>
+
+{% endblock %}
+
+
+

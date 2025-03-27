@@ -2,7 +2,7 @@
   --color-bg: #0d0d0d;
   --body-bg: #000;
   --color-panel: #1a1a1a;
-  --color-secondary: #3b82f6; // синий
+  --color-secondary: #3b82f6;
   --color-text: #fff;
   --color-muted: #aaaaaa;
   --color-error: #ef4444;
@@ -12,8 +12,12 @@
   // colors
   --color-primary: #63e;
   --color-pink: #b88cff;
+  --color-cherry: #e02367;
+  //--color-cherry: #f92672;
   --color-gray: #babcd2;
   --color-gray-2: #dfe1f4;
+  --color-gray-80: #2a2b3a;
+
 
   --launcher-background-color: #6633ee;
   --launcher-icon-color: #FFFFFF;
@@ -34,4 +38,5 @@
   --font-family-headings: "Roobert", sans-serif;
   --system-fonts: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue";
   --font-family-base: '__Inter_d65c78', '__Inter_Fallback_d65c78', var(--system-fonts);
+  --font-family-monospace: '__Roboto_Mono_43fb55', '__Roboto_Mono_Fallback_43fb55', monospace;
 }

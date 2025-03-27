@@ -1,0 +1,21 @@
+{% macro iconClass(mimeType) %}
+    {% if mimeType starts with 'image/' %}
+        fas fa-file-image
+    {% elseif mimeType starts with 'video/' %}
+        fas fa-file-video
+    {% elseif mimeType starts with 'audio/' %}
+        fas fa-file-audio
+    {% elseif mimeType == 'application/pdf' %}
+        fas fa-file-pdf
+    {% elseif 'spreadsheet' in mimeType or 'excel' in mimeType %}
+        fas fa-file-excel
+    {% elseif 'document' in mimeType or 'word' in mimeType %}
+        fas fa-file-word
+    {% elseif 'presentation' in mimeType or 'powerpoint' in mimeType %}
+        fas fa-file-powerpoint
+    {% elseif mimeType in ['application/zip', 'application/x-zip-compressed'] %}
+        fas fa-file-archive
+    {% else %}
+        fas fa-file
+    {% endif %}
+{% endmacro %}

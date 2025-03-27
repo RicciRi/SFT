@@ -2,13 +2,6 @@ TODO
 
 FUNC:
 
-
-User Entity changes ( more info )
-
-Users Role
-
-SET CORRECT SECURITY FOR PAGES
-
 Download functionality ( upload id & password )
 
 Translate

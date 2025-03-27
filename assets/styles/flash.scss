@@ -14,11 +14,11 @@
   font-family: 'Inter', sans-serif;
   color: #fff;
   background: #222;
-  //overflow: hidden;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.3s ease-out;
   transition: all 0.3s ease;
   font-size: 0.95rem;
+  z-index: 1000;
 
   &__icon {
     position: absolute;

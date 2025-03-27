@@ -43,6 +43,7 @@
   animation: fadeIn 0.3s ease-out;
   transition: all 0.3s ease;
   font-size: 0.95rem;
+  z-index: 1000;
 }
 .flash-message__icon {
   position: absolute;

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Enum\FlashTypes;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,6 +14,8 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
+            $this->addFlash(FlashTypes::WARNING->value, 'To access this page, you should log out first.');
+
             return $this->redirectToRoute('app_home');
         }
 

@@ -1,12 +1,53 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} Transfers{% endblock %}
+{% block title %}Transfers{% endblock %}
 
 {% block body %}
     <div class="transfers-container">
         <div class="page-header">
             <h1>Your File Transfers</h1>
-            <p>Manage and track your file transfers</p>
+            <form method="get" class="search-bar">
+                <div>
+                    <select name="limit" onchange="this.form.submit()">
+                        <option value="10" {% if limit == 10 %}selected{% endif %}>10 per page</option>
+                        <option value="25" {% if limit == 25 %}selected{% endif %}>25 per page</option>
+                        <option value="50" {% if limit == 50 %}selected{% endif %}>50 per page</option>
+                    </select>
+
+                    <!-- Фильтр по дате -->
+                    <select name="date_order" onchange="this.form.submit()">
+                        <option value="">Sort by date</option>
+                        <option value="newest" {% if date_order == 'newest' %}selected{% endif %}>Newest first</option>
+                        <option value="oldest" {% if date_order == 'oldest' %}selected{% endif %}>Oldest first</option>
+                    </select>
+
+                    <!-- Фильтр по размеру -->
+                    <select name="size_order" onchange="this.form.submit()">
+                        <option value="">Sort by size</option>
+                        <option value="largest" {% if size_order == 'largest' %}selected{% endif %}>Largest first</option>
+                        <option value="smallest" {% if size_order == 'smallest' %}selected{% endif %}>Smallest first</option>
+                    </select>
+
+                    <!-- Фильтр по периоду -->
+                    <select name="date_filter" onchange="this.form.submit()">
+                        <option value="">All time</option>
+                        <option value="day" {% if date_filter == 'day' %}selected{% endif %}>Last day</option>
+                        <option value="week" {% if date_filter == 'week' %}selected{% endif %}>Last week</option>
+                        <option value="month" {% if date_filter == 'month' %}selected{% endif %}>Last month</option>
+                    </select>
+                </div>
+
+                <div class="search-section">
+                    <input type="text" name="q" value="{{ search }}" placeholder="Search">
+                    <button type="submit" class="search-icon" aria-label="Search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="7"/>
+                            <line x1="17" y1="17" x2="22" y2="22"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
         </div>
 
         <div class="divider-style"></div>
@@ -46,6 +87,8 @@
                         <div class="transfer-footer">
                             <div class="file-count">
                                 {{ transfer.transferredFiles|length }} file{% if transfer.transferredFiles|length != 1 %}s{% endif %}
+                                -
+                                {{ transfer.size|format_filesize }}
                             </div>
                             <div class="actions">
                                 <a href="{{ path('app_home', {uuid: transfer.uuid}) }}" class="btn">Deactivate</a>
@@ -55,11 +98,91 @@
                     </div>
                 {% endfor %}
             </div>
+
+            {% set startPages = [1, 2, 3] %}
+            {% set endPages = [totalPages - 2, totalPages - 1, totalPages] %}
+            {% set nearbyPages = (currentPage - 2)..(currentPage + 2) %}
+
+            {# Собираем все страницы в один массив #}
+            {% set rawPages = [] %}
+            {% for p in startPages %}
+                {% if p >= 1 and p <= totalPages and p not in rawPages %}
+                    {% set rawPages = rawPages|merge([p]) %}
+                {% endif %}
+            {% endfor %}
+            {% for p in nearbyPages %}
+                {% if p >= 1 and p <= totalPages and p not in rawPages %}
+                    {% set rawPages = rawPages|merge([p]) %}
+                {% endif %}
+            {% endfor %}
+            {% for p in endPages %}
+                {% if p >= 1 and p <= totalPages and p not in rawPages %}
+                    {% set rawPages = rawPages|merge([p]) %}
+                {% endif %}
+            {% endfor %}
+
+            {# Сортируем #}
+            {% set pagesToShow = rawPages|sort %}
+
+            <div class="pagination-wrapper">
+                <div class="pagination">
+                    {# Prev #}
+                    {% if currentPage > 1 %}
+                        <a href="{{ path('app_send_transfers', {
+                            page: currentPage - 1,
+                            q: search,
+                            date_filter: date_filter,
+                            date_order: date_order,
+                            size_order: size_order,
+                            limit: limit
+                        }) }}" class="pagination-link" aria-label="Previous page">‹</a>
+                    {% endif %}
+
+                    {# Основной вывод страниц + троеточия #}
+                    {% set lastShown = 0 %}
+                    {% for i in pagesToShow %}
+                        {% if i > lastShown + 1 %}
+                            <span class="pagination-link dots">...</span>
+                        {% endif %}
+                        {% if i == currentPage %}
+                            <span class="pagination-link active" aria-current="page">{{ i }}</span>
+                        {% else %}
+                            <a href="{{ path('app_send_transfers', {
+                                page: i,
+                                q: search,
+                                date_filter: date_filter,
+                                date_order: date_order,
+                                size_order: size_order,
+                                limit: limit
+                            }) }}"
+                               class="pagination-link"
+                               aria-label="Page {{ i }}"
+                               rel="nofollow">
+                                {{ i }}
+                            </a>
+                        {% endif %}
+                        {% set lastShown = i %}
+                    {% endfor %}
+
+                    {# Next #}
+                    {% if currentPage < totalPages %}
+                        <a href="{{ path('app_send_transfers', {
+                            page: currentPage + 1,
+                            q: search,
+                            date_filter: date_filter,
+                            date_order: date_order,
+                            size_order: size_order,
+                            limit: limit
+                        }) }}" class="pagination-link" aria-label="Next page">›</a>
+                    {% endif %}
+                </div>
+            </div>
+
         {% else %}
             <div class="empty-state">
                 <div class="icon">📁</div>
-                <h2>No transfers yet</h2>
-                <p>You haven't sent any file transfers yet. Create your first transfer now.</p>
+                <h2>No transfers found</h2>
+                <p>Try adjusting filters or send your first transfer.</p>
                 <a href="{{ path('app_send') }}" class="btn-primary">Send Files</a>
             </div>
         {% endif %}

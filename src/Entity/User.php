@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: FileTransfer::class, mappedBy: 'user')]
     private Collection $fileTransfers;
 
-    #[ORM\ManyToOne(inversedBy: 'employee')]
+    #[ORM\ManyToOne(inversedBy: 'employees')]
     private ?Company $company = null;
 
     #[ORM\Column]
@@ -56,6 +56,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
+
+    #[ORM\OneToOne(targetEntity: Company::class, mappedBy: 'mainUser')]
+    private ?Company $mainCompany = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;

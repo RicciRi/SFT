@@ -26,7 +26,7 @@ final class DownloadController extends AbstractController
     public function __construct(
         private UrlGeneratorInterface $router,
         private UriSigner $uriSigner,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
     ) {
     }
 

@@ -39,13 +39,96 @@ final class SendFileController extends AbstractController
 
     #[Route('/transfers', name: 'app_send_transfers')]
     #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
-    public function index(): Response
+    public function index(FileTransferRepository $fileTransferRepository, Request $request): Response
     {
         $user = $this->getUser();
-        $transfers = $this->fileTransferRepository->findBy(['user' => $user]);
+
+        $qb = $fileTransferRepository->createQueryBuilder('t')
+                                     ->select('t')
+                                     ->where('t.user = :user')
+                                     ->setParameter('user', $user);
+
+        $search = $request->query->get('q');
+        if ($search) {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    't.recipientEmail LIKE :search',
+                    't.subject LIKE :search',
+                    't.message LIKE :search'
+                )
+            )
+               ->setParameter('search', '%'.$search.'%');
+        }
+
+        // Фильтр по дате (last day/week/month)
+        $dateFilter = $request->query->get('date_filter');
+        if ($dateFilter) {
+            $date = new \DateTimeImmutable();
+
+            switch ($dateFilter) {
+                case 'day':
+                    $since = $date->modify('-1 day');
+                    break;
+                case 'week':
+                    $since = $date->modify('-7 days');
+                    break;
+                case 'month':
+                    $since = $date->modify('-1 month');
+                    break;
+                default:
+                    $since = null;
+            }
+
+            if ($since) {
+                $qb->andWhere('t.createdAt >= :since')
+                   ->setParameter('since', $since);
+            }
+        }
+
+        // Сортировка по дате и размеру отдельно
+        $dateOrder = $request->query->get('date_order');
+        $sizeOrder = $request->query->get('size_order');
+
+        if ('newest' === $dateOrder) {
+            $qb->addOrderBy('t.createdAt', 'DESC');
+        } elseif ('oldest' === $dateOrder) {
+            $qb->addOrderBy('t.createdAt', 'ASC');
+        }
+
+        if ('largest' === $sizeOrder) {
+            $qb->addOrderBy('t.size', 'DESC');
+        } elseif ('smallest' === $sizeOrder) {
+            $qb->addOrderBy('t.size', 'ASC');
+        }
+
+        // Пагинация
+        $page = max(1, $request->query->getInt('page', 1));
+        $limit = $request->query->getInt('limit', 10);
+        $offset = ($page - 1) * $limit;
+
+        $totalItems = (clone $qb)
+            ->select('COUNT(t.id)')
+            ->resetDQLPart('orderBy')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $transfers = $qb
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+
+        $totalPages = ceil($totalItems / $limit);
 
         return $this->render('send/index.html.twig', [
             'transfers' => $transfers,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+            'search' => $search,
+            'date_filter' => $dateFilter,
+            'date_order' => $dateOrder,
+            'size_order' => $sizeOrder,
+            'limit' => $limit,
         ]);
     }
 
@@ -203,6 +286,7 @@ final class SendFileController extends AbstractController
 
             $this->fileUploadService->persistFiles($filesData, $fileTransfer, $this->entityManager);
 
+            $fileTransfer->setSize($fileTransfer->calculateTotalSize());
             $this->entityManager->flush();
 
             $this->logger->info('Files after upload', [
@@ -276,6 +360,16 @@ final class SendFileController extends AbstractController
                 'G' => $size * 1024 * 1024 * 1024,
                 default => $size,
             };
+        }
+
+        return $size;
+    }
+
+    public function calculateTotalSize(): int
+    {
+        $size = 0;
+        foreach ($this->getTransferredFiles() as $file) {
+            $size += $file->getFileSize();
         }
 
         return $size;

@@ -51,6 +51,9 @@ class FileTransfer
     #[ORM\ManyToOne(inversedBy: 'fileTransfers')]
     private ?Company $company = null;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $size = null;
+
     public function __construct()
     {
         $this->transferredFiles = new ArrayCollection();
@@ -198,5 +201,27 @@ class FileTransfer
         $this->company = $company;
 
         return $this;
+    }
+
+    public function getSize(): ?int
+    {
+        return $this->size;
+    }
+
+    public function setSize(int $size): static
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function calculateTotalSize(): int
+    {
+        $size = 0;
+        foreach ($this->getTransferredFiles() as $file) {
+            $size += $file->getFileSize();
+        }
+
+        return $size;
     }
 }

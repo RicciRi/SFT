@@ -23,7 +23,7 @@ class TransferredFile
     private ?string $storedFilename = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $fileSize = null;
+    private ?int $fileSize = null;
 
     #[ORM\Column(length: 255)]
     private ?string $mimeType = null;
@@ -72,12 +72,12 @@ class TransferredFile
         return $this;
     }
 
-    public function getFileSize(): ?string
+    public function getFileSize(): ?int
     {
         return $this->fileSize;
     }
 
-    public function setFileSize(string $fileSize): static
+    public function setFileSize(int $fileSize): static
     {
         $this->fileSize = $fileSize;
 

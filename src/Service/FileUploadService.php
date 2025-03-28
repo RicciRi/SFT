@@ -34,22 +34,18 @@ class FileUploadService
 
         foreach ($files as $file) {
             try {
-                // Генерируем токен сессии загрузки и имя файла
                 $sessionToken = Uuid::v4()->toRfc4122();
                 $originalFilename = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
                 $mimeType = $file->getMimeType() ?: 'application/octet-stream';
 
-                // Генерируем уникальное имя файла
                 $tempFilename = $sessionToken.($extension ? '.'.$extension : '');
                 $tempPath = $this->tempDir.'/'.$tempFilename;
 
-                // Прямое копирование файла
                 if (!copy($file->getRealPath(), $tempPath)) {
                     throw new \Exception("Не удалось скопировать файл в {$tempPath}");
                 }
 
-                // Проверяем, существует ли файл и доступен ли он для чтения
                 if (!file_exists($tempPath)) {
                     throw new \Exception("Файл не существует после копирования: {$tempPath}");
                 }
@@ -107,7 +103,7 @@ class FileUploadService
                 $transferredFile->setFileTransfer($fileTransfer);
                 $transferredFile->setOriginalFilename($data['originalFilename']);
                 $transferredFile->setStoredFilename($storedFilename);
-                $transferredFile->setFileSize((string) $data['fileSize']);
+                $transferredFile->setFileSize((int) $data['fileSize']);
                 $transferredFile->setMimeType($data['mimeType']);
                 $transferredFile->setCreatedAt(new \DateTimeImmutable());
 

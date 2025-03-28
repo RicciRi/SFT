@@ -48,6 +48,13 @@ final class SendFileController extends AbstractController
                                      ->where('t.user = :user')
                                      ->setParameter('user', $user);
 
+        $status = $request->query->get('status');
+
+        if ($status && in_array($status, ['uploaded', 'downloaded'], true)) {
+            $qb->andWhere('t.status = :status')
+               ->setParameter('status', $status);
+        }
+
         $search = $request->query->get('q');
         if ($search) {
             $qb->andWhere(
@@ -129,6 +136,7 @@ final class SendFileController extends AbstractController
             'date_order' => $dateOrder,
             'size_order' => $sizeOrder,
             'limit' => $limit,
+            'status' => $status,
         ]);
     }
 

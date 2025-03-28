@@ -14,6 +14,12 @@
                         <option value="50" {% if limit == 50 %}selected{% endif %}>50 per page</option>
                     </select>
 
+                    <select name="status" onchange="this.form.submit()">
+                        <option value="">All statuses</option>
+                        <option value="downloaded" {% if status == 'downloaded' %}selected{% endif %}>Downloaded</option>
+                        <option value="uploaded" {% if status == 'uploaded' %}selected{% endif %}>Not downloaded</option>
+                    </select>
+
                     <!-- Фильтр по дате -->
                     <select name="date_order" onchange="this.form.submit()">
                         <option value="">Sort by date</option>
@@ -134,7 +140,8 @@
                             date_filter: date_filter,
                             date_order: date_order,
                             size_order: size_order,
-                            limit: limit
+                            limit: limit,
+                            status: status
                         }) }}" class="pagination-link" aria-label="Previous page">‹</a>
                     {% endif %}
 

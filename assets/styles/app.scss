@@ -12,6 +12,7 @@
 @use "home.scss";
 @use "flatpickr.scss";
 @use "download.scss";
+@use "register.scss";
 
 
 body {
@@ -109,4 +110,46 @@ a {
   }
 }
 
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid transparent;
+  box-shadow: var(--base-box-shadow);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--text-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border: 1px solid var(--color-primary);
+    box-shadow: none;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: var(var(--color-gray-60));
+  }
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 12px;
+}
+
+.radial-text {
+  --x: 50%;
+  --y: 50%;
+  --width: 50%;
+  padding-bottom: .1em;
+  background: radial-gradient(var(--width) 100% at var(--x) var(--y), #fff 30%, hsla(0, 0%, 100%, .5) 100%);
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 

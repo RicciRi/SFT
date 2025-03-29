@@ -20,6 +20,7 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            // USER FORM
             ->add('email', EmailType::class, [
                 'constraints' => [
                     new NotBlank([
@@ -36,6 +37,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
                 'attr' => [
+                    'required' => true,
                     'class' => 'form-control',
                     'placeholder' => 'email@example.com',
                 ],
@@ -101,6 +103,91 @@ class RegistrationFormType extends AbstractType
                     new IsTrue([
                         'message' => 'You should agree to our terms.',
                     ]),
+                ],
+            ])
+
+            // COMPANY FORM
+            ->add('companyName', TextType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter an Email!',
+                    ]),
+                    new Length([
+                        'max' => 250,
+                        'maxMessage' => 'Your Company Name should be max {{ limit }} characters',
+                    ]),
+                ],
+                'attr' => [
+                    'required' => true,
+                    'class' => 'form-control',
+                    'placeholder' => 'Symfony File Transfer',
+                ],
+            ])
+            ->add('contactEmail', EmailType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter an Email!',
+                    ]),
+                    new Email([
+                        'message' => 'Please, enter valid Email.',
+                    ]),
+                    new Length([
+                        'min' => 6,
+                        'minMessage' => 'Your email should be at least {{ limit }} characters',
+                        'max' => 250,
+                        'maxMessage' => 'Your email should be max {{ limit }} characters',
+                    ]),
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'email@example.com',
+                ],
+            ])
+            ->add('address', TextType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new Length([
+                        'min' => 2,
+                        'minMessage' => 'Your email should be at least {{ limit }} characters',
+                        'max' => 250,
+                        'maxMessage' => 'Your email should be max {{ limit }} characters',
+                    ]),
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'USA, New York',
+                ],
+            ])
+            ->add('phone', TextType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new Length([
+                        'min' => 6,
+                        'minMessage' => 'Your phone number should be at least {{ limit }} characters',
+                        'max' => 250,
+                        'maxMessage' => 'Your phone number should be max {{ limit }} characters',
+                    ]),
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => '+48 732 581 469',
+                ],
+            ])
+            ->add('website', TextType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new Length([
+                        'min' => 2,
+                        'minMessage' => 'Your website link should be at least {{ limit }} characters',
+                        'max' => 250,
+                        'maxMessage' => 'Your website link  should be max {{ limit }} characters',
+                    ]),
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'sft.com',
                 ],
             ]);
     }

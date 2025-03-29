@@ -13,6 +13,9 @@
   --color-cherry: #e02367;
   --color-gray: #babcd2;
   --color-gray-2: #dfe1f4;
+  --color-gray-30: #dfe1f4;
+  --color-gray-40: #babcd2;
+  --color-gray-60: #5e6077;
   --color-gray-80: #2a2b3a;
   --launcher-background-color: #6633ee;
   --launcher-icon-color: #FFFFFF;
@@ -2552,127 +2555,70 @@
 
 .auth-page {
   display: flex;
-  height: 100vh;
+  flex-direction: column;
   width: 100%;
   font-family: var(--font-family-base);
 }
-.auth-page .left-panel {
-  flex: 1;
-  background: linear-gradient(135deg, #1f1f35 0%, #171825 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 4rem;
-  font-weight: 700;
-  color: var(--color-pink);
-  position: relative;
-  overflow: hidden;
+.auth-page .content-sizer {
+  max-width: 1000px;
+  margin: 0 auto;
 }
-.auth-page .left-panel::before {
-  content: "";
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(184, 140, 255, 0.15) 0%, rgba(184, 140, 255, 0) 70%);
-  bottom: -150px;
-  left: -150px;
-  z-index: 0;
-}
-.auth-page .left-panel::after {
-  content: "";
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(184, 140, 255, 0.1) 0%, rgba(184, 140, 255, 0) 70%);
-  top: -100px;
-  right: -100px;
-  z-index: 0;
-}
-.auth-page .right-panel {
-  flex: 1;
-  background-color: #0c0c13;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-.auth-page .right-panel form {
+.auth-page form {
   width: 100%;
+  min-width: 320px;
   max-width: 420px;
   font-family: var(--font-family-base);
+  color: var(--color-gray-40);
 }
-.auth-page .right-panel form .alert {
+.auth-page form h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 500;
+  font-family: "Roobert", sans-serif;
+}
+.auth-page form .alert {
   margin-bottom: 1.5rem;
   padding: 1rem;
   border-radius: var(--base-border-radius);
   font-size: 0.875rem;
 }
-.auth-page .right-panel form .alert.alert-danger {
+.auth-page form .alert.alert-danger {
   background-color: rgba(220, 53, 69, 0.15);
   color: #dc3545;
   border: 1px solid rgba(220, 53, 69, 0.2);
 }
-.auth-page .right-panel form h1 {
-  color: #fff;
-  font-size: 2.2rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-.auth-page .right-panel form .redirect-link {
+.auth-page form .redirect-link {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 0.875rem;
+  font-size: 0.7rem;
 }
-.auth-page .right-panel form .redirect-link a {
+.auth-page form .redirect-link a {
   margin-left: 8px;
   color: var(--color-pink);
   text-decoration: none;
 }
-.auth-page .right-panel form .redirect-link a:hover {
+.auth-page form .redirect-link a:hover {
   text-decoration: underline;
 }
-.auth-page .right-panel form label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.875rem;
-}
-.auth-page .right-panel form .form-control {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  background-color: rgba(23, 24, 37, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--base-border-radius);
-  font-size: 1rem;
-  color: #fff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  margin-bottom: 1.5rem;
-}
-.auth-page .right-panel form .form-control:focus {
-  outline: none;
-  border-color: var(--color-pink);
-  box-shadow: 0 0 0 2px rgba(184, 140, 255, 0.25);
-}
-.auth-page .right-panel form .checkbox-wrap {
+.auth-page form .checkbox-wrap {
   color: rgba(255, 255, 255, 0.8);
   margin: 0.5rem 0 2rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.auth-page .right-panel form .checkbox {
+.auth-page form .checkbox {
   display: flex;
   align-items: center;
 }
-.auth-page .right-panel form .checkbox label {
-  margin-bottom: 0 !important;
+.auth-page form .checkbox label {
+  font-size: 0.7rem;
+  margin: 0 !important;
   cursor: pointer;
   user-select: none;
   display: flex;
   align-items: center;
 }
-.auth-page .right-panel form .checkbox label input[type=checkbox] {
+.auth-page form .checkbox label input[type=checkbox] {
   appearance: none;
   -webkit-appearance: none;
   width: 1.125rem;
@@ -2684,11 +2630,11 @@
   position: relative;
   cursor: pointer;
 }
-.auth-page .right-panel form .checkbox label input[type=checkbox]:checked {
+.auth-page form .checkbox label input[type=checkbox]:checked {
   background-color: var(--color-pink);
   border-color: var(--color-pink);
 }
-.auth-page .right-panel form .checkbox label input[type=checkbox]:checked::after {
+.auth-page form .checkbox label input[type=checkbox]:checked::after {
   content: "";
   position: absolute;
   left: 4px;
@@ -2699,11 +2645,11 @@
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
-.auth-page .right-panel form .checkbox label input[type=checkbox]:focus {
+.auth-page form .checkbox label input[type=checkbox]:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(184, 140, 255, 0.25);
 }
-.auth-page .right-panel form .btn {
+.auth-page form .btn {
   font-family: var(--font-family-base);
   display: block;
   width: 100%;
@@ -2717,40 +2663,18 @@
   cursor: pointer;
   border: none;
 }
-.auth-page .right-panel form .btn.btn-primary {
+.auth-page form .btn.btn-primary {
   background-color: var(--color-pink);
   color: #000;
 }
-.auth-page .right-panel form .btn.btn-primary:hover {
+.auth-page form .btn.btn-primary:hover {
   background-color: rgb(199.7434782609, 165.5, 255);
 }
-.auth-page .right-panel form .btn.btn-primary:active {
+.auth-page form .btn.btn-primary:active {
   transform: translateY(1px);
 }
-.auth-page .right-panel form .mb-3 {
-  text-align: center;
-  border-radius: var(--base-border-radius);
-  margin-bottom: 2.5rem;
-  color: rgba(255, 255, 255, 0.8);
-}
-.auth-page .right-panel form .mb-3 a {
-  color: var(--color-pink);
-  text-decoration: none;
-  font-weight: 500;
-}
-.auth-page .right-panel form .mb-3 a:hover {
-  text-decoration: underline;
-}
-@media (max-width: 768px) {
-  .auth-page {
-    flex-direction: column;
-  }
-  .auth-page .left-panel {
-    flex: 0 0 150px;
-  }
-  .auth-page .right-panel {
-    flex: 1;
-  }
+.auth-page form label {
+  margin-top: 30px;
 }
 
 .send-container {
@@ -2969,7 +2893,6 @@
 }
 .send-file-container .form-section .form-group .form-control:focus {
   box-shadow: var(--base-box-shadow);
-  background-color: rgba(255, 255, 255, 0.02);
   outline: none;
 }
 .send-file-container .form-section .form-group .form-control::placeholder {
@@ -3832,6 +3755,82 @@ body {
   color: var(--color-cherry);
 }
 
+.register h1 {
+  margin: 100px;
+  font-size: 3.5rem;
+  text-align: center;
+  font-weight: 400;
+  font-family: var(--font-family-base);
+}
+.register .content-sizer {
+  max-width: 1000px;
+  margin: 200px auto;
+  display: flex;
+}
+.register .title-section {
+  max-width: 40%;
+  color: #fff;
+  font-family: "Roobert", sans-serif;
+}
+.register .title-section .title {
+  font-weight: 500;
+  font-size: 3.5rem;
+}
+.register .title-section .subtitle {
+  font-size: 0.9rem;
+}
+.register form[name=registration_form] {
+  font-family: var(--font-family-base);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+.register form[name=registration_form] .form-section {
+  margin: 0 0 20px 60px;
+  display: flex;
+  gap: 4rem;
+  color: var(--color-gray-40);
+}
+.register form[name=registration_form] .form-section .step {
+  display: flex;
+  align-items: center;
+  color: var(--color-gray-40);
+  height: 2rem;
+  padding: 0 0.9rem;
+  border-radius: 2rem;
+  border: 1px solid var(--color-gray-80);
+  font-feature-settings: "tnum";
+}
+.register form[name=registration_form] .form-section .vertical-line {
+  margin: 20px auto;
+  width: 1px;
+  height: 100%;
+  background: var(--color-gray-80);
+  position: relative;
+}
+.register form[name=registration_form] .form-section .vertical-line__fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 0;
+  background: var(--color-primary);
+  transition: height 0.3s ease-out;
+}
+.register form[name=registration_form] .form-section .step-title {
+  font-family: "Roobert", sans-serif;
+  margin: 0 0 2.5rem 0;
+  font-weight: 500;
+  font-size: 1.6rem;
+}
+.register form[name=registration_form] .form-section label {
+  margin-top: 2rem;
+}
+.register form[name=registration_form] .form-section .form {
+  min-width: 300px;
+  padding-bottom: 10rem;
+}
+
 body {
   background: #010314;
   padding: 0;
@@ -3919,4 +3918,44 @@ a {
 }
 .launcher svg {
   color: var(--launcher-icon-color);
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid transparent;
+  box-shadow: var(--base-box-shadow);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--text-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-control:focus {
+  border: 1px solid var(--color-primary);
+  box-shadow: none;
+  outline: none;
+}
+.form-control::placeholder {
+  color: var(var(--color-gray-60));
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 12px;
+}
+
+.radial-text {
+  --x: 50%;
+  --y: 50%;
+  --width: 50%;
+  padding-bottom: 0.1em;
+  background: radial-gradient(var(--width) 100% at var(--x) var(--y), #fff 30%, hsla(0, 0%, 100%, 0.5) 100%);
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

@@ -2,52 +2,109 @@
 
 {% block title %}Register{% endblock %}
 
-{% block navigation %}{% endblock %}
+{#{% block navigation %}{% endblock %}#}
 {% block footer %}{% endblock %}
 
 {% block body %}
-    <div class="auth-page">
-        <div class="left-panel">
-            SFT
-        </div>
-        <div class="right-panel">
+    <div class="register">
+        <div class="divider-style"></div>
+
+        <div class="content-sizer">
+            <div class="title-section radial-text">
+                <div class="title">Get started with the Functions Primitive</div>
+                <div class="subtitle">Deploy your first Evervault Function and start running logic on encrypted data.
+                </div>
+            </div>
+            {{ form_errors(registrationForm) }}
+            {{ form_start(registrationForm) }}
             {% for flash_error in app.flashes('verify_email_error') %}
                 <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
             {% endfor %}
-
-
-            {{ form_errors(registrationForm) }}
-
-            {{ form_start(registrationForm) }}
-            <h1 class="h3 mb-3 font-weight-normal">Create an account</h1>
-
-            {{ form_row(registrationForm.firstName) }}
-            {{ form_errors(registrationForm.firstName) }}
-
-            {{ form_row(registrationForm.lastName) }}
-            {{ form_errors(registrationForm.lastName) }}
-
-            {{ form_row(registrationForm.email) }}
-            {{ form_errors(registrationForm.email) }}
-
-            {{ form_row(registrationForm.plainPassword, { label: 'Password'}) }}
-            {{ form_errors(registrationForm.plainPassword) }}
-
-            <div class="checkbox-wrap">
-                <div class="checkbox">
-                    <label for="registration_form_agreeTerms" class="required">
-                        {{ form_widget(registrationForm.agreeTerms) }}
-                        Agree terms
-                    </label>
+            <div class="form-section">
+                <div class="step">Step 1</div>
+                <div class="vertical-line">
+                    <div class="vertical-line__fill"></div>
                 </div>
+                <div class="form">
 
-                <div class="redirect-link">Already have an account? <a href="{{ path('app_login') }}">Log in</a></div>
+
+                    <div class="step-title">Personal Info</div>
+                    {{ form_row(registrationForm.firstName) }}
+                    {{ form_errors(registrationForm.firstName) }}
+                    {{ form_row(registrationForm.lastName) }}
+                    {{ form_errors(registrationForm.lastName) }}
+                    {{ form_row(registrationForm.email) }}
+                    {{ form_errors(registrationForm.email) }}
+                    {{ form_row(registrationForm.plainPassword, { label: 'Password'}) }}
+                    {{ form_errors(registrationForm.plainPassword) }}
+                </div>
+            </div>
+            <div class="form-section">
+                <div class="step">Step 2</div>
+                <div class="vertical-line">
+                    <div class="vertical-line__fill"></div>
+                </div>
+                <div class="form">
+                    <div class="step-title">Company Info</div>
+
+                    {{ form_row(registrationForm.companyName) }}
+                    {{ form_errors(registrationForm.companyName) }}
+
+                    {{ form_row(registrationForm.contactEmail) }}
+                    {{ form_errors(registrationForm.contactEmail) }}
+
+                    {{ form_row(registrationForm.address) }}
+                    {{ form_errors(registrationForm.address) }}
+
+                    {{ form_row(registrationForm.phone) }}
+                    {{ form_errors(registrationForm.phone) }}
+
+                    {{ form_row(registrationForm.website) }}
+                    {{ form_errors(registrationForm.website) }}
+
+                    {{ form_errors(registrationForm.agreeTerms) }}
+
+                    <div class="checkbox-wrap">
+                        <div class="checkbox">
+                            <label for="registration_form_agreeTerms" class="required">
+                                {{ form_widget(registrationForm.agreeTerms) }}
+                                Agree terms
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            {{ form_errors(registrationForm.agreeTerms) }}
-
-            <button type="submit" class="btn btn-lg btn-primary">Register</button>
             {{ form_end(registrationForm) }}
         </div>
+
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const lines = document.querySelectorAll('.vertical-line');
+
+            window.addEventListener('scroll', () => {
+                const viewportCenter = window.innerHeight / 2;
+
+                lines.forEach(line => {
+                    const fill = line.querySelector('.vertical-line__fill');
+                    const rect = line.getBoundingClientRect();
+
+                    // distance = насколько пикселей центр экрана зашёл от верхней границы полосы
+                    let distance = viewportCenter - rect.top;
+
+                    // Ограничиваем distance от 0 до полной высоты полосы
+                    if (distance < 0) distance = 0;
+                    if (distance > rect.height) distance = rect.height;
+
+                    // Устанавливаем высоту "заливки" для каждой полосы
+                    fill.style.height = distance + 'px';
+                });
+            });
+
+        });
+    </script>
 {% endblock %}

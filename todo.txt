@@ -12,21 +12,6 @@ FUNC:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Download functionality service
-
 Translate
 
 Make company
@@ -36,8 +21,6 @@ Company employee
 Company employee activity + possibility to see ANALITICS !!!!! ( in graphic or smt like that )
 
 Download info about your transfers
-
-Filter your Transfers
 
 If files was deleted from session they should be also deleted from db
 

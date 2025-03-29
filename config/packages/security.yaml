@@ -32,7 +32,7 @@ security:
       custom_authenticator: App\Security\LoginFormAuthenticator
 
   access_control:
-    - { path: ^/(register|help-center|home), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/(login|register|help-center|home), roles: PUBLIC_ACCESS }
     - { path: ^/admin, roles: ROLE_GLOBAL_ADMIN }
 
 

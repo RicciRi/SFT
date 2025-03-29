@@ -10,17 +10,21 @@
         <div class="divider-style"></div>
 
         <div class="content-sizer">
-            <div class="title-section radial-text">
-                <div class="title">Get started with the Functions Primitive</div>
-                <div class="subtitle">Deploy your first Evervault Function and start running logic on encrypted data.
-                </div>
-            </div>
+{#            <div class="title-section radial-text">#}
+{#                <div class="title">Get started with the Functions Primitive</div>#}
+{#                <div class="subtitle">Deploy your first Evervault Function and start running logic on encrypted data.#}
+{#                </div>#}
+{#            </div>#}
             {{ form_errors(registrationForm) }}
             {{ form_start(registrationForm) }}
             {% for flash_error in app.flashes('verify_email_error') %}
                 <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
             {% endfor %}
             <div class="form-section">
+                <div class="title-section radial-text">
+                    <div class="title">Get started with the Functions Primitive</div>
+                    <div class="subtitle">Deploy your first Evervault Function and start running logic on encrypted data.</div>
+                </div>
                 <div class="step">Step 1</div>
                 <div class="vertical-line">
                     <div class="vertical-line__fill"></div>
@@ -40,6 +44,10 @@
                 </div>
             </div>
             <div class="form-section">
+                <div class="title-section radial-text">
+                    <div class="title">Get started with the Functions Primitive</div>
+                    <div class="subtitle">Deploy your first Evervault Function and start running logic on encrypted data.</div>
+                </div>
                 <div class="step">Step 2</div>
                 <div class="vertical-line">
                     <div class="vertical-line__fill"></div>
@@ -72,6 +80,8 @@
                             </label>
                         </div>
                     </div>
+
+                    <button type="submit">Register</button>
                 </div>
             </div>
 

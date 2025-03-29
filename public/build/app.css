@@ -3768,7 +3768,7 @@ body {
   display: flex;
 }
 .register .title-section {
-  max-width: 40%;
+  width: 45%;
   color: #fff;
   font-family: "Roobert", sans-serif;
 }
@@ -3786,7 +3786,7 @@ body {
   align-items: start;
 }
 .register form[name=registration_form] .form-section {
-  margin: 0 0 20px 60px;
+  margin: 0 0 20px 0;
   display: flex;
   gap: 4rem;
   color: var(--color-gray-40);
@@ -3794,6 +3794,8 @@ body {
 .register form[name=registration_form] .form-section .step {
   display: flex;
   align-items: center;
+  justify-content: center;
+  min-width: 100px;
   color: var(--color-gray-40);
   height: 2rem;
   padding: 0 0.9rem;

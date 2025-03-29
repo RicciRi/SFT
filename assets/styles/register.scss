@@ -15,7 +15,7 @@
   }
 
   .title-section {
-    max-width: 40%;
+    width: 45%;
     color: #fff;
     font-family: "Roobert", sans-serif;
 
@@ -37,7 +37,7 @@
 
 
     .form-section {
-      margin: 0 0 20px 60px;
+      margin: 0 0 20px 0;
       display: flex;
       gap: 4rem;
       color: var(--color-gray-40);
@@ -45,6 +45,8 @@
       .step {
         display: flex;
         align-items: center;
+        justify-content: center;
+        min-width: 100px;
         color: var(--color-gray-40);
         height: 2rem;
         padding: 0 0.9rem;

@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Enum\SubscriptionPeriod;
+use App\Enum\SubscriptionStatus;
+use App\Enum\SubscriptionType;
 use App\Repository\SubscriptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,22 +18,19 @@ class Subscription
     #[ORM\Column]
     private ?int $id = null;
     #[ORM\Column(length: 255)]
-    private ?string $type = null;
+    private ?SubscriptionType $type = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $price = null;
+    private ?SubscriptionPeriod $period = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $period = null;
+    private ?SubscriptionStatus $status = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $startDate = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $endDate = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
 
     /**
      * @var Collection<int, Payment>
@@ -52,36 +52,24 @@ class Subscription
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getType(): ?SubscriptionType
     {
         return $this->type;
     }
 
-    public function setType(string $type): static
+    public function setType(SubscriptionType $type): static
     {
         $this->type = $type;
 
         return $this;
     }
 
-    public function getPrice(): ?string
-    {
-        return $this->price;
-    }
-
-    public function setPrice(string $price): static
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    public function getPeriod(): ?string
+    public function getPeriod(): ?SubscriptionPeriod
     {
         return $this->period;
     }
 
-    public function setPeriod(string $period): static
+    public function setPeriod(SubscriptionPeriod $period): static
     {
         $this->period = $period;
 
@@ -112,12 +100,12 @@ class Subscription
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?SubscriptionStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(SubscriptionStatus $status): static
     {
         $this->status = $status;
 

@@ -2,7 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Company;
+use App\Entity\Subscription;
 use App\Entity\User;
+use App\Enum\SubscriptionPeriod;
+use App\Enum\SubscriptionStatus;
+use App\Enum\SubscriptionType;
 use App\Enum\UserRoles;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
@@ -31,6 +36,9 @@ class RegistrationController extends AbstractController
         }
 
         $user = new User();
+        $company = new Company();
+        $subscription = new Subscription();
+
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -38,13 +46,37 @@ class RegistrationController extends AbstractController
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
 
+            $dateImmutable = new \DateTimeImmutable();
+
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-            $user->setCreatedAt(new \DateTimeImmutable());
+            $user->setCreatedAt($dateImmutable);
             $user->setIsMainAccount(true);
             $user->setRoles([UserRoles::ROLE_USER]);
 
+            $companyName = $form->get('companyName')->getData();
+            $companyContactEmail = $form->get('contactEmail')->getData();
+            $companyAddress = $form->get('address')->getData();
+            $companyPhone = $form->get('phone')->getData();
+            $companyWebsite = $form->get('website')->getData();
+
+            $company->setMainUser($user);
+            $company->setName($companyName);
+            $company->setContactEmail($companyContactEmail);
+            $company->setAddress($companyAddress);
+            $company->setPhone($companyPhone);
+            $company->setWebsite($companyWebsite);
+
+            $subscription->setCompany($company);
+            $subscription->setType(SubscriptionType::FREE);
+            $subscription->setStatus(SubscriptionStatus::ACTIVE);
+            $subscription->setPeriod(SubscriptionPeriod::LIFETIME);
+            $subscription->setStartDate($dateImmutable);
+
             $entityManager->persist($user);
+            $entityManager->persist($company);
+            $entityManager->persist($subscription);
+
             $entityManager->flush();
 
             // generate a signed url and email it to the user
@@ -53,7 +85,7 @@ class RegistrationController extends AbstractController
                     ->from(new Address('sft.mailer@gmail.com', 'Mail Bot'))
                     ->to((string) $user->getEmail())
                     ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('registration/confirmation_email.html.twig'),
             );
 
             // do anything else you need here, like send an email

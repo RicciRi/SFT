@@ -32,6 +32,7 @@ PAGES:
 
 https://app.evervault.com/team_0cddf54f6ef1/settings/general - account settings
 
+https://evervault.com/products/pci - card payment
 
 1. Setting page for user
 

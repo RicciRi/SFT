@@ -1,0 +1,503 @@
+// assets/styles/pricing.scss
+
+// Основные переменные
+:root {
+  --color-hobby: 98, 98, 98;
+  --color-pro: 149, 112, 255;
+  --color-scale: 238, 205, 58;
+  --color-addon: 76, 217, 100;
+  --background-dark: #0a0a14;
+  --background-card: #171725;
+  --background-feature: #1a1a28;
+  //--text-primary: #ffffff;
+  --text-secondary: #a0a0b0;
+  --button-tertiary: #222230;
+}
+
+// Основной контейнер
+.pricing-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+  .price-title {
+    text-align: center;
+    max-width: 12ch;
+    margin: 0 auto;
+    font-size: 3.5rem;
+    font-weight: 500;
+  }
+
+  .price-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--color-gray-40);
+  }
+
+}
+
+// Список планов
+.pricing-plan-list {
+  display: grid;
+  grid-template-columns: repeat(var(--columns, 3), 1fr);
+  grid-template-rows: repeat(3, auto);
+  grid-auto-flow: row; // cl
+  list-style: none;
+  margin: 5rem auto;
+  padding: 0;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-auto-flow: row;
+  }
+}
+
+// Элемент списка планов
+.pricing-plan-item {
+  height: 100%;
+  display: block;
+}
+
+.pricing-plan__header,
+.pricing-plan__pricing,
+.pricing-plan__features {
+  z-index: 1;
+}
+
+// Карточка плана
+.pricing-plan {
+  position: relative;
+  background: var(--color-gray-95);
+  overflow: hidden;
+  //display: flex;
+  //flex-direction: column;
+  //height: 100%;
+
+  display: grid;
+  grid-template-rows: auto auto 1fr; // Header, Pricing, Features
+  height: 100%;
+
+  // План Hobby
+  &--hobby {
+    --spot-color: 98, 98, 98;
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(to top, rgba(var(--spot-color, "255,255,255"), .02), rgba(var(--spot-color, "255,255,255"), .1));
+      //z-index: 1;
+    }
+
+    .pricing-plan__icon {
+      color: rgb(var(--color-hobby));
+    }
+
+    .pricing-plan__header {
+      --spot-color: var(--color-hobby);
+    }
+  }
+
+  // План Pro
+  &--pro {
+    --spot-color: 149, 112, 255;
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(to top, rgba(var(--spot-color, "255,255,255"), .02), rgba(var(--spot-color, "255,255,255"), .1));
+      //z-index: 1;
+    }
+
+    .pricing-plan__icon {
+      color: rgb(var(--color-pro));
+    }
+
+    .pricing-plan__header {
+      --spot-color: var(--color-pro);
+    }
+
+    .pricing-plan__cta-button--primary {
+      color: var(--color-gray-100);
+      background-color: #fff;
+    }
+  }
+
+  // План Scale
+  &--scale {
+    --spot-color: 238, 205, 58;
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(to top, rgba(var(--spot-color, "255,255,255"), .02), rgba(var(--spot-color, "255,255,255"), .1));
+      //z-index: 1;
+    }
+
+    .pricing-plan__icon {
+      color: rgb(var(--color-scale));
+    }
+
+    .pricing-plan__header {
+      --spot-color: var(--color-scale);
+    }
+  }
+
+  // Заголовок плана
+  &__header {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+
+    &-border {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+                      to right,
+                      rgba(var(--spot-color), 0.1),
+                      rgba(var(--spot-color), 0.6) 50%,
+                      rgba(var(--spot-color), 0.1)
+      );
+    }
+
+    &-highlight {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(
+                      to right,
+                      rgba(var(--spot-color), 0),
+                      rgba(var(--spot-color), 0.4) 50%,
+                      rgba(var(--spot-color), 0)
+      );
+      border-radius: 4px 4px 0 0;
+    }
+
+    &-background {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 150px;
+      height: 150px;
+      opacity: 0.05;
+      overflow: hidden;
+    }
+
+    &-icon-bg {
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 180px;
+      height: 180px;
+      color: rgb(var(--spot-color));
+    }
+  }
+
+  &__icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.75rem;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  &__description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0.5rem 0 1rem;
+    line-height: 1.4;
+  }
+
+  // Секция с ценой
+  &__pricing {
+    padding: 0 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__price {
+    margin: 0 0 1rem;
+    font-size: 1.7rem;
+    font-weight: 600;
+
+    &-caption {
+      font-size: 0.9rem;
+      font-weight: normal;
+      color: var(--text-secondary);
+    }
+  }
+
+  &__cta-button {
+    width: max-content;
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    text-align: center;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+
+    &--primary {
+      background-color: #fff;
+      color: white;
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+
+    &--tertiary {
+      background-color: var(--button-tertiary);
+      color: white;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+
+  // Секция с возможностями
+  &__features {
+    z-index: 1;
+    padding: 0 1.5rem 1.5rem;
+  }
+}
+
+
+// Список возможностей
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+// Элемент списка возможностей
+.feature-item {
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  .feature-title {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .feature-description {
+    margin: 0.25rem 0 0;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+}
+
+// Секция Supercharge
+.supercharge-container {
+  background-color: var(--background-card);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.supercharge-header {
+  margin-bottom: 2rem;
+}
+
+.supercharge-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+
+.supercharge-description {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+// Контейнер для дополнений
+.addon-container {
+  margin-top: 1.5rem;
+}
+
+// Дополнение
+.addon {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 1.5rem;
+  position: relative;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  &--payments {
+    .addon__icon {
+      color: rgb(var(--color-addon));
+    }
+  }
+
+  // Заголовок дополнения
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.75rem;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  &__badge {
+    background-color: rgba(var(--color-addon), 0.2);
+    color: rgb(var(--color-addon));
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+  }
+
+  &__description {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin: 0.5rem 0 1rem;
+  }
+
+  &__price {
+    display: flex;
+    align-items: baseline;
+    margin: 0.5rem 0 1rem;
+
+    &-prefix {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    &-amount {
+      font-size: 1.7rem;
+      font-weight: 600;
+      margin: 0 0.3rem;
+    }
+
+    &-period {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+  }
+
+  &__cta-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    background-color: var(--button-tertiary);
+    color: white;
+    text-align: center;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+    width: fit-content;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  &__note {
+    color: rgb(var(--color-addon));
+    font-size: 0.8rem;
+    margin: 0.3rem 0;
+  }
+
+  // Секция с возможностями
+  &__features {
+    background-color: var(--background-feature);
+    border-radius: 8px;
+    padding: 1.5rem;
+
+    &-header {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  &__feature {
+    margin-bottom: 1.5rem;
+
+    &-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+
+    &-price {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+    }
+  }
+
+  &__image {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    max-width: 25%;
+    opacity: 0.7;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+}

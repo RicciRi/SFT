@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/SymfonyFileTransferTest.iml" filepath="$PROJECT_DIR$/.idea/SymfonyFileTransferTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/SymfonyFileTransfer.iml" filepath="$PROJECT_DIR$/.idea/SymfonyFileTransfer.iml" />
     </modules>
   </component>
 </project>

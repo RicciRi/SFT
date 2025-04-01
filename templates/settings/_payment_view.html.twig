@@ -1,0 +1,25 @@
+{# templates/settings/_payment_view.html.twig #}
+<div class="settings-view">
+    <div class="settings-field">
+        <div class="settings-label">Amount</div>
+        <div class="settings-value">{{ payment.amount }} {{ payment.currency }}</div>
+    </div>
+    <div class="settings-field">
+        <div class="settings-label">Payment Method</div>
+        <div class="settings-value">{{ payment.paymentMethod }}</div>
+    </div>
+    <div class="settings-field">
+        <div class="settings-label">Transaction ID</div>
+        <div class="settings-value">{{ payment.transactionId }}</div>
+    </div>
+    <div class="settings-field">
+        <div class="settings-label">Payment Date</div>
+        <div class="settings-value">{{ payment.paymentDate|date('d.m.Y') }}</div>
+    </div>
+    <div class="settings-field">
+        <div class="settings-label">Status</div>
+        <div class="settings-value">
+            <span class="payment-status payment-status-{{ payment.status|lower }}">{{ payment.status }}</span>
+        </div>
+    </div>
+</div>

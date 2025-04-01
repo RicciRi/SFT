@@ -1,0 +1,19 @@
+{# templates/settings/general.html.twig #}
+{% extends 'settings/index.html.twig' %}
+
+{% block settings_content %}
+    <div class="settings-section">
+        <div class="settings-header">
+            <h2 class="settings-title">General Information</h2>
+            {% if not edit %}
+                <a href="{{ path('app_settings_general', {'edit': true}) }}" class="settings-edit-btn" data-turbo-frame="settings-content">Edit</a>
+            {% endif %}
+        </div>
+
+        {% if edit %}
+            {% include 'settings/_general_form.html.twig' %}
+        {% else %}
+            {% include 'settings/_general_view.html.twig' %}
+        {% endif %}
+    </div>
+{% endblock %}

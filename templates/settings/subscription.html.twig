@@ -1,0 +1,12 @@
+{# templates/settings/subscription.html.twig #}
+{% extends 'settings/index.html.twig' %}
+
+{% block settings_content %}
+    <div class="settings-section">
+        <div class="settings-header">
+            <h2 class="settings-title">Subscription Information</h2>
+        </div>
+
+        {% include 'settings/_subscription_view.html.twig' %}
+    </div>
+{% endblock %}

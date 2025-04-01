@@ -1,0 +1,15 @@
+{# templates/settings/_company_form.html.twig #}
+<div class="settings-form">
+
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.address) }}
+    {{ form_row(form.contactEmail) }}
+    {{ form_row(form.phone) }}
+    {{ form_row(form.website) }}
+
+    <button type="submit" class="btn-save">Save Changes</button>
+
+    {{ form_end(form) }}
+
+</div>

@@ -1,0 +1,34 @@
+{# templates/settings/_subscription_view.html.twig #}
+<div class="settings-view">
+    <div class="settings-field">
+        <div class="settings-label">Subscription Type</div>
+        <div class="settings-value">
+            <span class="subscription-type subscription-type-{{ subscription.type.value |lower }}">{{ subscription.type.value }}</span>
+        </div>
+    </div>
+    <div class="settings-field">
+        <div class="settings-label">Period</div>
+        <div class="settings-value">{{ subscription.period.value }}</div>
+    </div>
+    <div class="settings-field">
+        <div class="settings-label">Status</div>
+        <div class="settings-value">
+            <span class="subscription-status subscription-status-{{ subscription.status.value|lower }}">{{ subscription.status.value }}</span>
+        </div>
+    </div>
+    <div class="settings-field">
+        <div class="settings-label">Start Date</div>
+        <div class="settings-value">{{ subscription.startDate|date('d.m.Y') }}</div>
+    </div>
+
+    <div class="settings-field">
+        <div class="settings-label">End Date</div>
+        <div class="settings-value">
+            {% if subscription.endDate %}
+                {{ subscription.endDate|date('d.m.Y') }}
+            {% else %}
+                -
+            {% endif %}
+        </div>
+    </div>
+</div>

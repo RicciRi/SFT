@@ -1,0 +1,52 @@
+{# templates/settings/_payment_form.html.twig #}
+<form method="post" action="{{ path('app_settings_payment_update') }}" class="settings-form" data-turbo-frame="settings-content">
+    <div class="form-group form-group-inline">
+        <div class="form-group-item">
+            <label for="amount" class="form-label">Amount</label>
+            <input type="number" id="amount" name="amount" value="{{ payment.amount }}" step="0.01" class="form-input" required>
+        </div>
+
+        <div class="form-group-item">
+            <label for="currency" class="form-label">Currency</label>
+            <select id="currency" name="currency" class="form-select">
+                <option value="USD" {% if payment.currency == 'USD' %}selected{% endif %}>USD</option>
+                <option value="EUR" {% if payment.currency == 'EUR' %}selected{% endif %}>EUR</option>
+                <option value="GBP" {% if payment.currency == 'GBP' %}selected{% endif %}>GBP</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="paymentMethod" class="form-label">Payment Method</label>
+        <select id="paymentMethod" name="paymentMethod" class="form-select">
+            <option value="Credit Card" {% if payment.paymentMethod == 'Credit Card' %}selected{% endif %}>Credit Card</option>
+            <option value="PayPal" {% if payment.paymentMethod == 'PayPal' %}selected{% endif %}>PayPal</option>
+            <option value="Bank Transfer" {% if payment.paymentMethod == 'Bank Transfer' %}selected{% endif %}>Bank Transfer</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="transactionId" class="form-label">Transaction ID</label>
+        <input type="text" id="transactionId" name="transactionId" value="{{ payment.transactionId }}" class="form-input" required>
+    </div>
+
+    <div class="form-group">
+        <label for="paymentDate" class="form-label">Payment Date</label>
+        <input type="date" id="paymentDate" name="paymentDate" value="{{ payment.paymentDate|date('Y-m-d') }}" class="form-input" required>
+    </div>
+
+    <div class="form-group">
+        <label for="paymentStatus" class="form-label">Status</label>
+        <select id="paymentStatus" name="status" class="form-select">
+            <option value="Completed" {% if payment.status == 'Completed' %}selected{% endif %}>Completed</option>
+            <option value="Pending" {% if payment.status == 'Pending' %}selected{% endif %}>Pending</option>
+            <option value="Failed" {% if payment.status == 'Failed' %}selected{% endif %}>Failed</option>
+            <option value="Refunded" {% if payment.status == 'Refunded' %}selected{% endif %}>Refunded</option>
+        </select>
+    </div>
+
+    <div class="form-actions">
+        <a href="{{ path('app_settings_payment') }}" class="btn-cancel" data-turbo-frame="settings-content">Cancel</a>
+        <button type="submit" class="btn-save">Save Changes</button>
+    </div>
+</form>

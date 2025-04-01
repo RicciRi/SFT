@@ -1,0 +1,33 @@
+{# templates/settings/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}User Settings{% endblock %}
+
+{% block body %}
+    <div class="settings-container">
+        <div class="settings-sidebar">
+            <nav class="settings-nav">
+                <ul class="settings-nav-list">
+                    <li class="settings-nav-item {% if active_tab == 'general' %}active{% endif %}">
+                        <a href="{{ path('app_settings_general') }}" class="settings-nav-link" data-turbo-frame="settings-content">General</a>
+                    </li>
+                    <li class="settings-nav-item {% if active_tab == 'company' %}active{% endif %}">
+                        <a href="{{ path('app_settings_company') }}" class="settings-nav-link" data-turbo-frame="settings-content">Company</a>
+                    </li>
+                    <li class="settings-nav-item {% if active_tab == 'subscription' %}active{% endif %}">
+                        <a href="{{ path('app_settings_subscription') }}" class="settings-nav-link" data-turbo-frame="settings-content">Subscription</a>
+                    </li>
+{#                    <li class="settings-nav-item {% if active_tab == 'payment' %}active{% endif %}">#}
+{#                        <a href="{{ path('app_settings_payment') }}" class="settings-nav-link" data-turbo-frame="settings-content">Payment</a>#}
+{#                    </li>#}
+                </ul>
+            </nav>
+        </div>
+
+        <div class="settings-content">
+            <turbo-frame id="settings-content">
+                {% block settings_content %}{% endblock %}
+            </turbo-frame>
+        </div>
+    </div>
+{% endblock %}

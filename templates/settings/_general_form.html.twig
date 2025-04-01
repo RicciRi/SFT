@@ -1,0 +1,21 @@
+<div data-component="account-settings">
+    {{ form_start(form) }}
+
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {{ form_row(form.email) }}
+
+    <div id="password-mismatch-error"></div>
+    {{ form_errors(form.plainPassword) }}
+
+    {{ form_label(form.plainPassword.first) }}
+    {{ form_widget(form.plainPassword.first, {'attr': {'id': 'password'}}) }}
+    {{ form_errors(form.plainPassword.first) }}
+
+    {{ form_label(form.plainPassword.second) }}
+    {{ form_widget(form.plainPassword.second, {'attr': {'id': 'confirm_password'}}) }}
+    {{ form_errors(form.plainPassword.second) }}
+
+    <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+    {{ form_end(form) }}
+</div>

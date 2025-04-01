@@ -5,11 +5,13 @@ import './js/send.js';
 import { initSafeDial } from './js/components/safeDial.js';
 import { initMatrix } from "./js/components/matrix.js";
 import { initRegister } from "./js/register.js";
+import {initAccountSettings} from "./js/accountSettings.js";
 
 document.addEventListener('turbo:load', () => {
     document.querySelectorAll('[data-component="safe_dial"]').forEach(initSafeDial);
     document.querySelectorAll('[data-component="matrix"]').forEach(initMatrix);
     document.querySelectorAll('[data-component="register"]').forEach(initRegister);
+    document.querySelectorAll('[data-component="account-settings"]').forEach(initAccountSettings);
 
 
 

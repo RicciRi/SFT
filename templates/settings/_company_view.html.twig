@@ -1,0 +1,29 @@
+{# templates/settings/_company_view.html.twig #}
+<div class="settings-view">
+    <div class="settings-field">
+        <div class="settings-label">Company Name</div>
+        <div class="settings-value">{{ company.name }}</div>
+    </div>
+    <div class="settings-field">
+        <div class="settings-label">Address</div>
+        <div class="settings-value">{{ company.address }}</div>
+    </div>
+    <div class="settings-field">
+        <div class="settings-label">Contact Email</div>
+        <div class="settings-value">{{ company.contactEmail }}</div>
+    </div>
+    <div class="settings-field">
+        <div class="settings-label">Phone</div>
+        <div class="settings-value">{{ company.phone }}</div>
+    </div>
+    <div class="settings-field">
+        <div class="settings-label">Website</div>
+        <div class="settings-value">
+            {% if company.website %}
+                <a href="{{ company.website }}" target="_blank" class="website-link">{{ company.website }}</a>
+            {% else %}
+                -
+            {% endif %}
+        </div>
+    </div>
+</div>

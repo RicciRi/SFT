@@ -188,14 +188,3 @@
 
     </div>
 {% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-
-    <script>
-        document.addEventListener('turbo:load', () => {
-            console.log('test home')
-
-        })
-    </script>
-{% endblock %}

@@ -10,11 +10,7 @@ FUNC:
 
 
 
-
-
 Translate
-
-Make company
 
 Company employee
 
@@ -27,8 +23,6 @@ If files was deleted from session they should be also deleted from db
 
 
 PAGES:
-
-! https://evervault.com/products/relay - take this page as register page ( step 1 - step 2 ) it's good design for long form
 
 https://app.evervault.com/team_0cddf54f6ef1/settings/general - account settings
 
@@ -47,8 +41,6 @@ https://evervault.com/products/pci - card payment
 7. Forgot password
 
 8. Page after register ( that you need to confirm email )
-
-9. Price
 
 10. Terms and pr
 

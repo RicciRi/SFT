@@ -6,7 +6,7 @@
 {% block footer %}{% endblock %}
 
 {% block body %}
-    <div class="register">
+    <div class="register" data-component="register">
         <div class="divider-style"></div>
 
         <div class="content-sizer">
@@ -89,32 +89,4 @@
         </div>
 
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const lines = document.querySelectorAll('.vertical-line');
-
-            window.addEventListener('scroll', () => {
-                const viewportCenter = window.innerHeight / 2;
-
-                lines.forEach(line => {
-                    const fill = line.querySelector('.vertical-line__fill');
-                    const rect = line.getBoundingClientRect();
-
-                    // distance = насколько пикселей центр экрана зашёл от верхней границы полосы
-                    let distance = viewportCenter - rect.top;
-
-                    // Ограничиваем distance от 0 до полной высоты полосы
-                    if (distance < 0) distance = 0;
-                    if (distance > rect.height) distance = rect.height;
-
-                    // Устанавливаем высоту "заливки" для каждой полосы
-                    fill.style.height = distance + 'px';
-                });
-            });
-
-        });
-    </script>
 {% endblock %}

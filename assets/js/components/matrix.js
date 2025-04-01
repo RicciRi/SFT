@@ -1,0 +1,109 @@
+
+export function initMatrix()  {
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const colors = [
+        '#7209b7',
+        '#63e',
+        '#b88cff',
+        '#5b21b6',
+        '#8e64ff',
+        '#c77dff'
+    ];
+
+    const symbols = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ+-=*';
+
+    const fontSize = 10;
+    const symbolSpacing = fontSize * 1.2;
+    let columns = 0;
+    let rows = 0;
+    let mousePosition = {x: -1000, y: -1000};
+
+    let matrixSymbols = [];
+
+    function setupMatrix() {
+        matrixSymbols = [];
+
+        for (let col = 0; col < columns; col++) {
+            for (let row = 0; row < rows; row++) {
+                matrixSymbols.push({
+                    x: col * symbolSpacing,
+                    y: row * symbolSpacing,
+                    symbol: symbols.charAt(Math.floor(Math.random() * symbols.length)),
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    colorChangeCounter: Math.floor(Math.random() * 160) + 80,
+                    symbolChangeCounter: Math.floor(Math.random() * 300) + 200
+                });
+            }
+        }
+    }
+
+    function resizeCanvas() {
+        const dpr = window.devicePixelRatio || 1;
+
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+
+        canvas.style.width = `${window.innerWidth}px`;
+        canvas.style.height = `${window.innerHeight}px`;
+
+        ctx.scale(dpr, dpr);
+
+        columns = Math.floor(canvas.width / (symbolSpacing * dpr));
+        rows = Math.floor(canvas.height / (symbolSpacing * dpr));
+
+        setupMatrix();
+    }
+
+    function draw() {
+        ctx.fillStyle = '#010314';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        matrixSymbols.forEach(symbol => {
+            const distance = Math.hypot(symbol.x - mousePosition.x, symbol.y - mousePosition.y);
+            let currentFontSize = fontSize;
+            let glow = '';
+
+            if (distance < 50) {
+                currentFontSize = fontSize * 1.6;
+                glow = 'rgba(200, 200, 255, 0.5)';
+            }
+
+            ctx.font = `${currentFontSize}px monospace`;
+            ctx.fillStyle = glow ? glow : symbol.color;
+            ctx.fillText(symbol.symbol, symbol.x, symbol.y);
+
+            symbol.colorChangeCounter--;
+            if (symbol.colorChangeCounter <= 0) {
+                symbol.color = colors[Math.floor(Math.random() * colors.length)];
+                symbol.colorChangeCounter = Math.floor(Math.random() * 100) + 50;
+            }
+
+            symbol.symbolChangeCounter--;
+            if (symbol.symbolChangeCounter <= 0) {
+                symbol.symbol = symbols.charAt(Math.floor(Math.random() * symbols.length));
+                symbol.symbolChangeCounter = Math.floor(Math.random() * 200) + 100;
+            }
+        });
+
+        requestAnimationFrame(draw);
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    canvas.addEventListener('mousemove', function (event) {
+        const rect = canvas.getBoundingClientRect();
+        mousePosition = {
+            x: event.clientX - rect.left,
+            y: event.clientY - rect.top
+        };
+    });
+
+    canvas.addEventListener('mouseleave', function () {
+        mousePosition = {x: -1000, y: -1000};
+    });
+
+    draw();
+}

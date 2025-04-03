@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\SubscriptionStatus;
 use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -201,6 +202,17 @@ class Company
     public function getSubscriptions(): Collection
     {
         return $this->subscriptions;
+    }
+
+    public function getActiveSubscription(): ?Subscription
+    {
+        foreach ($this->subscriptions as $subscription) {
+            if (SubscriptionStatus::ACTIVE === $subscription->getStatus()) {
+                return $subscription;
+            }
+        }
+
+        return null;
     }
 
     public function addSubscription(Subscription $subscription): static

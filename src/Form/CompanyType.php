@@ -33,7 +33,7 @@ class CompanyType extends AbstractType
                     'placeholder' => 'Symfony File Transfer',
                 ],
                 'label_attr' => ['class' => 'settings-label'],
-                'label' => 'Company Name'
+                'label' => 'Company Name',
             ])
             ->add('contactEmail', EmailType::class, [
                 'constraints' => [
@@ -55,8 +55,7 @@ class CompanyType extends AbstractType
                     'placeholder' => 'email@example.com',
                 ],
                 'label_attr' => ['class' => 'settings-label'],
-                'label' => 'Contact Email'
-
+                'label' => 'Contact Email',
             ])
             ->add('address', TextType::class, [
                 'constraints' => [
@@ -72,8 +71,7 @@ class CompanyType extends AbstractType
                     'placeholder' => 'USA, New York',
                 ],
                 'label_attr' => ['class' => 'settings-label'],
-                'label' => 'Adress'
-
+                'label' => 'Adress',
             ])
             ->add('phone', TextType::class, [
                 'constraints' => [
@@ -89,8 +87,7 @@ class CompanyType extends AbstractType
                     'placeholder' => '+48 732 581 469',
                 ],
                 'label_attr' => ['class' => 'settings-label'],
-                'label' => 'Phone'
-
+                'label' => 'Phone',
             ])
             ->add('website', TextType::class, [
                 'constraints' => [
@@ -106,7 +103,6 @@ class CompanyType extends AbstractType
                     'placeholder' => 'sft.com',
                 ],
                 'label_attr' => ['class' => 'settings-label'],
-
             ])
         ;
     }

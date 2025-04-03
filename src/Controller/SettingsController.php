@@ -78,7 +78,6 @@ class SettingsController extends AbstractController
     {
         $company = $this->getUser()->getCompany();
 
-
         $form = $this->createForm(CompanyType::class, $company);
         $form->handleRequest($request);
 
@@ -101,7 +100,7 @@ class SettingsController extends AbstractController
     #[Route('/subscription', name: 'app_settings_subscription')]
     public function subscription(SubscriptionRepository $subscriptionRepository): Response
     {
-        $subscription = $subscriptionRepository->findOneBy(['company' => $this->getUser()->getCompany()]);
+        $subscription = $this->getUser()->getCompany()->getActiveSubscription();
 
         return $this->render('settings/subscription.html.twig', [
             'subscription' => $subscription,

@@ -18,7 +18,7 @@ class Payment
     #[ORM\JoinColumn(nullable: true)]
     private ?Subscription $subscription = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private ?string $amount = null;
 
     #[ORM\Column(length: 255)]

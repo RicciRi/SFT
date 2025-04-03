@@ -1,20 +1,7 @@
-// Dark theme variables
-:root {
-
-  // Additional colors
-  --color-primary: #5E35FF;
-  --color-text: #dfe1f4;
-  --color-text-secondary: #babcd2;
-  --color-border: #383a4d;
-  --color-button: #5E35FF;
-  --color-button-text: #ffffff;
-}
-
-
 .payment-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 60px 20px;
 
   .payment-header {
     display: flex;
@@ -56,6 +43,8 @@
     }
 
     .payment-info {
+      max-width: 460px;
+
       .payment-title {
         font-size: 22px;
         font-weight: 500;
@@ -141,6 +130,9 @@
     }
 
     .payment-form {
+      max-width: 400px;
+      margin: 0 auto;
+
       .form-title {
         font-size: 22px;
         font-weight: 500;
@@ -292,6 +284,9 @@
 
       .submit-button {
         width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         padding: 14px;
         background-color: var(--color-button);
         color: var(--color-button-text);
@@ -321,26 +316,16 @@
         color: var(--color-text-secondary);
         font-size: 14px;
 
-        .powered-by {
-          display: flex;
-          align-items: center;
+        a {
+          color: var(--color-text-secondary);
+          text-decoration: none;
+          margin-left: 16px;
 
-          svg {
-            margin-left: 8px;
+          &:hover {
+            color: var(--color-text);
           }
         }
 
-        .links {
-          a {
-            color: var(--color-text-secondary);
-            text-decoration: none;
-            margin-left: 16px;
-
-            &:hover {
-              color: var(--color-text);
-            }
-          }
-        }
       }
     }
   }

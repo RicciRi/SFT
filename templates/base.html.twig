@@ -59,7 +59,9 @@
     </head>
     <body data-page="{{ app.request.attributes.get('_route') }}">
         <div class="layout">
+            {% block navigationMenu %}
             {% include 'general/navigation.html.twig' %}
+            {% endblock %}
             <header>
                 {% block navigation %}
                     {% include 'general/header.html.twig' %}

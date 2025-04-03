@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/send')]
+#[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
 final class SendFileController extends AbstractController
 {
     public function __construct(
@@ -29,7 +30,6 @@ final class SendFileController extends AbstractController
     }
 
     #[Route('/', name: 'app_send')]
-    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function new(): Response
     {
         return $this->render('send/new.html.twig', [
@@ -38,7 +38,6 @@ final class SendFileController extends AbstractController
     }
 
     #[Route('/transfers', name: 'app_send_transfers')]
-    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function index(FileTransferRepository $fileTransferRepository, Request $request): Response
     {
         $user = $this->getUser();
@@ -141,7 +140,6 @@ final class SendFileController extends AbstractController
     }
 
     #[Route('/api/reset-files', name: 'api_reset_files', methods: ['POST'])]
-    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function resetFiles(Request $request): JsonResponse
     {
         $session = $request->getSession();
@@ -155,7 +153,6 @@ final class SendFileController extends AbstractController
     }
 
     #[Route('/api/remove-file/{token}', name: 'api_remove_file', methods: ['DELETE'])]
-    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function removeFile(string $token, Request $request): JsonResponse
     {
         $session = $request->getSession();
@@ -185,7 +182,6 @@ final class SendFileController extends AbstractController
     }
 
     #[Route('/api/upload-files', name: 'api_upload_files', methods: ['POST'])]
-    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function uploadFiles(Request $request): JsonResponse
     {
         $files = $request->files->get('files');
@@ -242,7 +238,6 @@ final class SendFileController extends AbstractController
     }
 
     #[Route('/api/file-transfer/create', name: 'api_file_transfer_create', methods: ['POST'])]
-    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function createFileTransfer(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -373,13 +368,4 @@ final class SendFileController extends AbstractController
         return $size;
     }
 
-    public function calculateTotalSize(): int
-    {
-        $size = 0;
-        foreach ($this->getTransferredFiles() as $file) {
-            $size += $file->getFileSize();
-        }
-
-        return $size;
-    }
 }

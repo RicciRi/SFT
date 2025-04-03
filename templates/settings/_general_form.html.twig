@@ -1,21 +1,34 @@
-<div data-component="account-settings">
+<div class="form-section" data-component="account-settings">
     {{ form_start(form) }}
 
-    {{ form_row(form.firstName) }}
-    {{ form_row(form.lastName) }}
-    {{ form_row(form.email) }}
+    <div class="settings-field">
+        {{ form_row(form.firstName) }}
+    </div>
+    <div class="settings-field">
+        {{ form_row(form.lastName) }}
+    </div>
+    <div class="settings-field">
+        {{ form_row(form.email) }}
+    </div>
 
-    <div id="password-mismatch-error"></div>
     {{ form_errors(form.plainPassword) }}
+    <div id="password-mismatch-error"></div>
 
-    {{ form_label(form.plainPassword.first) }}
-    {{ form_widget(form.plainPassword.first, {'attr': {'id': 'password'}}) }}
-    {{ form_errors(form.plainPassword.first) }}
+    <div class="settings-field">
+        {{ form_label(form.plainPassword.first) }}
+        {{ form_widget(form.plainPassword.first, {'attr': {'id': 'password'}}) }}
+        {{ form_errors(form.plainPassword.first) }}
+    </div>
 
-    {{ form_label(form.plainPassword.second) }}
-    {{ form_widget(form.plainPassword.second, {'attr': {'id': 'confirm_password'}}) }}
-    {{ form_errors(form.plainPassword.second) }}
+    <div class="settings-field">
+        {{ form_label(form.plainPassword.second) }}
+        {{ form_widget(form.plainPassword.second, {'attr': {'id': 'confirm_password'}}) }}
+        {{ form_errors(form.plainPassword.second) }}
+    </div>
 
-    <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+    <div class="display-flex-end">
+        <button type="submit" class="settings-edit-btn submit-btn">Save Changes</button>
+
+    </div>
     {{ form_end(form) }}
 </div>

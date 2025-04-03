@@ -1,15 +1,26 @@
-{# templates/settings/_company_form.html.twig #}
-<div class="settings-form">
-
+<div class="form-section">
     {{ form_start(form) }}
-    {{ form_row(form.name) }}
-    {{ form_row(form.address) }}
-    {{ form_row(form.contactEmail) }}
-    {{ form_row(form.phone) }}
-    {{ form_row(form.website) }}
 
-    <button type="submit" class="btn-save">Save Changes</button>
+    <div class="settings-field">
+        {{ form_row(form.name) }}
+    </div>
+    <div class="settings-field">
+        {{ form_row(form.contactEmail) }}
+    </div>
+    <div class="settings-field">
+        {{ form_row(form.address) }}
+    </div>
+    <div class="settings-field">
+        {{ form_row(form.phone) }}
+    </div>
 
+    <div class="settings-field">
+        {{ form_row(form.website) }}
+    </div>
+
+    <div class="display-flex-end">
+        <button type="submit" class="settings-edit-btn submit-btn">Save Changes</button>
+
+    </div>
     {{ form_end(form) }}
-
 </div>

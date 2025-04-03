@@ -37,6 +37,9 @@ class AccountSettingsType extends AbstractType
                     'class' => 'form-control',
                     'placeholder' => 'email@example.com',
                 ],
+
+                'label_attr' => ['class' => 'settings-label'],
+
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -50,6 +53,8 @@ class AccountSettingsType extends AbstractType
                         'class' => 'form-control',
                         'placeholder' => '********',
                     ],
+                    'label_attr' => ['class' => 'settings-label'],
+
                 ],
                 'second_options' => [
                     'label' => 'Repeat Password',
@@ -58,6 +63,8 @@ class AccountSettingsType extends AbstractType
                         'class' => 'form-control',
                         'placeholder' => '********',
                     ],
+                    'label_attr' => ['class' => 'settings-label'],
+
                 ],
                 'constraints' => [
                     new Length([
@@ -83,6 +90,9 @@ class AccountSettingsType extends AbstractType
                     'class' => 'form-control',
                     'placeholder' => 'Vito',
                 ],
+                'label' => 'First Name',
+                'label_attr' => ['class' => 'settings-label'],
+
             ])
             ->add('lastName', TextType::class, [
                 'constraints' => [
@@ -100,6 +110,9 @@ class AccountSettingsType extends AbstractType
                     'class' => 'form-control',
                     'placeholder' => 'Scaletta',
                 ],
+                'label' => 'Last Name',
+                'label_attr' => ['class' => 'settings-label'],
+
             ]);
     }
 

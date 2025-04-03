@@ -4,7 +4,9 @@
 {% block settings_content %}
     <div class="settings-section">
         <div class="settings-header">
-            <h2 class="settings-title">Subscription Information</h2>
+            <div class="settings-title">Subscription info</div>
+            <a href="{{ path('app_settings_subscription', {'edit': true}) }}" class="settings-edit-btn">Get Update</a>
+
         </div>
 
         {% include 'settings/_subscription_view.html.twig' %}

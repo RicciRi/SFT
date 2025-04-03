@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Form\AccountSettingsType;
 use App\Form\CompanyType;
+use App\Repository\CompanyRepository;
 use App\Repository\SubscriptionRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -73,21 +74,26 @@ class SettingsController extends AbstractController
     }
 
     #[Route('/company', name: 'app_settings_company')]
-    public function company(Request $request): Response
+    public function company(Request $request, CompanyRepository $repository): Response
     {
         $company = $this->getUser()->getCompany();
+
 
         $form = $this->createForm(CompanyType::class, $company);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->flush();
+
+            $this->addFlash('success', 'Company info changed successfully!');
+
+            return $this->redirectToRoute('app_settings_company');
         }
 
         return $this->render('settings/company.html.twig', [
+            'form' => $form,
             'company' => $company,
             'active_tab' => 'company',
-            'form' => $form,
             'edit' => $request->query->getBoolean('edit', false),
         ]);
     }

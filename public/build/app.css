@@ -9,16 +9,23 @@
   --color-primary-hover: #5b21b6;
   --color-secondary-hover: #1e3a8a;
   --color-primary: #63e;
+  --primary-dark: #4213c1;
   --color-pink: #b88cff;
   --color-cherry: #e02367;
   --color-gray: #babcd2;
   --color-gray-2: #dfe1f4;
+  --color-gray-20: #ececfb;
   --color-gray-30: #dfe1f4;
   --color-gray-40: #babcd2;
   --color-gray-60: #5e6077;
+  --color-gray-70: #383a4d;
   --color-gray-80: #2a2b3a;
   --color-gray-95: #0b0d1c;
   --color-gray-100: #010314;
+  --grey-100: #010314;
+  --red-light: #ffced6;
+  --red-dark: #e23453;
+  --red-medium: #e23453;
   --launcher-background-color: #6633ee;
   --launcher-icon-color: #FFFFFF;
   --background-navbar: rgba(23, 24, 37, .75);
@@ -4287,6 +4294,132 @@ body {
   z-index: 2;
 }
 
+.settings-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  padding: 1.6rem;
+}
+.settings-container .settings-sidebar .settings-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--color-gray-80);
+}
+.settings-container .settings-sidebar .settings-nav-list .settings-nav-item {
+  width: 250px;
+  position: relative;
+  margin: 10px 0;
+  padding: 4px 20px;
+}
+.settings-container .settings-sidebar .settings-nav-list .settings-nav-item a {
+  display: flex;
+  width: 100%;
+  color: #ddd;
+}
+.settings-container .settings-sidebar .settings-nav-list .settings-nav-item a:hover {
+  color: #fff;
+}
+.settings-container .settings-sidebar .settings-nav-list .active-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  z-index: 2;
+  width: 2px;
+  background: var(--color-primary);
+}
+.settings-container .settings-content {
+  flex-grow: 1;
+}
+.settings-container .settings-content .settings-section .settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.settings-container .settings-content .settings-section .settings-header .settings-title {
+  line-height: 1;
+  font-size: 1.7rem;
+  font-weight: 300;
+}
+.settings-container .settings-content .settings-section .red-dark {
+  color: var(--red-dark);
+}
+.settings-container .settings-content .settings-section .danger-zone {
+  margin-top: 80px;
+}
+.settings-container .settings-content .form-section {
+  border-radius: 0.8rem;
+  border: 1px solid var(--color-gray-80);
+}
+.settings-container .settings-content .form-section input {
+  border: 1px solid var(--color-gray-80);
+  box-shadow: none;
+  background: hsla(0, 0%, 100%, 0.08);
+  transition: 0.3s;
+}
+.settings-container .settings-content .form-section input:hover {
+  border: 1px solid var(--color-gray-60);
+}
+.settings-container .settings-content .form-section .settings-field {
+  padding: 0.8rem 1.2rem;
+}
+.settings-container .settings-content .form-section .settings-field:not(:last-child) {
+  border-bottom: 1px solid var(--color-gray-80);
+}
+.settings-container .settings-content .form-section .settings-field .settings-label {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.settings-container .settings-content .form-section .settings-field .settings-value {
+  color: var(--color-gray);
+  font-size: 0.8rem;
+  font-weight: 300;
+}
+.settings-container .settings-content .form-section-danger-zone .settings-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.settings-container .settings-content .settings-edit-btn {
+  padding: 1rem;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #fff;
+  border-radius: 0.4rem;
+  border: 1px solid var(--color-gray-70);
+}
+.settings-container .settings-content .settings-edit-btn:hover {
+  border: 1px solid var(--color-gray-60);
+}
+.settings-container .settings-content .settings-delete-btn {
+  color: var(--red-dark);
+  border: 0.5px solid var();
+  cursor: pointer;
+}
+.settings-container .settings-content .settings-delete-btn:hover {
+  border-color: var(--red-dark);
+}
+.settings-container .settings-content .submit-btn {
+  margin: 0.8rem 1.2rem;
+  color: #fff;
+  background: var(--color-primary);
+  box-shadow: var(--base-box-shadow-color);
+  cursor: pointer;
+  border: none;
+  transition: 0.3s;
+}
+.settings-container .settings-content .submit-btn:hover {
+  border: none;
+  box-shadow: var(--base-box-shadow-color);
+  background: var(--primary-dark);
+}
+
 body {
   background: #010314;
   padding: 0;
@@ -4316,6 +4449,12 @@ a {
 
 .mt-100 {
   margin-top: 100px;
+}
+
+.display-flex-end {
+  display: flex;
+  justify-content: end;
+  align-items: end;
 }
 
 .button {

@@ -2,18 +2,20 @@
 {% extends 'settings/index.html.twig' %}
 
 {% block settings_content %}
-    <div class="settings-section">
-        <div class="settings-header">
-            <h2 class="settings-title">Company Information</h2>
-            {% if not edit %}
-                <a href="{{ path('app_settings_company', {'edit': true}) }}" class="settings-edit-btn" data-turbo-frame="settings-content">Edit</a>
-            {% endif %}
-        </div>
-
-        {% if edit %}
-            {% include 'settings/_company_form.html.twig' %}
+<div class="settings-section">
+    <div class="settings-header">
+        <div class="settings-title">Company Settings</div>
+        {% if not edit %}
+            <a href="{{ path('app_settings_company', {'edit': true}) }}" class="settings-edit-btn">Edit info</a>
         {% else %}
-            {% include 'settings/_company_view.html.twig' %}
+            <a href="{{ path('app_settings_company') }}" class="settings-edit-btn">Cansel</a>
         {% endif %}
     </div>
+
+    {% if edit %}
+        {% include 'settings/_company_form.html.twig' %}
+    {% else %}
+        {% include 'settings/_company_view.html.twig' %}
+    {% endif %}
+</div>
 {% endblock %}

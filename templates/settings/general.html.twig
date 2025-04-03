@@ -4,9 +4,11 @@
 {% block settings_content %}
     <div class="settings-section">
         <div class="settings-header">
-            <h2 class="settings-title">General Information</h2>
+            <div class="settings-title">Account Settings</div>
             {% if not edit %}
-                <a href="{{ path('app_settings_general', {'edit': true}) }}" class="settings-edit-btn" data-turbo-frame="settings-content">Edit</a>
+                <a href="{{ path('app_settings_general', {'edit': true}) }}" class="settings-edit-btn">Edit info</a>
+            {% else %}
+                <a href="{{ path('app_settings_general') }}" class="settings-edit-btn">Cansel</a>
             {% endif %}
         </div>
 
@@ -14,6 +16,18 @@
             {% include 'settings/_general_form.html.twig' %}
         {% else %}
             {% include 'settings/_general_view.html.twig' %}
+        {% endif %}
+
+        {% if not edit %}
+        <div class="settings-header danger-zone">
+            <div class="settings-title red-dark">Danger Zone</div>
+        </div>
+            <div class="form-section form-section-danger-zone">
+                <div class="settings-field settings-field-danger-zone">
+                    <div class="settings-label">Delete Account</div>
+                    <div class="settings-edit-btn settings-delete-btn">Delete</div>
+                </div>
+            </div>
         {% endif %}
     </div>
 {% endblock %}

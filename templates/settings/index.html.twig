@@ -8,17 +8,20 @@
         <div class="settings-sidebar">
             <nav class="settings-nav">
                 <ul class="settings-nav-list">
-                    <li class="settings-nav-item {% if active_tab == 'general' %}active{% endif %}">
-                        <a href="{{ path('app_settings_general') }}" class="settings-nav-link" data-turbo-frame="settings-content">General</a>
+                    <li class="settings-nav-item">
+                        {% if active_tab == 'general' %}<div class="active-line"></div>{% endif %}
+                        <a href="{{ path('app_settings_general') }}" class="settings-nav-link">General</a>
                     </li>
-                    <li class="settings-nav-item {% if active_tab == 'company' %}active{% endif %}">
-                        <a href="{{ path('app_settings_company') }}" class="settings-nav-link" data-turbo-frame="settings-content">Company</a>
+                    <li class="settings-nav-item">
+                        {% if active_tab == 'company' %}<div class="active-line"></div>{% endif %}
+                        <a href="{{ path('app_settings_company') }}" class="settings-nav-link">Company</a>
                     </li>
-                    <li class="settings-nav-item {% if active_tab == 'subscription' %}active{% endif %}">
-                        <a href="{{ path('app_settings_subscription') }}" class="settings-nav-link" data-turbo-frame="settings-content">Subscription</a>
+                    <li class="settings-nav-item">
+                        {% if active_tab == 'subscription' %}<div class="active-line"></div>{% endif %}
+                        <a href="{{ path('app_settings_subscription') }}" class="settings-nav-link">Subscription</a>
                     </li>
 {#                    <li class="settings-nav-item {% if active_tab == 'payment' %}active{% endif %}">#}
-{#                        <a href="{{ path('app_settings_payment') }}" class="settings-nav-link" data-turbo-frame="settings-content">Payment</a>#}
+{#                        <a href="{{ path('app_settings_payment') }}" class="settings-nav-link" >Payment</a>#}
 {#                    </li>#}
                 </ul>
             </nav>

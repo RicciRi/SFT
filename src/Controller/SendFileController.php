@@ -367,5 +367,4 @@ final class SendFileController extends AbstractController
 
         return $size;
     }
-
 }

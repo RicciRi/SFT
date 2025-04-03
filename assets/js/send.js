@@ -1,6 +1,5 @@
 document.addEventListener('turbo:load', () => {
     if (document.body.dataset.page === 'app_send') {
-        console.log('🏠 Sent page JS работает!');
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('file-input');
         const fileList = document.getElementById('file-list');
@@ -225,7 +224,7 @@ document.addEventListener('turbo:load', () => {
                     console.log('File removed from session', data);
                 })
                 .catch(error => {
-                    console.error('Error removing file from session:', error);
+                    showFlash('error','Error removing file from session:', error);
                 });
         }
 

@@ -39,16 +39,16 @@ final class PaymentController extends AbstractController
             SubscriptionType::PRO,
             $amount,
             $currency,
+            $paymentMethod,
             $transactionId,
             $status,
             $receiptUrl,
-            $paymentMethod,
             $subscription,
         );
 
         $this->addFlash('success', 'Thank you! Your subscription is now active. Enjoy all the premium features!');
 
-        return $this->render('price/index.html.twig');
+        return $this->render('home/index.html.twig');
     }
 
     #[Route('/business', name: 'app_payment_business')]
@@ -74,15 +74,15 @@ final class PaymentController extends AbstractController
             SubscriptionType::BUSINESS,
             $amount,
             $currency,
+            $paymentMethod,
             $transactionId,
             $status,
             $receiptUrl,
-            $paymentMethod,
             $subscription,
         );
 
         $this->addFlash('success', 'Thank you! Your subscription is now active. Enjoy all the premium features!');
 
-        return $this->render('price/index.html.twig');
+        return $this->render('home/index.html.twig');
     }
 }

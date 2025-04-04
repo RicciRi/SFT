@@ -54,6 +54,7 @@ class RegistrationController extends AbstractController
             $user->setIsMainAccount(true);
             $user->setRoles([UserRoles::ROLE_USER]);
             $user->setIsActive(true);
+            $user->setCompany($company);
 
             $companyName = $form->get('companyName')->getData();
             $companyContactEmail = $form->get('contactEmail')->getData();

@@ -6,11 +6,10 @@ namespace App\Controller;
 
 use App\Form\AccountSettingsType;
 use App\Form\CompanyType;
-use App\Repository\CompanyRepository;
-use App\Repository\SubscriptionRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -76,19 +75,23 @@ class SettingsController extends AbstractController
     }
 
     #[Route('/company', name: 'app_settings_company')]
-    public function company(Request $request, CompanyRepository $repository): Response
+    public function company(Request $request): Response
     {
         $company = $this->getUser()->getCompany();
 
-        $form = $this->createForm(CompanyType::class, $company);
-        $form->handleRequest($request);
+        if (!$this->isGranted('ROLE_COMPANY_ADMIN') && !$this->getUser()->isMainAccount()) {
+            $form = null;
+        } else {
+            $form = $this->createForm(CompanyType::class, $company);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->entityManager->flush();
 
-            $this->addFlash('success', 'Company info changed successfully!');
+                $this->addFlash('success', 'Company info changed successfully!');
 
-            return $this->redirectToRoute('app_settings_company');
+                return $this->redirectToRoute('app_settings_company');
+            }
         }
 
         return $this->render('settings/company.html.twig', [
@@ -100,7 +103,8 @@ class SettingsController extends AbstractController
     }
 
     #[Route('/subscription', name: 'app_settings_subscription')]
-    public function subscription(SubscriptionRepository $subscriptionRepository): Response
+    #[IsGranted(new Expression('is_granted("ROLE_COMPANY_ADMIN") or user.isMainAccount()'))]
+    public function subscription(): Response
     {
         $subscription = $this->getUser()->getCompany()->getActiveSubscription();
 
@@ -111,6 +115,7 @@ class SettingsController extends AbstractController
     }
 
     #[Route('/payment', name: 'app_settings_payment')]
+    #[IsGranted(new Expression('is_granted("ROLE_COMPANY_ADMIN") or user.isMainAccount()'))]
     public function payment(Request $request): Response
     {
         return $this->render('settings/payment.html.twig', [

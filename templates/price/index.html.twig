@@ -18,20 +18,26 @@
                             <div class="pricing-plan__header-icon-bg"></div>
                         </div>
                         <div class="pricing-plan__icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" height="32" width="32">
-                                <path stroke-width="6" stroke="url(#paint0_linear_175_2)" d="M16 25C11.0294 25 7 20.9706 7 16C7 11.0294 11.0294 7 16 7"/>
-                                <path fill="url(#paint1_linear_175_2)" d="M16 4C14.3431 4 13 5.34315 13 7C13 8.65685 14.3431 10 16 10V4ZM22 16C22 19.3137 19.3137 22 16 22V28C22.6274 28 28 22.6274 28 16H22ZM16 10C19.3137 10 22 12.6863 22 16H28C28 9.37258 22.6274 4 16 4V10Z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" height="32"
+                                 width="32">
+                                <path stroke-width="6" stroke="url(#paint0_linear_175_2)"
+                                      d="M16 25C11.0294 25 7 20.9706 7 16C7 11.0294 11.0294 7 16 7"/>
+                                <path fill="url(#paint1_linear_175_2)"
+                                      d="M16 4C14.3431 4 13 5.34315 13 7C13 8.65685 14.3431 10 16 10V4ZM22 16C22 19.3137 19.3137 22 16 22V28C22.6274 28 28 22.6274 28 16H22ZM16 10C19.3137 10 22 12.6863 22 16H28C28 9.37258 22.6274 4 16 4V10Z"/>
                                 <defs>
-                                    <linearGradient gradientUnits="userSpaceOnUse" y2="7" x2="12.3571" y1="21" x1="12.3571" id="paint0_linear_175_2">
+                                    <linearGradient gradientUnits="userSpaceOnUse" y2="7" x2="12.3571" y1="21"
+                                                    x1="12.3571" id="paint0_linear_175_2">
                                         <stop stop-color="#BBBBBB"/>
                                         <stop stop-color="#797979" offset="1"/>
                                     </linearGradient>
-                                    <linearGradient gradientUnits="userSpaceOnUse" y2="21.5" x2="21.5" y1="11" x1="21.5" id="paint1_linear_175_2">
+                                    <linearGradient gradientUnits="userSpaceOnUse" y2="21.5" x2="21.5" y1="11" x1="21.5"
+                                                    id="paint1_linear_175_2">
                                         <stop stop-color="#CCCCCC"/>
                                         <stop stop-color="#BBBBBB" offset="1"/>
                                     </linearGradient>
                                 </defs>
-                            </svg>                        </div>
+                            </svg>
+                        </div>
                         <h2 class="pricing-plan__title">Free</h2>
                         <p class="pricing-plan__description">Perfect for individuals or small projects.</p>
                     </div>
@@ -40,7 +46,18 @@
                         <p class="pricing-plan__price">
                             $0<span class="pricing-plan__price-caption"> per month</span>
                         </p>
-                        <a href="#" class="pricing-plan__cta-button pricing-plan__cta-button--tertiary">Get started</a>
+                        {% if app.user %}
+                            {% if isFree() %}
+                                <div class="pricing-plan__cta-button pricing-plan__cta-button--tertiary">Current Plan</div>
+                            {% elseif isPro() %}
+                                <div class="pricing-plan__cta-button pricing-plan__cta-button--tertiary">Downgrade</div>
+                            {% elseif isBusiness() %}
+                                <div class="pricing-plan__cta-button pricing-plan__cta-button--tertiary">Downgrade</div>
+                            {% endif %}
+                        {% else %}
+                            <a href="{{ path('app_register') }}"
+                               class="pricing-plan__cta-button pricing-plan__cta-button--tertiary">Get started</a>
+                        {% endif %}
                     </div>
 
                     <div class="pricing-plan__features">
@@ -63,22 +80,30 @@
                             <div class="pricing-plan__header-icon-bg"></div>
                         </div>
                         <div class="pricing-plan__icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" height="32" width="32">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" height="32"
+                                 width="32">
                                 <g clip-path="url(#clip0_175_7)">
-                                    <mask height="23" width="26" y="4" x="3" maskUnits="userSpaceOnUse" style="mask-type:alpha" id="mask0_175_7">
-                                        <path fill="#D9D9D9" d="M13.4762 5.87143C14.5979 3.92857 17.4021 3.92857 18.5238 5.87143L28.1986 22.6286C29.3203 24.5714 27.9182 27 25.6747 27H6.32525C4.08184 27 2.6797 24.5714 3.80141 22.6286L13.4762 5.87143Z"/>
+                                    <mask height="23" width="26" y="4" x="3" maskUnits="userSpaceOnUse"
+                                          style="mask-type:alpha" id="mask0_175_7">
+                                        <path fill="#D9D9D9"
+                                              d="M13.4762 5.87143C14.5979 3.92857 17.4021 3.92857 18.5238 5.87143L28.1986 22.6286C29.3203 24.5714 27.9182 27 25.6747 27H6.32525C4.08184 27 2.6797 24.5714 3.80141 22.6286L13.4762 5.87143Z"/>
                                     </mask>
                                     <g mask="url(#mask0_175_7)">
-                                        <path stroke-linejoin="round" stroke-width="5.82857" stroke="url(#paint0_linear_175_7)" d="M26.1998 24.3286H5.7998L15.9998 7.32857L26.1998 24.3286Z"/>
-                                        <path fill="url(#paint1_linear_175_7)" d="M26.1998 24.3286V27.2429C27.2497 27.2429 28.2185 26.6781 28.7358 25.7644C29.2531 24.8508 29.239 23.7295 28.6988 22.8292L26.1998 24.3286ZM18.4988 5.82918C17.6707 4.44903 15.8806 4.0015 14.5004 4.82959C13.1203 5.65768 12.6727 7.44781 13.5008 8.82796L18.4988 5.82918ZM5.7998 27.2429H26.1998V21.4143H5.7998V27.2429ZM28.6988 22.8292L18.4988 5.82918L13.5008 8.82796L23.7008 25.828L28.6988 22.8292Z"/>
+                                        <path stroke-linejoin="round" stroke-width="5.82857"
+                                              stroke="url(#paint0_linear_175_7)"
+                                              d="M26.1998 24.3286H5.7998L15.9998 7.32857L26.1998 24.3286Z"/>
+                                        <path fill="url(#paint1_linear_175_7)"
+                                              d="M26.1998 24.3286V27.2429C27.2497 27.2429 28.2185 26.6781 28.7358 25.7644C29.2531 24.8508 29.239 23.7295 28.6988 22.8292L26.1998 24.3286ZM18.4988 5.82918C17.6707 4.44903 15.8806 4.0015 14.5004 4.82959C13.1203 5.65768 12.6727 7.44781 13.5008 8.82796L18.4988 5.82918ZM5.7998 27.2429H26.1998V21.4143H5.7998V27.2429ZM28.6988 22.8292L18.4988 5.82918L13.5008 8.82796L23.7008 25.828L28.6988 22.8292Z"/>
                                     </g>
                                 </g>
                                 <defs>
-                                    <linearGradient gradientUnits="userSpaceOnUse" y2="4.19749" x2="24.5008" y1="20.5508" x1="19.3998" id="paint0_linear_175_7">
+                                    <linearGradient gradientUnits="userSpaceOnUse" y2="4.19749" x2="24.5008"
+                                                    y1="20.5508" x1="19.3998" id="paint0_linear_175_7">
                                         <stop stop-color="#6A3FE5"/>
                                         <stop stop-color="#17179C" offset="1"/>
                                     </linearGradient>
-                                    <linearGradient gradientUnits="userSpaceOnUse" y2="22.5" x2="16.9998" y1="8.99999" x1="17.4998" id="paint1_linear_175_7">
+                                    <linearGradient gradientUnits="userSpaceOnUse" y2="22.5" x2="16.9998" y1="8.99999"
+                                                    x1="17.4998" id="paint1_linear_175_7">
                                         <stop stop-color="#8764EB"/>
                                         <stop stop-color="#6A3FE5" offset="1"/>
                                     </linearGradient>
@@ -96,7 +121,22 @@
                         <p class="pricing-plan__price" id="price-pro">
                             $10<span class="pricing-plan__price-caption"> per month</span>
                         </p>
-                        <a href="{{ path('app_payment_pro') }}" class="pricing-plan__cta-button pricing-plan__cta-button--primary">Get started</a>
+
+                        {% if app.user %}
+                            {% if isFree() %}
+                                <a href="{{ path('app_payment_pro') }}"
+                                   class="pricing-plan__cta-button pricing-plan__cta-button--primary">Get started</a>
+                            {% elseif isPro() %}
+                                <div class="pricing-plan__cta-button pricing-plan__cta-button--primary">Current Plan</div>
+                            {% elseif isBusiness() %}
+                                <div class="pricing-plan__cta-button pricing-plan__cta-button--primary">Downgrade</div>
+                            {% endif %}
+                        {% else %}
+                            <a href="{{ path('app_login') }}"
+                               class="pricing-plan__cta-button pricing-plan__cta-button--primary">Get started</a>
+                        {% endif %}
+
+
                     </div>
 
                     <div class="pricing-plan__features">
@@ -120,20 +160,27 @@
                             <div class="pricing-plan__header-icon-bg"></div>
                         </div>
                         <div class="pricing-plan__icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" height="32" width="32">
-                                <mask height="26" width="26" y="3" x="3" maskUnits="userSpaceOnUse" style="mask-type:alpha" id="mask0_175_16">
-                                    <rect fill="#D9D9D9" transform="rotate(45 16 2)" rx="3" height="19.799" width="19.799" y="2" x="16"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" height="32"
+                                 width="32">
+                                <mask height="26" width="26" y="3" x="3" maskUnits="userSpaceOnUse"
+                                      style="mask-type:alpha" id="mask0_175_16">
+                                    <rect fill="#D9D9D9" transform="rotate(45 16 2)" rx="3" height="19.799"
+                                          width="19.799" y="2" x="16"/>
                                 </mask>
                                 <g mask="url(#mask0_175_16)">
-                                    <path stroke-linejoin="round" stroke-linecap="square" stroke-width="6" stroke="url(#paint0_linear_175_16)" d="M6 16L14 8"/>
-                                    <path fill="url(#paint1_linear_175_16)" d="M18.1213 3.87868C16.9497 2.70711 15.0503 2.70711 13.8787 3.87868C12.7071 5.05025 12.7071 6.94975 13.8787 8.12132L18.1213 3.87868ZM26 16L28.1213 18.1213C29.2929 16.9497 29.2929 15.0503 28.1213 13.8787L26 16ZM16 26L13.8787 28.1213C15.0503 29.2929 16.9497 29.2929 18.1213 28.1213L16 26ZM13.8787 8.12132L23.8787 18.1213L28.1213 13.8787L18.1213 3.87868L13.8787 8.12132ZM23.8787 13.8787L13.8787 23.8787L18.1213 28.1213L28.1213 18.1213L23.8787 13.8787ZM18.1213 23.8787L10.1213 15.8787L5.87868 20.1213L13.8787 28.1213L18.1213 23.8787Z"/>
+                                    <path stroke-linejoin="round" stroke-linecap="square" stroke-width="6"
+                                          stroke="url(#paint0_linear_175_16)" d="M6 16L14 8"/>
+                                    <path fill="url(#paint1_linear_175_16)"
+                                          d="M18.1213 3.87868C16.9497 2.70711 15.0503 2.70711 13.8787 3.87868C12.7071 5.05025 12.7071 6.94975 13.8787 8.12132L18.1213 3.87868ZM26 16L28.1213 18.1213C29.2929 16.9497 29.2929 15.0503 28.1213 13.8787L26 16ZM16 26L13.8787 28.1213C15.0503 29.2929 16.9497 29.2929 18.1213 28.1213L16 26ZM13.8787 8.12132L23.8787 18.1213L28.1213 13.8787L18.1213 3.87868L13.8787 8.12132ZM23.8787 13.8787L13.8787 23.8787L18.1213 28.1213L28.1213 18.1213L23.8787 13.8787ZM18.1213 23.8787L10.1213 15.8787L5.87868 20.1213L13.8787 28.1213L18.1213 23.8787Z"/>
                                 </g>
                                 <defs>
-                                    <linearGradient gradientUnits="userSpaceOnUse" y2="6" x2="16" y1="14.5" x1="8" id="paint0_linear_175_16">
+                                    <linearGradient gradientUnits="userSpaceOnUse" y2="6" x2="16" y1="14.5" x1="8"
+                                                    id="paint0_linear_175_16">
                                         <stop stop-color="#EECD3B"/>
                                         <stop stop-color="#E79122" offset="1"/>
                                     </linearGradient>
-                                    <linearGradient gradientUnits="userSpaceOnUse" y2="15.5" x2="16.5" y1="7.5" x1="24" id="paint1_linear_175_16">
+                                    <linearGradient gradientUnits="userSpaceOnUse" y2="15.5" x2="16.5" y1="7.5" x1="24"
+                                                    id="paint1_linear_175_16">
                                         <stop stop-color="#FAE173"/>
                                         <stop stop-color="#EECD3B" offset="1"/>
                                     </linearGradient>
@@ -148,7 +195,20 @@
                         <p class="pricing-plan__price" id="price-business">
                             $40<span class="pricing-plan__price-caption"> per month</span>
                         </p>
-                        <a href="{{ path('app_payment_business') }}" class="pricing-plan__cta-button pricing-plan__cta-button--tertiary">Get started</a>
+                        {% if app.user %}
+                            {% if isFree() %}
+                                <a href="{{ path('app_payment_business') }}"
+                                   class="pricing-plan__cta-button pricing-plan__cta-button--tertiary">Get started</a>
+                            {% elseif isPro() %}
+                                <a href="{{ path('app_payment_business') }}"
+                                   class="pricing-plan__cta-button pricing-plan__cta-button--tertiary">Upgrade plan</a>
+                            {% elseif isBusiness() %}
+                                <div class="pricing-plan__cta-button pricing-plan__cta-button--tertiary">Current Plan</div>
+                            {% endif %}
+                        {% else %}
+                            <a href="{{ path('app_login') }}"
+                               class="pricing-plan__cta-button pricing-plan__cta-button--tertiary">Get started</a>
+                        {% endif %}
                     </div>
 
                     <div class="pricing-plan__features">
@@ -221,7 +281,7 @@
                     </div>
 
                     <div class="addon__image">
-{#                        <img src="/images/card-chip.svg" alt="Payment card with chip" />#}
+                        {#                        <img src="/images/card-chip.svg" alt="Payment card with chip" /> #}
                     </div>
                 </div>
             </div>

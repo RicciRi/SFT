@@ -5,8 +5,11 @@
     <div class="settings-section">
         <div class="settings-header">
             <div class="settings-title">Subscription info</div>
-            <a href="{{ path('app_settings_subscription', {'edit': true}) }}" class="settings-edit-btn">Get Update</a>
-
+            {% if subscription.type.value == 'free' or subscription.type.value == 'pro'  %}
+                <a href="{{ path('app_price') }}" class="settings-edit-btn">
+                    Get Update
+                </a>
+            {% endif %}
         </div>
 
         {% include 'settings/_subscription_view.html.twig' %}

@@ -5,9 +5,11 @@
             <a class="nav-link" href="{{ path('app_send') }}">Send</a>
             <a class="nav-link" href="{{ path('app_send_transfers') }}">Transfers</a>
             <a class="nav-link" href="{{ path('app_settings_general') }}">Settings</a>
-            <a class="nav-link" href="{{ path('app_employee') }}">Employee</a>
-            <a class="nav-link" href="{{ path('app_price') }}">Price</a>
 
+            {% if app.user.isMainAccount or is_granted('ROLE_COMPANY_ADMIN')  %}
+                <a class="nav-link" href="{{ path('app_employee') }}">Employee</a>
+                <a class="nav-link" href="{{ path('app_price') }}">Price</a>
+            {% endif %}
 
         {% else %}
             <a class="nav-link" href="{{ path('app_home') }}">Home</a>

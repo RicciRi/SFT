@@ -46,6 +46,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $fileTransfers;
 
     #[ORM\ManyToOne(inversedBy: 'employees')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Company $company = null;
 
     #[ORM\Column]

@@ -2,20 +2,22 @@
 {% extends 'settings/index.html.twig' %}
 
 {% block settings_content %}
-<div class="settings-section">
-    <div class="settings-header">
-        <div class="settings-title">Company Settings</div>
-        {% if not edit %}
-            <a href="{{ path('app_settings_company', {'edit': true}) }}" class="settings-edit-btn">Edit info</a>
+    <div class="settings-section">
+        <div class="settings-header">
+            <div class="settings-title">Company Settings</div>
+            {% if not edit %}
+                {% if app.user.isMainAccount or is_granted('ROLE_COMPANY_ADMIN') %}
+                    <a href="{{ path('app_settings_company', {'edit': true}) }}" class="settings-edit-btn">Edit info</a>
+                {% endif %}
+            {% else %}
+                <a href="{{ path('app_settings_company') }}" class="settings-edit-btn">Cansel</a>
+            {% endif %}
+        </div>
+
+        {% if edit %}
+            {% include 'settings/_company_form.html.twig' %}
         {% else %}
-            <a href="{{ path('app_settings_company') }}" class="settings-edit-btn">Cansel</a>
+            {% include 'settings/_company_view.html.twig' %}
         {% endif %}
     </div>
-
-    {% if edit %}
-        {% include 'settings/_company_form.html.twig' %}
-    {% else %}
-        {% include 'settings/_company_view.html.twig' %}
-    {% endif %}
-</div>
 {% endblock %}

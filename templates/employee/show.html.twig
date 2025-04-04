@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ employee.firstName }} {{ employee.lastName }}{% endblock %}
+
+{% block body %}
+    <div class="employee-container">
+        <div class="employee-header">
+            <div class="back-wrap">
+                <a href="{{ path('app_employee') }}" class="back-button">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                        <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                </a>
+                <h1>{{ employee.firstName }} {{ employee.lastName }}</h1>
+            </div>
+            {% if not employee.isMainAccount %}
+                <a href="{{ path('app_employee_edit', {'id': employee.id}) }}" class="btn-add">Edit</a>
+            {% endif %}
+        </div>
+
+        <div class="employee-table-container">
+            <table class="employee-table">
+                <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Created at</th>
+                    <th>Updated at</th>
+                    <th>Status</th>
+                    {% if not employee.isMainAccount %}
+                        <th>Action</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ employee.email }}</td>
+                    <td>{{ employee.firstName }} {{ employee.lastName }}</td>
+                    <td>
+                        {% if employee.isMainAccount %}
+                            Admin
+                        {% else %}
+                            {% if 'ROLE_COMPANY_ADMIN' in employee.roles %}
+                                Admin
+                            {% else %}
+                                Employee
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>{{ employee.createdAt | date('Y-m-d') }}</td>
+                    <td>{{ employee.updatedAt | date('Y-m-d') }}</td>
+                    <td>
+                        {% if employee.isActive %}
+                            <span class="status-active">Active</span>
+                        {% else %}
+                            <span class="status-inactive">Inactive</span>
+                        {% endif %}
+                    </td>
+                    {% if not employee.isMainAccount %}
+                        <td>
+                            <a href="{{ path('app_employee_delete', {'id': employee.id}) }}" class="btn-delete">
+                                Delete
+                            </a>
+                        </td>
+                    {% endif %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -11,10 +11,7 @@ Download info about your transfers
 If files was deleted from session they should be also deleted from db
 
 
-
 PAGES:
-
-https://evervault.com/products/pci - card payment
 
 1. Setting page for user
 

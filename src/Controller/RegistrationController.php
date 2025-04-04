@@ -53,6 +53,7 @@ class RegistrationController extends AbstractController
             $user->setCreatedAt($dateImmutable);
             $user->setIsMainAccount(true);
             $user->setRoles([UserRoles::ROLE_USER]);
+            $user->setIsActive(true);
 
             $companyName = $form->get('companyName')->getData();
             $companyContactEmail = $form->get('contactEmail')->getData();

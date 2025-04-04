@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add New Employee{% endblock %}
+
+{% block body %}
+    <div class="employee-container">
+        <div class="employee-header">
+            <h1>Add New Team Member</h1>
+            <a href="{{ path('app_employee') }}" class="btn-back">Back to Team</a>
+        </div>
+
+        <div class="employee-form-container">
+            {{ form_start(form) }}
+            {{ form_row(form._token) }}
+
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form_label(form.firstName) }}
+                    {{ form_widget(form.firstName) }}
+                    {{ form_errors(form.firstName) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.lastName) }}
+                    {{ form_widget(form.lastName) }}
+                    {{ form_errors(form.lastName) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email) }}
+                {{ form_errors(form.email) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.plainPassword) }}
+                {{ form_widget(form.plainPassword) }}
+                {{ form_errors(form.plainPassword) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.roles) }}
+                {{ form_widget(form.roles) }}
+                {{ form_errors(form.roles) }}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Add Team Member</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

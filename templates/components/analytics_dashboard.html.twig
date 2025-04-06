@@ -1,0 +1,8 @@
+<div id="analyticsChartContainer"
+     class="analytics-chart-container"
+     data-component="analyticsChartContainer"
+     data-chart-id="{{ chart_id|default('analyticsChart') }}"
+     data-labels="{{ labels|default(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'])|json_encode }}"
+     data-data="{{ data|default([20, 14, 15, 12, 20, 5, 1])|json_encode }}">
+    <canvas id="{{ chart_id|default('analyticsChart') }}" style="height: 200px; width: 100%"></canvas>
+</div>

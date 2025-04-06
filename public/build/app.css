@@ -2566,6 +2566,10 @@
   background: var(--grey-90);
 }
 
+.analytics-dashboard {
+  margin-top: 3rem;
+}
+
 .auth-page {
   display: flex;
   flex-direction: column;
@@ -2799,6 +2803,8 @@
 
 .send-file-container-wrap {
   display: flex;
+  justify-content: center;
+  margin-top: -20px;
 }
 .send-file-container-wrap .left-side {
   width: 50%;
@@ -2809,8 +2815,7 @@
 
 .send-file-container {
   max-width: 500px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 1.7rem 1rem;
   font-family: "Inter", sans-serif;
 }
 .send-file-container .page-title {
@@ -2913,7 +2918,7 @@
 }
 .send-file-container .form-section .form-group textarea.form-control {
   resize: vertical;
-  min-height: 120px;
+  min-height: 100px;
 }
 .send-file-container .form-section .form-actions {
   display: flex;
@@ -3467,14 +3472,11 @@ body {
 .features-container .feature-card.feature-large {
   grid-column: span 1;
 }
-.features-container .feature-card.feature-large .illustration-area {
+.features-container .feature-card .illustration-area {
   height: 240px;
 }
 .features-container .feature-card.feature-medium {
   grid-column: span 1;
-}
-.features-container .feature-card.feature-medium .illustration-area {
-  height: 180px;
 }
 .features-container .feature-card .category-label {
   font-size: 14px;

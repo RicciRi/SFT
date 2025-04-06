@@ -123,6 +123,8 @@
 
 .send-file-container-wrap {
   display: flex;
+  justify-content: center;
+  margin-top: -20px;
 
   .left-side {
     width: 50%;
@@ -134,8 +136,8 @@
 
 .send-file-container {
   max-width: 500px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+  //margin: 0 auto;
+  padding: 1.7rem 1rem;
   font-family: 'Inter', sans-serif;
 
   .page-title {
@@ -257,7 +259,7 @@
 
       textarea.form-control {
         resize: vertical;
-        min-height: 120px;
+        min-height: 100px;
       }
     }
 

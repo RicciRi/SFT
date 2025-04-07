@@ -114,16 +114,16 @@ class SettingsController extends AbstractController
         ]);
     }
 
-//    #[Route('/payment', name: 'app_settings_payment')]
-//    #[IsGranted(new Expression('is_granted("ROLE_COMPANY_ADMIN") or user.isMainAccount()'))]
-//    public function payment(Request $request): Response
-//    {
-//        $payment = $this->getUser()->getCompany()->getActiveSubscription()->
-//
-//        return $this->render('settings/payment.html.twig', [
-//            'payment' => $payment,
-//            'active_tab' => 'payment',
-//            'edit' => $request->query->getBoolean('edit', false),
-//        ]);
-//    }
+    //    #[Route('/payment', name: 'app_settings_payment')]
+    //    #[IsGranted(new Expression('is_granted("ROLE_COMPANY_ADMIN") or user.isMainAccount()'))]
+    //    public function payment(Request $request): Response
+    //    {
+    //        $payment = $this->getUser()->getCompany()->getActiveSubscription()->
+    //
+    //        return $this->render('settings/payment.html.twig', [
+    //            'payment' => $payment,
+    //            'active_tab' => 'payment',
+    //            'edit' => $request->query->getBoolean('edit', false),
+    //        ]);
+    //    }
 }

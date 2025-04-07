@@ -4,17 +4,43 @@
 
 namespace App\Twig;
 
+use App\Entity\Company;
+use App\Enum\SubscriptionType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
 use Twig\TwigFunction;
 
-class AppExtension extends AbstractExtension
+class AppExtension extends AbstractExtension implements GlobalsInterface
 {
     private Security $security;
 
-    public function __construct(Security $security)
-    {
+    public function __construct(
+        Security $security,
+    ) {
         $this->security = $security;
+    }
+
+    public function getGlobals(): array
+    {
+        $user = $this->security->getUser();
+
+        if(!$user) {
+            return [];
+        }
+
+        $liceseType = $this->getCompany()->getActiveSubscription()->getType();
+        $proType = SubscriptionType::PRO->value;
+        $businessType = SubscriptionType::BUSINESS->value;
+        $freeType = SubscriptionType::FREE->value;
+
+        return [
+            'company_data' => $this->getCompany(),
+            'licenseType' => $liceseType->value,
+            'freeType' => $freeType,
+            'proType' => $proType,
+            'businessType' => $businessType,
+        ];
     }
 
     public function getFunctions(): array
@@ -47,7 +73,7 @@ class AppExtension extends AbstractExtension
         return 'business' === $type->value;
     }
 
-    private function getCompany(): ?\App\Entity\Company
+    private function getCompany(): ?Company
     {
         $user = $this->security->getUser();
 

@@ -69,19 +69,19 @@
                         <div class="transfer-body">
                             <div class="recipient">
                                 <div class="label">Sender</div>
-                                <div class="value">{{ transfer.user.email }}</div>
+                                <div class="value">{{ transfer.user.email|highlight(search) }}</div>
                             </div>
                             <div class="recipient">
                                 <div class="label">Recipient</div>
-                                <div class="value">{{ transfer.recipientEmail }}</div>
+                                <div class="value">{{ transfer.recipientEmail|highlight(search) }}</div>
                             </div>
                             <div class="subject">
                                 <div class="label">Subject</div>
-                                <div class="value">{{ transfer.subject }}</div>
+                                <div class="value">{{ transfer.subject|highlight(search) }}</div>
                             </div>
                             <div class="message">
                                 <div class="label">Message</div>
-                                <div class="value">{{ transfer.message }}</div>
+                                <div class="value">{{ transfer.message|highlight(search) }}</div>
                             </div>
                             <div class="dates">
                                 <div class="created">

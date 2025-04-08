@@ -63,16 +63,32 @@ final class SendFileController extends AbstractController
                ->setParameter('status', $status);
         }
 
-        $search = $request->query->get('q');
-        if ($search) {
-            $qb->andWhere(
-                $qb->expr()->orX(
-                    't.recipientEmail LIKE :search',
-                    't.subject LIKE :search',
-                    't.message LIKE :search',
-                ),
-            )
-               ->setParameter('search', '%'.$search.'%');
+        if ($this->isGranted('ROLE_COMPANY_ADMIN')) {
+            $search = $request->query->get('q');
+            if ($search) {
+                $qb->leftJoin('t.user', 'u')
+                   ->andWhere(
+                       $qb->expr()->orX(
+                           't.recipientEmail LIKE :search',
+                           't.subject LIKE :search',
+                           't.message LIKE :search',
+                           'u.email LIKE :search',
+                       ),
+                   )
+                   ->setParameter('search', '%'.$search.'%');
+            }
+        } else {
+            $search = $request->query->get('q');
+            if ($search) {
+                $qb->andWhere(
+                    $qb->expr()->orX(
+                        't.recipientEmail LIKE :search',
+                        't.subject LIKE :search',
+                        't.message LIKE :search',
+                    ),
+                )
+                   ->setParameter('search', '%'.$search.'%');
+            }
         }
 
         // Фильтр по дате (last day/week/month)

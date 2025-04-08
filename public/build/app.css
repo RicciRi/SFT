@@ -5022,3 +5022,8 @@ label {
 .hidden {
   display: none !important;
 }
+
+mark {
+  background: var(--color-primary);
+  color: white;
+}

@@ -10,7 +10,7 @@ export function initSafeDial() {
     const DELTA_FOR_SOUND = 17;
 
     let lastSoundTime = 0;
-    const MIN_SOUND_INTERVAL = 100; // в мс, например, 100мс между звуками
+    const MIN_SOUND_INTERVAL = 40; // в мс, например, 100мс между звуками
 
     function playDialSound() {
         const now = Date.now();

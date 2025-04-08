@@ -9,6 +9,7 @@ use App\Enum\SubscriptionType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension implements GlobalsInterface
@@ -82,5 +83,25 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
         }
 
         return $user->getCompany();
+    }
+
+    public function getFilters(): array
+    {
+        return [
+            new TwigFilter('highlight', [$this, 'highlight'], ['is_safe' => ['html']]),
+        ];
+    }
+
+    public function highlight(string $text, ?string $term): string
+    {
+        if (!$term || trim($term) === '') {
+            return htmlspecialchars($text);
+        }
+
+        return preg_replace(
+            '/(' . preg_quote($term, '/') . ')/i',
+            '<mark>$1</mark>',
+            htmlspecialchars($text)
+        );
     }
 }

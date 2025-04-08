@@ -2,6 +2,10 @@ TODO
 
 Translate
 
+Transfer info
+
+Deactivate transfer download
+
 Company employee activity + possibility to see ANALITICS !!!!! ( in graphic or smt like that )
 
 Download info about your transfers

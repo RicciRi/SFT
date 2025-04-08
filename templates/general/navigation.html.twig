@@ -6,9 +6,9 @@
             <a class="nav-link" href="{{ path('app_send_transfers') }}">Transfers</a>
             <a class="nav-link" href="{{ path('app_settings_general') }}">Settings</a>
 
-            {% if licenseType != freeType %}
-                {% if app.user.isMainAccount or is_granted('ROLE_COMPANY_ADMIN') %}
+            {% if app.user.isMainAccount or is_granted('ROLE_COMPANY_ADMIN') %}
                     <a class="nav-link" href="{{ path('app_employee') }}">Employee</a>
+                {% if licenseType == freeType %}
                     <a class="nav-link" href="{{ path('app_price') }}">Price</a>
                 {% endif %}
             {% endif %}

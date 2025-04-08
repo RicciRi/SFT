@@ -13,6 +13,10 @@ bash:
 console:
 	@$(SYMFONY) $(cmd)
 
+fixtures-load:
+	@$(SYMFONY) doctrine:fixtures:load
+
+
 # 🧱 Обновление схемы БД (осторожно, изменяет структуру таблиц)
 db-update:
 	@$(SYMFONY) doctrine:schema:update --force

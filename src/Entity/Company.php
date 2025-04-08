@@ -32,6 +32,7 @@ class Company
     private ?string $website = null;
 
     #[ORM\OneToOne(inversedBy: 'mainCompany', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $mainUser = null;
 
     /**

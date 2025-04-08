@@ -25,7 +25,7 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
     {
         $user = $this->security->getUser();
 
-        if(!$user) {
+        if (!$user) {
             return [];
         }
 

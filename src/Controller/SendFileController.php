@@ -42,10 +42,19 @@ final class SendFileController extends AbstractController
     {
         $user = $this->getUser();
 
-        $qb = $fileTransferRepository->createQueryBuilder('t')
-                                     ->select('t')
-                                     ->where('t.user = :user')
-                                     ->setParameter('user', $user);
+        if ($this->isGranted('ROLE_COMPANY_ADMIN')) {
+            $company = $user->getCompany();
+
+            $qb = $fileTransferRepository->createQueryBuilder('t')
+                                         ->select('t')
+                                         ->where('t.company = :company')
+                                         ->setParameter('company', $company);
+        } else {
+            $qb = $fileTransferRepository->createQueryBuilder('t')
+                                         ->select('t')
+                                         ->where('t.user = :user')
+                                         ->setParameter('user', $user);
+        }
 
         $status = $request->query->get('status');
 
@@ -60,8 +69,8 @@ final class SendFileController extends AbstractController
                 $qb->expr()->orX(
                     't.recipientEmail LIKE :search',
                     't.subject LIKE :search',
-                    't.message LIKE :search'
-                )
+                    't.message LIKE :search',
+                ),
             )
                ->setParameter('search', '%'.$search.'%');
         }
@@ -309,7 +318,7 @@ final class SendFileController extends AbstractController
                 $data['recipientEmail'],
                 $data['subject'],
                 $data['message'],
-                $fileTransfer
+                $fileTransfer,
             );
 
             return $this->json([

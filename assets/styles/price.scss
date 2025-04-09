@@ -131,6 +131,9 @@
     .pricing-plan__cta-button--primary {
       color: var(--color-gray-100);
       background-color: #fff;
+      &:hover {
+        background-color: #fff !important;
+      }
     }
   }
 
@@ -282,6 +285,7 @@
       color: white;
 
       &:hover {
+        background-color: #4E4E6BFF;
         opacity: 0.9;
       }
     }

@@ -19,7 +19,7 @@ class AnalyticsService
         return $this->fileTransferRepository->countTransfers($company, $startDate, $endDate);
     }
 
-    public function getTotalTransferredSize(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate): int
+    public function getTotalTransferredSize(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
     {
         return $this->fileTransferRepository->countTotalTransferredSize($company, $startDate, $endDate);
     }

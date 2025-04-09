@@ -41,7 +41,7 @@
 
     .btn-back {
       background-color: #f5f5f7;
-      color: #333;
+      color: #444;
       padding: 12px 24px;
       border-radius: 9999px;
       text-decoration: none;
@@ -125,7 +125,7 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     padding: 24px;
 
-    .employee-form {
+    //.employee-form {
       .form-row {
         display: flex;
         gap: 20px;
@@ -139,12 +139,12 @@
       .form-group {
         margin-bottom: 20px;
 
-        label {
-          display: block;
-          margin-bottom: 8px;
-          font-weight: 500;
-          color: #333;
-        }
+        //label {
+        //  display: block;
+        //  margin-bottom: 8px;
+        //  font-weight: 500;
+        //  color: #333;
+        //}
 
         input[type="text"],
         input[type="email"],
@@ -152,9 +152,13 @@
         select {
           width: 100%;
           padding: 12px;
-          border: 1px solid #ddd;
+          //border: 1px solid #ddd;
           border-radius: 6px;
           font-size: 14px;
+          color: #fff;
+          background: transparent;
+          box-shadow: var(--base-box-shadow);
+          border: 1px solid transparent;
 
           &:focus {
             border-color: #6c43ff;
@@ -215,6 +219,6 @@
         }
       }
 
-    }
+    //}
   }
 }

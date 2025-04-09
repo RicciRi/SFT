@@ -37,7 +37,7 @@ final class AnalyticsController extends AbstractController
         $dailyTransfers = $this->analyticsService->getDailyTransfers($company, $startDate, $endDate);
 
         return $this->render('analytics/index.html.twig', [
-            'totalTransferredSize' => $totalTransferredSize,
+            'totalTransferredSize' => $totalTransferredSize ?? 0,
 
             'totalTransfers' => $totalTransfers,
             'downloadedTransfers' => $downloadedTransfers,

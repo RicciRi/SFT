@@ -94,6 +94,77 @@
 
     }
 
+    .checkbox {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+
+      label {
+        font-size: 0.7rem;
+        margin: 0 !important;
+        cursor: pointer;
+        user-select: none;
+        display: flex;
+        align-items: center;
+
+        input[type="checkbox"] {
+          appearance: none;
+          -webkit-appearance: none;
+          width: 1.125rem;
+          height: 1.125rem;
+          background-color: rgba(23, 24, 37, 0.75);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 4px;
+          margin-right: 0.5rem;
+          position: relative;
+          cursor: pointer;
+
+          &:checked {
+            background-color: var(--color-pink);
+            border-color: var(--color-pink);
+
+            &::after {
+              content: '';
+              position: absolute;
+              left: 4px;
+              top: 1px;
+              width: 5px;
+              height: 9px;
+              border: solid #000;
+              border-width: 0 2px 2px 0;
+              transform: rotate(45deg);
+            }
+          }
+
+          &:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(184, 140, 255, 0.25);
+          }
+        }
+      }
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 10px 18px;
+      color: #ccc;
+      background-color: rgba(255, 255, 255, 0.02);
+      border-radius: 8px;
+      border: none;
+      box-shadow: var(--base-box-shadow-color);
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: 0.3s;
+
+      &:hover {
+        color: #fff;
+        box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px rgba(0, 0, 0, .1), inset 0 0 12px 4px rgb(from #63e r g b / .5), 0 0 4px 2px rgb(from #63e r g b / .7), 0 0 24px 4px rgb(from #63e r g b / .5), 0 0 12px 2px rgb(from #63e r g b / .25), 0 0 40px 12px rgb(from #63e r g b / .1), 0 1px 2px rgb(from #171825 r g b / .8);
+      }
+    }
   }
 
 }

@@ -37,12 +37,13 @@ final class FileTransferFactory extends PersistentProxyObjectFactory
             'expirationAt' => $createdAt->add(new \DateInterval('P2D')),
             'message' => self::faker()->text(60),
             'recipientEmail' => self::faker()->email(),
-            'status' => self::faker()->randomElement(TransferStatus::cases()),
+            //            'status' => self::faker()->randomElement(TransferStatus::cases()),
+            'status' => TransferStatus::UPLOADED,
+            'isExpired' => false,
             'subject' => self::faker()->text(30),
-            'size' => self::faker()->numberBetween((int)$min, (int)$max),
+            'size' => self::faker()->numberBetween((int) $min, (int) $max),
         ];
     }
-
 
     protected function initialize(): static
     {

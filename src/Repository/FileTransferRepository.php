@@ -18,6 +18,17 @@ class FileTransferRepository extends ServiceEntityRepository
         parent::__construct($registry, FileTransfer::class);
     }
 
+    public function findExpiredNotMarked($now)
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.status != :status')
+            ->andWhere('t.expirationAt < :now')
+            ->setParameter('status', TransferStatus::EXPIRED)
+            ->setParameter('now', $now)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function countTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
     {
         return $this->createQueryBuilder('t')
@@ -46,16 +57,14 @@ class FileTransferRepository extends ServiceEntityRepository
 
     public function countExpiredFiles(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
     {
-        $status = TransferStatus::UPLOADED;
+        $status = TransferStatus::EXPIRED;
 
         return $this->createQueryBuilder('t')
                     ->select('COUNT(t.id)')
                     ->where('t.company = :company')
-                    ->andWhere('t.expirationAt <:now')
                     ->andWhere('t.status = :status')
                     ->andWhere('t.createdAt BETWEEN :start AND :end')
                     ->setParameter('company', $company)
-                    ->setParameter('now', new \DateTimeImmutable())
                     ->setParameter('status', $status)
                     ->setParameter('start', $startDate)
                     ->setParameter('end', $endDate)
@@ -114,12 +123,11 @@ class FileTransferRepository extends ServiceEntityRepository
 
         $stmt = $conn->prepare($sql);
         $result = $stmt->executeQuery([
-                                          'companyId' => $company->getId(),
-                                          'start' => $startDate->format('Y-m-d 00:00:00'),
-                                          'end' => $endDate->format('Y-m-d 23:59:59'),
-                                      ]);
+            'companyId' => $company->getId(),
+            'start' => $startDate->format('Y-m-d 00:00:00'),
+            'end' => $endDate->format('Y-m-d 23:59:59'),
+        ]);
 
         return $result->fetchAllAssociative(); // вернёт массив вида [['day' => '2025-04-01', 'count' => 3], ...]
     }
-
 }

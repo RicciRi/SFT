@@ -297,6 +297,7 @@ final class SendFileController extends AbstractController
             $fileTransfer->setMessage($data['message']);
             $fileTransfer->setCreatedAt(new \DateTimeImmutable());
             $fileTransfer->setCompany($company);
+            $fileTransfer->setIsExpired(false);
 
             $expDate = $data['expirationAt'];
 

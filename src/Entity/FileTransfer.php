@@ -54,6 +54,9 @@ class FileTransfer
     #[ORM\Column(type: 'bigint', nullable: true)]
     private ?int $size = null;
 
+    #[ORM\Column]
+    private ?bool $IsExpired = null;
+
     public function __construct()
     {
         $this->transferredFiles = new ArrayCollection();
@@ -223,5 +226,17 @@ class FileTransfer
         }
 
         return $size;
+    }
+
+    public function isExpired(): ?bool
+    {
+        return $this->IsExpired;
+    }
+
+    public function setIsExpired(bool $IsExpired): static
+    {
+        $this->IsExpired = $IsExpired;
+
+        return $this;
     }
 }

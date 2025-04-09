@@ -51,7 +51,7 @@ class FileTransfer
     #[ORM\ManyToOne(inversedBy: 'fileTransfers')]
     private ?Company $company = null;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'bigint', nullable: true)]
     private ?int $size = null;
 
     public function __construct()

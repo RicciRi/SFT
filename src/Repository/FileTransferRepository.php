@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\FileTransfer;
+use App\Enum\TransferStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +18,108 @@ class FileTransferRepository extends ServiceEntityRepository
         parent::__construct($registry, FileTransfer::class);
     }
 
-    //    /**
-    //     * @return FileTransfer[] Returns an array of FileTransfer objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('f')
-    //            ->andWhere('f.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('f.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function countTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
+    {
+        return $this->createQueryBuilder('t')
+                    ->select('COUNT(t.id)')
+                    ->where('t.company = :company')
+                    ->andWhere('t.createdAt BETWEEN :start AND :end')
+                    ->setParameter('company', $company)
+                    ->setParameter('start', $startDate)
+                    ->setParameter('end', $endDate)
+                    ->getQuery()
+                    ->getSingleScalarResult();
+    }
 
-    //    public function findOneBySomeField($value): ?FileTransfer
-    //    {
-    //        return $this->createQueryBuilder('f')
-    //            ->andWhere('f.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function countTotalTransferredSize(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
+    {
+        return $this->createQueryBuilder('t')
+                    ->select('SUM(t.size)')
+                    ->where('t.company = :company')
+                    ->andWhere('t.createdAt BETWEEN :start AND :end')
+                    ->setParameter('company', $company)
+                    ->setParameter('start', $startDate)
+                    ->setParameter('end', $endDate)
+                    ->getQuery()
+                    ->getSingleScalarResult();
+    }
+
+    public function countExpiredFiles(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
+    {
+        $status = TransferStatus::UPLOADED;
+
+        return $this->createQueryBuilder('t')
+                    ->select('COUNT(t.id)')
+                    ->where('t.company = :company')
+                    ->andWhere('t.expirationAt <:now')
+                    ->andWhere('t.status = :status')
+                    ->andWhere('t.createdAt BETWEEN :start AND :end')
+                    ->setParameter('company', $company)
+                    ->setParameter('now', new \DateTimeImmutable())
+                    ->setParameter('status', $status)
+                    ->setParameter('start', $startDate)
+                    ->setParameter('end', $endDate)
+                    ->getQuery()
+                    ->getSingleScalarResult();
+    }
+
+    public function getDownloadedTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
+    {
+        $status = TransferStatus::DOWNLOADED;
+
+        return $this->createQueryBuilder('t')
+                    ->select('COUNT(t.id)')
+                    ->where('t.company = :company')
+                    ->andWhere('t.status = :status')
+                    ->andWhere('t.createdAt BETWEEN :start AND :end')
+                    ->setParameter('company', $company)
+                    ->setParameter('status', $status)
+                    ->setParameter('start', $startDate)
+                    ->setParameter('end', $endDate)
+                    ->getQuery()
+                    ->getSingleScalarResult()
+        ;
+    }
+
+    public function getUploadedTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
+    {
+        $status = TransferStatus::UPLOADED;
+
+        return $this->createQueryBuilder('t')
+                    ->select('COUNT(t.id)')
+                    ->where('t.company = :company')
+                    ->andWhere('t.status = :status')
+                    ->andWhere('t.createdAt BETWEEN :start AND :end')
+                    ->setParameter('company', $company)
+                    ->setParameter('status', $status)
+                    ->setParameter('start', $startDate)
+                    ->setParameter('end', $endDate)
+                    ->getQuery()
+                    ->getSingleScalarResult()
+        ;
+    }
+
+    public function getDailyTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT DATE(t.created_at) as day, COUNT(t.id) as count
+        FROM file_transfer t
+        WHERE t.company_id = :companyId
+        AND t.created_at BETWEEN :start AND :end
+        GROUP BY day
+        ORDER BY day ASC
+    ';
+
+        $stmt = $conn->prepare($sql);
+        $result = $stmt->executeQuery([
+                                          'companyId' => $company->getId(),
+                                          'start' => $startDate->format('Y-m-d 00:00:00'),
+                                          'end' => $endDate->format('Y-m-d 23:59:59'),
+                                      ]);
+
+        return $result->fetchAllAssociative(); // вернёт массив вида [['day' => '2025-04-01', 'count' => 3], ...]
+    }
+
 }

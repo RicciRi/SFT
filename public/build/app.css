@@ -4884,6 +4884,445 @@ body {
   background-color: #5536cc;
 }
 
+.analytics-dashboard {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto;
+  gap: 20px;
+  padding: 20px;
+  font-family: var(--font-family-base);
+  color: var(--color-text);
+}
+.analytics-dashboard h2, .analytics-dashboard h3 {
+  margin: 0;
+  font-family: var(--font-family-headings);
+  font-weight: 500;
+}
+.analytics-dashboard .dashboard-grid {
+  grid-column: 1/2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr) 320px;
+  gap: 20px;
+}
+.analytics-dashboard .stat-card {
+  border-radius: var(--base-border-radius);
+  padding: 20px;
+  box-shadow: var(--base-box-shadow);
+}
+.analytics-dashboard .stat-card .stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.analytics-dashboard .stat-card .stat-header h3 {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+.analytics-dashboard .stat-card .stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.analytics-dashboard .stat-card .stat-icon.transactions {
+  background-color: rgba(99, 238, 188, 0.2);
+  color: #63eebb;
+}
+.analytics-dashboard .stat-card .stat-icon.subscriptions {
+  background-color: rgba(184, 140, 255, 0.2);
+  color: var(--color-pink);
+}
+.analytics-dashboard .stat-card .stat-icon.referrals {
+  background-color: rgba(184, 140, 255, 0.2);
+  color: var(--color-pink);
+}
+.analytics-dashboard .stat-card .stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+.analytics-dashboard .stat-card .stat-change {
+  font-size: 0.875rem;
+}
+.analytics-dashboard .stat-card .stat-change.increase {
+  color: #63eebb;
+}
+.analytics-dashboard .stat-card .stat-change.decrease {
+  color: var(--red-medium);
+}
+.analytics-dashboard .stat-card .stat-change i {
+  margin-right: 4px;
+}
+.analytics-dashboard .user-profile-card {
+  border-radius: var(--base-border-radius);
+  padding: 20px;
+  box-shadow: var(--base-box-shadow);
+}
+.analytics-dashboard .user-profile-card .user-profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.analytics-dashboard .user-profile-card .user-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 15px;
+  background-color: var(--color-primary);
+}
+.analytics-dashboard .user-profile-card .user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.analytics-dashboard .user-profile-card .user-details h2 {
+  font-size: 1.25rem;
+  margin-bottom: 4px;
+}
+.analytics-dashboard .user-profile-card .user-details .user-company,
+.analytics-dashboard .user-profile-card .user-details .user-role {
+  color: var(--color-text-secondary);
+  margin: 0 0 4px;
+  font-size: 0.875rem;
+}
+.analytics-dashboard .user-profile-card .user-details .user-role {
+  text-transform: capitalize;
+  font-weight: 500;
+}
+.analytics-dashboard .user-profile-card .user-contact .contact-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+.analytics-dashboard .user-profile-card .user-contact .contact-item i {
+  width: 16px;
+  margin-right: 10px;
+  color: var(--color-primary);
+}
+.analytics-dashboard .chart-row {
+  grid-column: 1/2;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+}
+.analytics-dashboard .revenue-chart-container,
+.analytics-dashboard .goal-chart-container,
+.analytics-dashboard .sales-chart-container,
+.analytics-dashboard .profit-chart-container {
+  border-radius: var(--base-border-radius);
+  padding: 20px;
+  box-shadow: var(--base-box-shadow);
+}
+.analytics-dashboard .chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.analytics-dashboard .chart-header h3 {
+  font-size: 1.25rem;
+}
+.analytics-dashboard .chart-header .details-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+.analytics-dashboard .chart-header .details-link:hover {
+  text-decoration: underline;
+}
+.analytics-dashboard .revenue-stats {
+  display: flex;
+  margin-bottom: 20px;
+}
+.analytics-dashboard .revenue-stats .revenue-period {
+  margin-right: 30px;
+}
+.analytics-dashboard .revenue-stats .revenue-period .period-label {
+  display: block;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 5px;
+}
+.analytics-dashboard .revenue-stats .revenue-period .period-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-pink);
+}
+.analytics-dashboard .chart-container {
+  position: relative;
+  height: 300px;
+}
+.analytics-dashboard .goal-chart {
+  position: relative;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+}
+.analytics-dashboard .goal-chart .goal-stats {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -25%);
+  text-align: center;
+}
+.analytics-dashboard .goal-chart .goal-stats .total-percentage {
+  display: flex;
+  flex-direction: column;
+}
+.analytics-dashboard .goal-chart .goal-stats .total-percentage span {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+.analytics-dashboard .goal-chart .goal-stats .total-percentage .percentage {
+  color: var(--color-text);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.analytics-dashboard .goal-details {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+.analytics-dashboard .goal-details .goal-detail {
+  text-align: center;
+}
+.analytics-dashboard .goal-details .goal-detail .label {
+  display: block;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 5px;
+}
+.analytics-dashboard .goal-details .goal-detail .value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.analytics-dashboard .growth-chart {
+  position: relative;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+}
+.analytics-dashboard .growth-chart .growth-percentage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.analytics-dashboard .growth-chart .growth-percentage span {
+  display: block;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+.analytics-dashboard .growth-chart .growth-percentage .percentage {
+  color: var(--color-text);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.analytics-dashboard .best-selling {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+.analytics-dashboard .best-selling .channel-icon {
+  width: 22px;
+  height: 22px;
+  margin-right: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.analytics-dashboard .best-selling .channel-icon img {
+  width: 100%;
+  height: auto;
+}
+.analytics-dashboard .best-selling .channel-info .channel-name {
+  display: block;
+  font-weight: 500;
+}
+.analytics-dashboard .best-selling .channel-info .channel-description {
+  display: block;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+.analytics-dashboard .dashboard-sidebar {
+  grid-column: 2/3;
+  grid-row: 1/4;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.analytics-dashboard .calendar-widget,
+.analytics-dashboard .followers-widget,
+.analytics-dashboard .notifications-widget {
+  border-radius: var(--base-border-radius);
+  padding: 20px;
+  box-shadow: var(--base-box-shadow);
+}
+.analytics-dashboard .calendar-widget h3,
+.analytics-dashboard .followers-widget h3,
+.analytics-dashboard .notifications-widget h3 {
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+}
+.analytics-dashboard .calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.analytics-dashboard .calendar-header .calendar-nav {
+  display: flex;
+  gap: 5px;
+}
+.analytics-dashboard .calendar-header .calendar-nav .calendar-nav-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.analytics-dashboard .calendar-header .calendar-nav .calendar-nav-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.analytics-dashboard .calendar-grid .calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: 10px;
+}
+.analytics-dashboard .calendar-grid .calendar-weekdays span {
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.analytics-dashboard .calendar-grid .calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+.analytics-dashboard .calendar-grid .calendar-days .calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  border-radius: 50%;
+}
+.analytics-dashboard .calendar-grid .calendar-days .calendar-day.empty {
+  visibility: hidden;
+}
+.analytics-dashboard .calendar-grid .calendar-days .calendar-day.current {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+}
+.analytics-dashboard .calendar-grid .calendar-days .calendar-day:not(.empty):not(.current):hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+.analytics-dashboard .followers-widget .followers-avatars {
+  margin-bottom: 15px;
+}
+.analytics-dashboard .followers-widget .followers-avatars .avatar-stack {
+  display: flex;
+}
+.analytics-dashboard .followers-widget .followers-avatars .avatar-stack .avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: -15px;
+  background-color: var(--color-primary);
+}
+.analytics-dashboard .followers-widget .followers-avatars .avatar-stack .avatar:nth-child(2) {
+  background-color: var(--color-cherry);
+}
+.analytics-dashboard .followers-widget .followers-avatars .avatar-stack .avatar:nth-child(3) {
+  background-color: #63eebb;
+}
+.analytics-dashboard .followers-widget .followers-avatars .avatar-stack .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.analytics-dashboard .text-green {
+  color: #63eebb;
+}
+.analytics-dashboard .color-pink {
+  color: #b88cff;
+}
+.analytics-dashboard .text-primary {
+  color: var(--color-primary);
+}
+.analytics-dashboard .text-expired {
+  color: var(--color-cherry);
+}
+
+.goal-stats {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-weight: bold;
+  color: #cbd5e1;
+  margin-top: 40px;
+}
+
+.goal-stats .percentage {
+  font-size: 1.5rem;
+}
+
+.goal-chart-grid {
+  width: 100%;
+  position: relative;
+  height: 100%;
+}
+.goal-chart-grid .sent {
+  width: 100%;
+  left: 0;
+}
+.goal-chart-grid .downloaded {
+  padding-top: 14px;
+  transform: scale(0.9);
+}
+.goal-chart-grid .waiting {
+  padding-top: 34px;
+  transform: scale(0.8);
+}
+.goal-chart-grid .expired {
+  padding-top: 60px;
+  transform: scale(0.7);
+}
+
+.goal-row {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 160px;
+  min-height: 100%;
+  width: 100%;
+}
+
+.goal-row canvas {
+  width: 100%;
+  height: 100% !important;
+}
+
 body {
   background: #010314;
   padding: 0;

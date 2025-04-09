@@ -22,7 +22,7 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        foreach (CompanyFactory::createMany(2) as $company) {
+        foreach (CompanyFactory::createMany(1) as $company) {
             $mainUser = UserFactory::createOne([
                 'isMainAccount' => true,
                 'company' => $company,
@@ -36,14 +36,18 @@ class AppFixtures extends Fixture
             $company->setMainUser($mainUser->_real());
             $company->addSubscription($subscription->_real());
 
-            foreach (UserFactory::createMany(2, ['company' => $company]) as $user) {
-                foreach (FileTransferFactory::createMany(2, ['user' => $user, 'company' => $company]) as $transfer) {
+            $transferCount = 10;
+
+            foreach (UserFactory::createMany(5, ['company' => $company]) as $user) {
+                foreach (FileTransferFactory::createMany($transferCount, ['user' => $user, 'company' => $company]) as $transfer) {
                     $company->addFileTransfer($transfer->_real());
 
                     foreach (TransferredFileFactory::createMany(2, ['fileTransfer' => $transfer]) as $file) {
                         $transfer->addTransferredFile($file->_real());
                     }
                 }
+
+                $transferCount = $transferCount + 10;
             }
         }
 

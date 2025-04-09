@@ -286,6 +286,7 @@ final class SendFileController extends AbstractController
         }
 
         $user = $this->getUser();
+        $company = $user->getCompany();
 
         try {
             // Создаем новую передачу файлов
@@ -295,6 +296,7 @@ final class SendFileController extends AbstractController
             $fileTransfer->setSubject($data['subject']);
             $fileTransfer->setMessage($data['message']);
             $fileTransfer->setCreatedAt(new \DateTimeImmutable());
+            $fileTransfer->setCompany($company);
 
             $expDate = $data['expirationAt'];
 

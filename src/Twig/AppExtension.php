@@ -94,12 +94,12 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
 
     public function highlight(string $text, ?string $term): string
     {
-        if (!$term || trim($term) === '') {
+        if (!$term || '' === trim($term)) {
             return htmlspecialchars($text);
         }
 
         return preg_replace(
-            '/(' . preg_quote($term, '/') . ')/i',
+            '/('.preg_quote($term, '/').')/i',
             '<mark>$1</mark>',
             htmlspecialchars($text)
         );

@@ -1,0 +1,220 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Analytics Dashboard{% endblock %}
+
+
+{% block body %}
+    <div class="analytics-dashboard" data-component="companyAnalyticsContainer">
+        <div class="dashboard-grid">
+            <!-- Top row stats -->
+            <div class="stat-card">
+                <div class="stat-header">
+                    <h3>Transfers</h3>
+                    <div class="stat-icon transactions">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                </div>
+                <div class="stat-value">{{ totalTransfers|number_format }}</div>
+                <div class="stat-change increase">+7.8% <i class="fas fa-arrow-up"></i> since last month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <h3>Total Transfers Size</h3>
+                    <div class="stat-icon subscriptions">
+                        <i class="fas fa-file"></i>
+                    </div>
+                </div>
+                <div class="stat-value">{{ totalTransferredSize|format_filesize }}</div>
+                <div class="stat-change decrease">-2.7% <i class="fas fa-arrow-down"></i> going down</div>
+            </div>
+
+{#            <div class="calendar-widget">#}
+{#                <div class="calendar-header">#}
+{#                    <h3>April 2025</h3>#}
+{#                    <div class="calendar-nav">#}
+{#                        <button class="calendar-nav-btn prev"><i class="fas fa-chevron-left"></i></button>#}
+{#                        <button class="calendar-nav-btn next"><i class="fas fa-chevron-right"></i></button>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="calendar-grid">#}
+{#                    <div class="calendar-weekdays">#}
+{#                        <span>M</span>#}
+{#                        <span>T</span>#}
+{#                        <span>W</span>#}
+{#                        <span>T</span>#}
+{#                        <span>F</span>#}
+{#                        <span>S</span>#}
+{#                        <span>S</span>#}
+{#                    </div>#}
+{#                    <div class="calendar-days"></div>#}
+{#                </div>#}
+{#            </div>#}
+
+
+            <div class="user-profile-card">
+                <div class="user-profile-header">
+                    <div class="user-avatar">
+                        <img src="{{ asset('images/user_1.svg') }}" alt="User Avatar">
+                    </div>
+                    <div class="user-details">
+                        <h2>{{ app.user.firstName }} {{ app.user.lastName }}</h2>
+                        <p class="user-company">{{ app.user.company.name }}</p>
+                        <p class="user-role">{{ app.user.roles[0]|replace({'ROLE_': ''}) }}</p>
+                    </div>
+                </div>
+                <div class="user-contact">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ app.user.location ?? 'Los Angeles, CA' }}</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>{{ app.user.phone ?? '+1 444-751-5156' }}</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>{{ app.user.email }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue section -->
+        <div class="chart-row">
+            <div class="revenue-chart-container">
+                <div class="chart-header">
+                    <h3>Users Activity</h3>
+                    <a href="#" class="details-link">Details</a>
+                </div>
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            {# goal_chart.twig #}
+
+            <div class="goal-chart-container">
+                <div class="chart-header">
+                    <h3>Transfers analytics</h3>
+                </div>
+
+                <div class="goal-chart">
+                    <div class="goal-chart-grid">
+                        <div class="goal-row sent">
+                            <canvas style="width: 100% !important; height: 100% !important;" id="chart-sent"></canvas>
+                        </div>
+                        <div class="goal-row downloaded">
+                            <canvas style="width: 100% !important; height: 100% !important;" id="chart-downloaded"></canvas>
+                        </div>
+                        <div class="goal-row waiting">
+                            <canvas style="width: 100% !important; height: 100% !important;" id="chart-waiting"></canvas>
+                        </div>
+                        <div class="goal-row expired">
+                            <canvas style="width: 100% !important; height: 100% !important;" id="chart-expired"></canvas>
+                        </div>
+                    </div>
+                    <div class="goal-stats">
+                        <div class="total-percentage">
+                            <span>Total</span>
+                            <span class="percentage" id="goalPercentage">--%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="goal-details">
+                    <div class="goal-detail">
+                        <span class="label">Sent</span>
+                        <span class="value color-pink">{{ totalTransfers }}</span>
+                    </div>
+                    <div class="goal-detail">
+                        <span class="label">Downloaded</span>
+                        <span class="value text-green">{{ downloadedTransfers }}</span>
+                    </div>
+                    <div class="goal-detail">
+                        <span class="label">Waiting</span>
+                        <span class="value text-primary">{{ uploadedTransfers }}</span>
+                    </div>
+                    <div class="goal-detail">
+                        <span class="label">Expired</span>
+                        <span class="value text-expired">{{ expiredFiles }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom row charts -->
+        <div class="chart-row">
+            <div class="sales-chart-container">
+                <div class="chart-header">
+                    <h3>Storage Usage</h3>
+                </div>
+                <div class="growth-chart">
+                    <canvas id="salesGrowthChart"></canvas>
+                    <div class="growth-percentage">
+                        <span>Used</span>
+                        <span class="percentage">--%</span>
+                    </div>
+                </div>
+                <div class="best-selling">
+                    <div class="channel-icon">
+                        <img src="{{ asset('images/storage.svg') }}" alt="Storage">
+                    </div>
+                    <div class="channel-info">
+                        <span class="channel-name">1 TB Monthly Limit</span>
+                        <span class="channel-description">File transfer capacity used</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profit-chart-container">
+                <div class="chart-header">
+                    <h3>Top Users</h3>
+                </div>
+                <div class="chart-container">
+                    <canvas id="topUsersChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right sidebar -->
+{#        <div class="dashboard-sidebar">#}
+            <!-- Calendar widget -->
+{#            <div class="calendar-widget">#}
+{#                <div class="calendar-header">#}
+{#                    <h3>April 2025</h3>#}
+{#                    <div class="calendar-nav">#}
+{#                        <button class="calendar-nav-btn prev"><i class="fas fa-chevron-left"></i></button>#}
+{#                        <button class="calendar-nav-btn next"><i class="fas fa-chevron-right"></i></button>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="calendar-grid">#}
+{#                    <div class="calendar-weekdays">#}
+{#                        <span>M</span>#}
+{#                        <span>T</span>#}
+{#                        <span>W</span>#}
+{#                        <span>T</span>#}
+{#                        <span>F</span>#}
+{#                        <span>S</span>#}
+{#                        <span>S</span>#}
+{#                    </div>#}
+{#                    <div class="calendar-days"></div>#}
+{#                </div>#}
+{#            </div>#}
+
+        <input type="hidden" id="topUsersLabels" value='{{ topFiveUsers|map(u => u.user.firstName ~ " " ~ u.user.lastName)|json_encode|raw }}'>
+        <input type="hidden" id="topUsersData" value='{{ topFiveUsers|map(u => u.transferCount)|json_encode|raw }}'>
+
+        <input type="hidden" id="analytics-total" value="{{ totalTransfers }}">
+        <input type="hidden" id="analytics-downloaded" value="{{ downloadedTransfers }}">
+        <input type="hidden" id="analytics-uploaded" value="{{ uploadedTransfers }}">
+        <input type="hidden" id="analytics-expired" value="{{ expiredFiles }}">
+
+        <input type="hidden" id="uploadedTransfers" value='{{ dailyTransfers|json_encode()|e('html_attr') }}'>
+
+        <input type="hidden" id="dataLimit" value="1024"> {# 1 ТБ = 1024 ГБ #}
+        <input type="hidden" id="dataUsed" value="{{ totalTransferredSize }}">
+
+
+    </div>
+{% endblock %}

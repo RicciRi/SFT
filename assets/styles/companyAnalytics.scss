@@ -1,0 +1,536 @@
+.analytics-dashboard {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  //grid-template-columns: 1fr 320px;
+  grid-template-rows: auto;
+  gap: 20px;
+  padding: 20px;
+  font-family: var(--font-family-base);
+  color: var(--color-text);
+
+  h2, h3 {
+    margin: 0;
+    font-family: var(--font-family-headings);
+    font-weight: 500;
+  }
+
+  .dashboard-grid {
+    grid-column: 1 / 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) 320px;
+    gap: 20px;
+  }
+
+  .stat-card {
+    //background-color: var(--color-panel);
+    border-radius: var(--base-border-radius);
+    padding: 20px;
+    box-shadow: var(--base-box-shadow);
+
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+
+      h3 {
+        color: var(--color-text-secondary);
+        font-size: 1rem;
+      }
+    }
+
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &.transactions {
+        background-color: rgba(99, 238, 188, 0.2);
+        color: #63eebb;
+      }
+
+      &.subscriptions {
+        background-color: rgba(184, 140, 255, 0.2);
+        color: var(--color-pink);
+      }
+
+      &.referrals {
+        background-color: rgba(184, 140, 255, 0.2);
+        color: var(--color-pink);
+      }
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .stat-change {
+      font-size: 0.875rem;
+
+      &.increase {
+        color: #63eebb;
+      }
+
+      &.decrease {
+        color: var(--red-medium);
+      }
+
+      i {
+        margin-right: 4px;
+      }
+    }
+  }
+
+  .user-profile-card {
+    //background-color: var(--color-panel);
+    border-radius: var(--base-border-radius);
+    padding: 20px;
+    box-shadow: var(--base-box-shadow);
+
+    .user-profile-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .user-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 15px;
+      background-color: var(--color-primary);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .user-details {
+      h2 {
+        font-size: 1.25rem;
+        margin-bottom: 4px;
+      }
+
+      .user-company,
+      .user-role {
+        color: var(--color-text-secondary);
+        margin: 0 0 4px;
+        font-size: 0.875rem;
+      }
+
+      .user-role {
+        text-transform: capitalize;
+        font-weight: 500;
+      }
+    }
+
+    .user-contact {
+      .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        color: var(--color-text-secondary);
+        font-size: 0.875rem;
+
+        i {
+          width: 16px;
+          margin-right: 10px;
+          color: var(--color-primary);
+        }
+      }
+    }
+  }
+
+  .chart-row {
+    grid-column: 1 / 2;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 20px;
+  }
+
+  .revenue-chart-container,
+  .goal-chart-container,
+  .sales-chart-container,
+  .profit-chart-container {
+    //background-color: var(--color-panel);
+    border-radius: var(--base-border-radius);
+    padding: 20px;
+    box-shadow: var(--base-box-shadow);
+  }
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h3 {
+      font-size: 1.25rem;
+    }
+
+    .details-link {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-size: 0.875rem;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .revenue-stats {
+    display: flex;
+    margin-bottom: 20px;
+
+    .revenue-period {
+      margin-right: 30px;
+
+      .period-label {
+        display: block;
+        color: var(--color-text-secondary);
+        font-size: 0.875rem;
+        margin-bottom: 5px;
+      }
+
+      .period-value {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--color-pink);
+      }
+    }
+  }
+
+  .chart-container {
+    position: relative;
+    height: 300px;
+  }
+
+  .goal-chart {
+    position: relative;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+
+    .goal-stats {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -25%);
+      text-align: center;
+
+      .total-percentage {
+        display: flex;
+        flex-direction: column;
+
+        span {
+          color: var(--color-text-secondary);
+          font-size: 0.875rem;
+        }
+
+        .percentage {
+          color: var(--color-text);
+          font-size: 1.5rem;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  .goal-details {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+
+    .goal-detail {
+      text-align: center;
+
+      .label {
+        display: block;
+        color: var(--color-text-secondary);
+        font-size: 0.875rem;
+        margin-bottom: 5px;
+      }
+
+      .value {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .growth-chart {
+    position: relative;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+
+    .growth-percentage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+
+      span {
+        display: block;
+        color: var(--color-text-secondary);
+        font-size: 0.875rem;
+      }
+
+      .percentage {
+        color: var(--color-text);
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .best-selling {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+
+    .channel-icon {
+      width: 22px;
+      height: 22px;
+      margin-right: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    .channel-info {
+      .channel-name {
+        display: block;
+        font-weight: 500;
+      }
+
+      .channel-description {
+        display: block;
+        color: var(--color-text-secondary);
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  // Sidebar styles
+  .dashboard-sidebar {
+    grid-column: 2 / 3;
+    grid-row: 1 / 4;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .calendar-widget,
+  .followers-widget,
+  .notifications-widget {
+    //background-color: var(--color-panel);
+    border-radius: var(--base-border-radius);
+    padding: 20px;
+    box-shadow: var(--base-box-shadow);
+
+    h3 {
+      font-size: 1.25rem;
+      margin-bottom: 20px;
+    }
+  }
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .calendar-nav {
+      display: flex;
+      gap: 5px;
+
+      .calendar-nav-btn {
+        background-color: transparent;
+        border: none;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+  }
+
+  .calendar-grid {
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      margin-bottom: 10px;
+
+      span {
+        color: var(--color-text-secondary);
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+    }
+
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+
+      .calendar-day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+        border-radius: 50%;
+
+        &.empty {
+          visibility: hidden;
+        }
+
+        &.current {
+          background-color: var(--color-primary);
+          color: var(--color-text);
+        }
+
+        &:not(.empty):not(.current):hover {
+          background-color: rgba(255, 255, 255, 0.1);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .followers-widget {
+    .followers-avatars {
+      margin-bottom: 15px;
+
+      .avatar-stack {
+        display: flex;
+
+        .avatar {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          //border: 3px solid var(--color-panel);
+          overflow: hidden;
+          margin-right: -15px;
+          background-color: var(--color-primary);
+
+          &:nth-child(2) {
+            background-color: var(--color-cherry);
+          }
+
+          &:nth-child(3) {
+            background-color: #63eebb;
+          }
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+  }
+
+
+  .text-green {
+    color: #63eebb;
+  }
+  .color-pink {
+    color: #b88cff;
+  }
+  .text-primary{
+    color: var(--color-primary);
+  }
+
+  .text-expired {
+    color: var(--color-cherry);
+  }
+
+
+
+}
+
+.goal-stats {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-weight: bold;
+  color: #cbd5e1;
+  margin-top: 40px;
+}
+
+.goal-stats .percentage {
+  font-size: 1.5rem;
+}
+
+.goal-chart-grid {
+  width: 100%;
+  position: relative;
+  height: 100%;
+
+  .sent {
+    width: 100%;
+    left: 0;
+  }
+
+  .downloaded {
+    padding-top: 14px;
+    transform: scale(0.9);
+  }
+
+  .waiting {
+    padding-top: 34px;
+    transform: scale(0.8);
+  }
+
+  .expired {
+    padding-top: 60px;
+    transform: scale(0.7);
+  }
+}
+
+.goal-row {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 160px;
+  min-height: 100%;
+  //height: 100%;
+  width: 100%;
+}
+
+.goal-row canvas {
+  width: 100%;
+  height: 100% !important;
+}

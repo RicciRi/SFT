@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -33,28 +34,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    //    /**
-    //     * @return User[] Returns an array of User objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?User
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function getTopFiveUsers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate): array
+    {
+        return $this->createQueryBuilder('u')
+                    ->select('u AS user, COUNT(t.id) AS transferCount')
+                    ->leftJoin('u.fileTransfers', 't')
+                    ->where('u.company = :company')
+                    ->andWhere('t.createdAt BETWEEN :start AND :end')
+                    ->groupBy('u.id')
+                    ->orderBy('transferCount', 'DESC')
+                    ->setMaxResults(5)
+                    ->setParameter('company', $company)
+                    ->setParameter('start', $startDate)
+                    ->setParameter('end', $endDate)
+                    ->getQuery()
+                    ->getResult();
+    }
 }

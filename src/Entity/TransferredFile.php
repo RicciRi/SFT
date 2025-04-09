@@ -22,7 +22,7 @@ class TransferredFile
     #[ORM\Column(length: 255)]
     private ?string $storedFilename = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'bigint', nullable: true)]
     private ?int $fileSize = null;
 
     #[ORM\Column(length: 255)]

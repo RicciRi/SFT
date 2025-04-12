@@ -8,6 +8,8 @@ import { initRegister } from "./js/register.js";
 import { initAnalytics } from "./js/analytics.js";
 import { initAccountSettings } from "./js/accountSettings.js";
 import { initCompanyAnalytics } from "./js/companyAnalytics.js";
+import { initDownload } from "./js/download.js";
+import { initTransfer } from "./js/transfer.js";
 
 document.addEventListener('turbo:load', () => {
     document.querySelectorAll('[data-component="safe_dial"]').forEach(initSafeDial);
@@ -16,6 +18,8 @@ document.addEventListener('turbo:load', () => {
     document.querySelectorAll('[data-component="account-settings"]').forEach(initAccountSettings);
     document.querySelectorAll('[data-component="analyticsChartContainer"]').forEach(initAnalytics);
     document.querySelectorAll('[data-component="companyAnalyticsContainer"]').forEach(initCompanyAnalytics);
+    document.querySelectorAll('[data-component="downloadContainer"]').forEach(initDownload);
+    document.querySelectorAll('[data-component="transferContainer"]').forEach(initTransfer);
 
     document.querySelectorAll('.flash-message__close').forEach((btn) => {
         btn.addEventListener('click', () => {

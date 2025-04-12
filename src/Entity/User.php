@@ -70,9 +70,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isActive = null;
 
+    /**
+     * @var Collection<int, FileDownloadLog>
+     */
+    #[ORM\OneToMany(targetEntity: FileDownloadLog::class, mappedBy: 'downloadedBy')]
+    private Collection $fileDownloadLogs;
+
     public function __construct()
     {
         $this->fileTransfers = new ArrayCollection();
+        $this->fileDownloadLogs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -272,6 +279,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FileDownloadLog>
+     */
+    public function getFileDownloadLogs(): Collection
+    {
+        return $this->fileDownloadLogs;
+    }
+
+    public function addFileDownloadLog(FileDownloadLog $fileDownloadLog): static
+    {
+        if (!$this->fileDownloadLogs->contains($fileDownloadLog)) {
+            $this->fileDownloadLogs->add($fileDownloadLog);
+            $fileDownloadLog->setDownloadedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFileDownloadLog(FileDownloadLog $fileDownloadLog): static
+    {
+        if ($this->fileDownloadLogs->removeElement($fileDownloadLog)) {
+            // set the owning side to null (unless already changed)
+            if ($fileDownloadLog->getDownloadedBy() === $this) {
+                $fileDownloadLog->setDownloadedBy(null);
+            }
+        }
 
         return $this;
     }

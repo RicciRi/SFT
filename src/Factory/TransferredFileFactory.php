@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\TransferredFile;
+use App\Enum\FileStatus;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
@@ -27,6 +28,7 @@ final class TransferredFileFactory extends PersistentProxyObjectFactory
             'mimeType' => self::faker()->mimeType(),
             'originalFilename' => self::faker()->text(20),
             'storedFilename' => self::faker()->text(20),
+            'status' => FileStatus::UPLOADED,
         ];
     }
 

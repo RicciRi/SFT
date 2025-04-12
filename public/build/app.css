@@ -12,6 +12,7 @@
   --primary-dark: #4213c1;
   --color-pink: #b88cff;
   --color-cherry: #e02367;
+  --color-green: #52DB7b;
   --color-gray: #babcd2;
   --color-gray-2: #dfe1f4;
   --color-gray-20: #ececfb;
@@ -3767,6 +3768,23 @@ body {
   color: #fff;
 }
 .download-container .download-content .right-side .files .file-wrap .download-link:hover {
+  color: var(--color-cherry);
+}
+.download-container .download-content .right-side .files .file-wrap .file-status {
+  box-shadow: var(--base-box-shadow);
+  border-radius: var(--base-border-radius);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 100;
+  letter-spacing: 1px;
+}
+.download-container .download-content .right-side .files .file-wrap .file-status-downloaded {
+  color: var(--color-green);
+}
+.download-container .download-content .right-side .files .file-wrap .file-status-uploaded {
+  color: var(--color-primary);
+}
+.download-container .download-content .right-side .files .file-wrap .file-status-expired, .download-container .download-content .right-side .files .file-wrap .file-status-deleted {
   color: var(--color-cherry);
 }
 

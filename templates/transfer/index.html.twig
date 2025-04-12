@@ -1,10 +1,8 @@
-{# templates/download/index.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% import 'macros/file_icon.html.twig' as fileIcon %}
 
-{% block title %}Download Files{% endblock %}
+{% block title %}Transfer info{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -16,8 +14,8 @@
 {% endblock %}
 
 {% block body %}
-    <div class="download-container" data-component="downloadContainer">
-        <h1 class="">Download Files</h1>
+    <div class="download-container" data-component="transferContainer">
+        <h1 class="">Transfer Details</h1>
         <div class="divider-style"></div>
         <div class="download-content">
             <div class="left-side">
@@ -52,10 +50,6 @@
                         <div class="download-all-wrap">
                             {% if  files|length > 1 %}
                                 <div>Files:</div>
-                                <a href="{{ download_all_link }}" class="download-all-link">
-                                    <span>Download All</span>
-                                    <span class="download-all-size">{{ download_size | format_filesize }}</span>
-                                </a>
                             {% else %}
                                 <div>File:</div>
                             {% endif %}
@@ -72,7 +66,7 @@
                                     </div>
                                 </div>
 
-                                <a href="{{ download_links[file.id] }}" class="download-link">download</a>
+                                <a class="file-status file-status-{{ file.status.value }}">{{ file.status.value }}</a>
                             </div>
                         {% endfor %}
                     </div>

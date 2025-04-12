@@ -100,6 +100,7 @@ final class DownloadController extends AbstractController
         $transfer = $transferredFile->getFileTransfer();
 
         $transfer->markAsDownloaded();
+        $transferredFile->markAsDownloaded();
 
         $this->entityManager->flush();
 
@@ -134,10 +135,12 @@ final class DownloadController extends AbstractController
             $zip = new ZipStream('files.zip', $options);
 
             foreach ($files as $file) {
+                $file->markAsDownloaded();
                 $filePath = $uploadDir.'/'.$file->getStoredFilename();
                 if (file_exists($filePath)) {
                     $zip->addFileFromPath($file->getOriginalFilename(), $filePath);
                 }
+                $this->entityManager->flush();
             }
 
             $zip->finish();

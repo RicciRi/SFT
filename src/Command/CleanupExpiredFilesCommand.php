@@ -16,7 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 #[AsCommand(
     name: 'app:cleanup-expired-files',
-    description: 'Mark expired file transfers and remove associated files.',
+    description: 'Mark expired file transfers & files and remove associated files.',
 )]
 class CleanupExpiredFilesCommand extends Command
 {
@@ -60,6 +60,7 @@ class CleanupExpiredFilesCommand extends Command
 
             foreach ($transfer->getTransferredFiles() as $file) {
                 $filePath = $this->tempDir.'/'.$file->getStoredFilename();
+                $file->markAsExpired();
                 if ($filesystem->exists($filePath)) {
                     $this->logger->info('FILE WAS REMOVED! - '.$filePath);
                     $filesystem->remove($filePath);

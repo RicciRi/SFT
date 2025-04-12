@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use App\Enum\FileStatus;
 use App\Repository\TransferredFileRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TransferredFileRepository::class)]
@@ -30,6 +33,20 @@ class TransferredFile
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+
+    /**
+     * @var Collection<int, FileDownloadLog>
+     */
+    #[ORM\OneToMany(targetEntity: FileDownloadLog::class, mappedBy: 'file')]
+    private Collection $fileDownloadLogs;
+
+    #[ORM\Column(length: 255, enumType: FileStatus::class)]
+    private ?FileStatus $status = FileStatus::UPLOADED;
+
+    public function __construct()
+    {
+        $this->fileDownloadLogs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +121,63 @@ class TransferredFile
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FileDownloadLog>
+     */
+    public function getFileDownloadLogs(): Collection
+    {
+        return $this->fileDownloadLogs;
+    }
+
+    public function addFileDownloadLog(FileDownloadLog $fileDownloadLog): static
+    {
+        if (!$this->fileDownloadLogs->contains($fileDownloadLog)) {
+            $this->fileDownloadLogs->add($fileDownloadLog);
+            $fileDownloadLog->setFile($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFileDownloadLog(FileDownloadLog $fileDownloadLog): static
+    {
+        if ($this->fileDownloadLogs->removeElement($fileDownloadLog)) {
+            // set the owning side to null (unless already changed)
+            if ($fileDownloadLog->getFile() === $this) {
+                $fileDownloadLog->setFile(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getStatus(): ?FileStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(FileStatus $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+
+    public function markAsDownloaded(): static
+    {
+        $this->status = FileStatus::DOWNLOADED;
+
+        return $this;
+    }
+
+    public function markAsExpired(): static
+    {
+        $this->status = FileStatus::EXPIRED;
 
         return $this;
     }

@@ -2,7 +2,10 @@
 
 namespace App\DataFixtures;
 
+use App\Enum\FileStatus;
+use App\Enum\TransferStatus;
 use App\Factory\CompanyFactory;
+use App\Factory\FileDownloadLogFactory;
 use App\Factory\FileTransferFactory;
 use App\Factory\PaymentFactory;
 use App\Factory\SubscriptionFactory;
@@ -36,7 +39,7 @@ class AppFixtures extends Fixture
             $company->setMainUser($mainUser->_real());
             $company->addSubscription($subscription->_real());
 
-            $transferCount = 10;
+            $transferCount = 4;
 
             foreach (UserFactory::createMany(5, ['company' => $company]) as $user) {
                 foreach (FileTransferFactory::createMany($transferCount, ['user' => $user, 'company' => $company]) as $transfer) {
@@ -46,8 +49,20 @@ class AppFixtures extends Fixture
                         $transfer->addTransferredFile($file->_real());
                     }
                 }
+                foreach (FileTransferFactory::createMany($transferCount, ['user' => $user, 'company' => $company, 'status' => TransferStatus::DOWNLOADED]) as $transfer) {
+                    $company->addFileTransfer($transfer->_real());
 
-                $transferCount = $transferCount + 10;
+                    foreach (TransferredFileFactory::createMany(2, ['fileTransfer' => $transfer, 'status' => FileStatus::DOWNLOADED]) as $file) {
+                        $transfer->addTransferredFile($file->_real());
+                        FileDownloadLogFactory::createOne([
+                            'downloadedBy' => $user,
+                            'file' => $file,
+                            'downloadedAt' => new \DateTimeImmutable(),
+                        ]);
+                    }
+                }
+
+                //                $transferCount = $transferCount + 10;
             }
         }
 

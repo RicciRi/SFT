@@ -162,6 +162,27 @@
               color: var(--color-cherry);
             }
           }
+
+          .file-status {
+            box-shadow: var(--base-box-shadow);
+            border-radius: var(--base-border-radius);
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 100;
+            letter-spacing: 1px;
+          }
+
+          .file-status-downloaded {
+            color: var(--color-green);
+
+          }
+          .file-status-uploaded {
+            color: var(--color-primary);
+
+          }
+          .file-status-expired, .file-status-deleted {
+            color: var(--color-cherry);
+          }
         }
       }
 

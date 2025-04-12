@@ -3,29 +3,28 @@ SYMFONY = docker compose exec app php bin/console
 #	make console cmd=make:user   # Запустить любую команду Symfony
 #	make db-update               # Обновить базу данных
 #	make fixtures                # Загрузить фикстуры
+#	make fixtures-load           # Загрузить фикстуры + удаление
 #	make fix                     # Применить php-cs-fixer
 
 # 🔧 Открыть bash внутри PHP-контейнера
 bash:
 	docker compose exec app bash
 
-# ⚙️ Запуск любой Symfony-команды
 console:
 	@$(SYMFONY) $(cmd)
+
+fixtures:
+	@$(SYMFONY) doctrine:fixtures:load --no-interaction
 
 fixtures-load:
 	@$(SYMFONY) doctrine:fixtures:load
 
-
-# 🧱 Обновление схемы БД (осторожно, изменяет структуру таблиц)
 db-update:
 	@$(SYMFONY) doctrine:schema:update --force
 
-# 🍭 Загрузка фикстур
-fixtures:
-	@$(SYMFONY) doctrine:fixtures:load --no-interaction
+cleanup-files:
+	@$(SYMFONY) app:cleanup-expired-files
 
-# ✨ Автоматическое исправление кода через PHP-CS-Fixer
 fix:
 	vendor/bin/php-cs-fixer fix
 
@@ -35,4 +34,3 @@ watch:
 
 show limits:
 	docker compose exec app php -i | grep -E "upload_max_filesize|post_max_size"
-

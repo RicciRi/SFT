@@ -38,19 +38,19 @@ final class SendFileController extends AbstractController
     }
 
     #[Route('/transfers', name: 'app_send_transfers')]
-    public function index(FileTransferRepository $fileTransferRepository, Request $request): Response
+    public function index(Request $request): Response
     {
         $user = $this->getUser();
 
         if ($this->isGranted('ROLE_COMPANY_ADMIN')) {
             $company = $user->getCompany();
 
-            $qb = $fileTransferRepository->createQueryBuilder('t')
+            $qb = $this->fileTransferRepository->createQueryBuilder('t')
                                          ->select('t')
                                          ->where('t.company = :company')
                                          ->setParameter('company', $company);
         } else {
-            $qb = $fileTransferRepository->createQueryBuilder('t')
+            $qb = $this->fileTransferRepository->createQueryBuilder('t')
                                          ->select('t')
                                          ->where('t.user = :user')
                                          ->setParameter('user', $user);

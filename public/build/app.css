@@ -3210,6 +3210,10 @@
   background: rgba(220, 53, 69, 0.15);
   color: #dc3545;
 }
+.transfers-container .transfer-card .transfer-header .transfer-status.deleted {
+  background: rgba(220, 53, 69, 0.15);
+  color: #dc3545;
+}
 .transfers-container .transfer-card .transfer-body {
   padding: 1.25rem;
 }

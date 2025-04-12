@@ -167,7 +167,6 @@ class TransferredFile
         return $this;
     }
 
-
     public function markAsDownloaded(): static
     {
         $this->status = FileStatus::DOWNLOADED;

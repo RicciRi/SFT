@@ -101,7 +101,9 @@
                                 {{ transfer.size|format_filesize }}
                             </div>
                             <div class="actions">
-                                <a href="{{ path('app_home', {uuid: transfer.uuid}) }}" class="btn">Deactivate</a>
+                                {% if not transfer.isExpired %}
+                                    <a href="{{ path('api_deactivate_transfer', {uuid: transfer.uuid}) }}" class="btn">Deactivate</a>
+                                {% endif %}
                                 <a href="{{ path('app_transfer', {uuid: transfer.uuid}) }}" class="btn btn-primary">Details</a>
                             </div>
                         </div>

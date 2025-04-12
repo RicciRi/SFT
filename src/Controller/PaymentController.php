@@ -5,12 +5,13 @@ namespace App\Controller;
 use App\Enum\SubscriptionType;
 use App\Service\PaymentService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/payment')]
-#[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
+#[IsGranted(new Expression('is_granted("ROLE_COMPANY_ADMIN") or user.isMainAccount()'))]
 final class PaymentController extends AbstractController
 {
     public function __construct(

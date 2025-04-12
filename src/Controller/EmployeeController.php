@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/employees')]
-#[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
 #[IsGranted(new Expression('is_granted("ROLE_COMPANY_ADMIN") or user.isMainAccount()'))]
 final class EmployeeController extends AbstractController
 {

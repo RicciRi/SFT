@@ -21,25 +21,12 @@ class FileTransferRepository extends ServiceEntityRepository
     public function findExpiredNotMarked($now)
     {
         return $this->createQueryBuilder('t')
-            ->where('t.status != :status')
-            ->andWhere('t.expirationAt < :now')
-            ->setParameter('status', TransferStatus::EXPIRED)
-            ->setParameter('now', $now)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function countTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
-    {
-        return $this->createQueryBuilder('t')
-                    ->select('COUNT(t.id)')
-                    ->where('t.company = :company')
-                    ->andWhere('t.createdAt BETWEEN :start AND :end')
-                    ->setParameter('company', $company)
-                    ->setParameter('start', $startDate)
-                    ->setParameter('end', $endDate)
+                    ->where('t.status != :status')
+                    ->andWhere('t.expirationAt < :now')
+                    ->setParameter('status', TransferStatus::EXPIRED)
+                    ->setParameter('now', $now)
                     ->getQuery()
-                    ->getSingleScalarResult();
+                    ->getResult();
     }
 
     public function countTotalTransferredSize(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
@@ -53,63 +40,6 @@ class FileTransferRepository extends ServiceEntityRepository
                     ->setParameter('end', $endDate)
                     ->getQuery()
                     ->getSingleScalarResult();
-    }
-
-    public function countExpiredFiles(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
-    {
-        $status = TransferStatus::EXPIRED;
-
-        return $this->createQueryBuilder('t')
-                    ->select('COUNT(t.id)')
-                    ->where('t.company = :company')
-                    ->andWhere('t.status = :status')
-                    ->andWhere('t.createdAt BETWEEN :start AND :end')
-                    ->setParameter('company', $company)
-                    ->setParameter('status', $status)
-                    ->setParameter('start', $startDate)
-                    ->setParameter('end', $endDate)
-                    ->getQuery()
-                    ->getSingleScalarResult();
-    }
-
-    public function getDownloadedTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
-    {
-        $status = TransferStatus::DOWNLOADED;
-
-        return $this->createQueryBuilder('t')
-                    ->select('COUNT(t.id)')
-                    ->where('t.company = :company')
-                    ->andWhere('t.status = :status')
-                    ->andWhere('t.isDeleted = :isDeleted')
-                    ->andWhere('t.createdAt BETWEEN :start AND :end')
-                    ->setParameter('company', $company)
-                    ->setParameter('status', $status)
-                    ->setParameter('isDeleted', false)
-                    ->setParameter('start', $startDate)
-                    ->setParameter('end', $endDate)
-                    ->getQuery()
-                    ->getSingleScalarResult()
-        ;
-    }
-
-    public function getUploadedTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
-    {
-        $status = TransferStatus::UPLOADED;
-
-        return $this->createQueryBuilder('t')
-                    ->select('COUNT(t.id)')
-                    ->where('t.company = :company')
-                    ->andWhere('t.status = :status')
-                    ->andWhere('t.isDeleted = :isDeleted')
-                    ->andWhere('t.createdAt BETWEEN :start AND :end')
-                    ->setParameter('company', $company)
-                    ->setParameter('status', $status)
-                    ->setParameter('isDeleted', false)
-                    ->setParameter('start', $startDate)
-                    ->setParameter('end', $endDate)
-                    ->getQuery()
-                    ->getSingleScalarResult()
-        ;
     }
 
     public function getDailyTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate): array
@@ -135,18 +65,52 @@ class FileTransferRepository extends ServiceEntityRepository
         return $result->fetchAllAssociative(); // вернёт массив вида [['day' => '2025-04-01', 'count' => 3], ...]
     }
 
-    public function getDeletedTransfers($company, $startDate, $endDate)
+    private function countByCriteria(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate, array $additionalCriteria = []): int
     {
-        return $this->createQueryBuilder('t')
-                    ->select('COUNT(t.id)')
-                    ->where('t.company = :company')
-                    ->andWhere('t.isDeleted = true')
-                    ->andWhere('t.createdAt BETWEEN :start AND :end')
-                    ->setParameter('company', $company)
-                    ->setParameter('start', $startDate)
-                    ->setParameter('end', $endDate)
-                    ->getQuery()
-                    ->getSingleScalarResult()
-            ;
+        $qb = $this->createQueryBuilder('t')
+                   ->select('COUNT(t.id)')
+                   ->where('t.company = :company')
+                   ->andWhere('t.createdAt BETWEEN :start AND :end')
+                   ->setParameter('company', $company)
+                   ->setParameter('start', $startDate)
+                   ->setParameter('end', $endDate);
+
+        foreach ($additionalCriteria as $key => $value) {
+            $qb->andWhere("t.$key = :$key")
+               ->setParameter($key, $value);
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function countTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate): int
+    {
+        return $this->countByCriteria($company, $startDate, $endDate);
+    }
+
+    public function countExpiredFiles(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate): int
+    {
+        return $this->countByCriteria($company, $startDate, $endDate, ['status' => TransferStatus::EXPIRED]);
+    }
+
+    public function getDownloadedTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate): int
+    {
+        return $this->countByCriteria($company, $startDate, $endDate, [
+            'status' => TransferStatus::DOWNLOADED,
+            'isDeleted' => false,
+        ]);
+    }
+
+    public function getUploadedTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate): int
+    {
+        return $this->countByCriteria($company, $startDate, $endDate, [
+            'status' => TransferStatus::UPLOADED,
+            'isDeleted' => false,
+        ]);
+    }
+
+    public function getDeletedTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate): int
+    {
+        return $this->countByCriteria($company, $startDate, $endDate, ['isDeleted' => true]);
     }
 }

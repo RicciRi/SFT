@@ -16,7 +16,7 @@ final class TransferController extends AbstractController
 {
     public function __construct(
         private FileTransferRepository $fileTransferRepository,
-        private FileActionService $actionService
+        private FileActionService $actionService,
     ) {
     }
 
@@ -31,7 +31,7 @@ final class TransferController extends AbstractController
 
         return $this->render('transfer/index.html.twig', [
             'transfer' => $transfer,
-            'files'    => $files,
+            'files' => $files,
         ]);
     }
 
@@ -46,6 +46,7 @@ final class TransferController extends AbstractController
         $this->actionService->deactivateTransfer($transfer, $files);
 
         $this->addFlash('success', 'Transfer was deactivated successfully.');
+
         return $this->redirectToRoute('app_send_transfers');
     }
 
@@ -55,20 +56,21 @@ final class TransferController extends AbstractController
 
         if (!$transfer) {
             $this->addFlash('error', 'Transfer doesn\'t exist.');
+
             return null;
         }
 
         $user = $this->getUser();
 
         if (
-            $this->isGranted('ROLE_COMPANY_ADMIN') && $transfer->getCompany() !== $user->getCompany() ||
-            !$this->isGranted('ROLE_COMPANY_ADMIN') && $transfer->getUser() !== $user
+            $this->isGranted('ROLE_COMPANY_ADMIN') && $transfer->getCompany() !== $user->getCompany()
+            || !$this->isGranted('ROLE_COMPANY_ADMIN') && $transfer->getUser() !== $user
         ) {
             $this->addFlash('error', 'You have no access to this transfer');
+
             return null;
         }
 
         return $transfer;
     }
-
 }

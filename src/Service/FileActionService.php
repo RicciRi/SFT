@@ -12,11 +12,11 @@ class FileActionService
 {
     private string $tempDir;
     private string $uploadDir;
+
     public function __construct(
         private EntityManagerInterface $entityManager,
         string $uploadDir,
-    )
-    {
+    ) {
         $this->uploadDir = $uploadDir;
         $this->tempDir = $uploadDir;
 
@@ -27,14 +27,13 @@ class FileActionService
 
     public function deactivateTransfer(FileTransfer $transfer, $files)
     {
-//        $transfer->setStatus(TransferStatus::DELETED);
+        //        $transfer->setStatus(TransferStatus::DELETED);
         $transfer->setIsExpired(true);
         $transfer->setIsDeleted(true);
         $filesystem = new Filesystem();
 
-
         foreach ($files as $file) {
-//            $file->setStatus(FileStatus::DELETED);
+            //            $file->setStatus(FileStatus::DELETED);
 
             $filePath = $this->tempDir.'/'.$file->getStoredFilename();
             if ($filesystem->exists($filePath)) {
@@ -43,6 +42,5 @@ class FileActionService
         }
 
         $this->entityManager->flush();
-
     }
 }

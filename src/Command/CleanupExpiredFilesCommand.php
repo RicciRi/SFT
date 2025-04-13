@@ -60,7 +60,12 @@ class CleanupExpiredFilesCommand extends Command
 
             foreach ($transfer->getTransferredFiles() as $file) {
                 $filePath = $this->tempDir.'/'.$file->getStoredFilename();
-                $file->markAsExpired();
+
+                if (TransferStatus::UPLOADED === $transfer->getStatus()) {
+                    $file->markAsExpired();
+                }
+
+
                 if ($filesystem->exists($filePath)) {
                     $this->logger->info('FILE WAS REMOVED! - '.$filePath);
                     $filesystem->remove($filePath);

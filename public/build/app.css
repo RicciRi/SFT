@@ -3191,6 +3191,10 @@
   font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.5);
 }
+.transfers-container .transfer-card .transfer-header .transfer-status-wrap {
+  display: flex;
+  gap: 8px;
+}
 .transfers-container .transfer-card .transfer-header .transfer-status {
   padding: 0.25rem 0.75rem;
   border-radius: 999px;

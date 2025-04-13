@@ -131,6 +131,11 @@
         color: rgba(255, 255, 255, 0.5);
       }
 
+      .transfer-status-wrap {
+        display: flex;
+        gap: 8px;
+      }
+
       .transfer-status {
         padding: 0.25rem 0.75rem;
         border-radius: 999px;

@@ -64,10 +64,13 @@
                     <div class="transfer-card">
                         <div class="transfer-header">
                             <div class="transfer-id">ID: {{ transfer.uuid|slice(0, 8) }}</div>
-                            <div class="transfer-status {{ transfer.status.value }}">{{ transfer.status.name }}</div>
-                            {% if transfer.isDeleted %}
-                                <div class="transfer-status expired">Deleted</div>
-                            {% endif %}
+                            <div class="transfer-status-wrap">
+                                <div class="transfer-status {{ transfer.status.value }}">{{ transfer.status.name }}</div>
+                                {% if transfer.isDeleted %}
+                                    <div class="transfer-status expired">Deleted</div>
+                                {% endif %}
+                            </div>
+
                         </div>
                         <div class="transfer-body">
                             <div class="recipient">

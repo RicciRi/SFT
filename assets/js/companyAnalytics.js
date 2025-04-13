@@ -1,21 +1,21 @@
 import Chart from 'chart.js/auto';
 
 export function initCompanyAnalytics() {
-    // Initialize all charts
     initDailyUploadsChart();
     initGoalChartSeparate();
     initUsageChart();
     initTopUsersChart();
-    // initCalendar();
+    initCalendar();
 
-// Revenue Chart
     function initDailyUploadsChart() {
         const ctx = document.getElementById('revenueChart').getContext('2d');
 
+        // Создаем градиент для заливки
         const gradient = ctx.createLinearGradient(0, 0, 0, 400);
         gradient.addColorStop(0, 'rgba(99, 102, 241, 0.4)');
         gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
 
+        // Получаем данные из скрытого input
         const rawValue = document.getElementById('uploadedTransfers')?.value || '[]';
         let dailyUploads = [];
 
@@ -26,25 +26,41 @@ export function initCompanyAnalytics() {
             dailyUploads = [];
         }
 
-        const now = new Date();
+        // Определяем выбранный месяц для построения графика
+        const calendarWidget = document.querySelector('.calendar-widget');
+        let currentMonthDate;
+        if (calendarWidget && calendarWidget.getAttribute('data-current-month')) {
+            const currentMonthStr = calendarWidget.getAttribute('data-current-month'); // формат: "YYYY-MM"
+            const [year, month] = currentMonthStr.split('-');
+            currentMonthDate = new Date(parseInt(year, 10), parseInt(month, 10) - 1, 1);
+        } else {
+            // Если data-атрибут отсутствует, используем текущий месяц
+            currentMonthDate = new Date();
+            currentMonthDate.setDate(1);
+        }
+
+        // Вычисляем количество дней в выбранном месяце
+        const daysInMonth = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth() + 1, 0).getDate();
         const labels = [];
+        const fullDates = [];
         const uploadCounts = [];
 
-        // Генерируем последние 7 дней
-        for (let i = 6; i >= 0; i--) {
-            const date = new Date(now);
-            date.setDate(now.getDate() - i);
+        // Генерируем метки и значения для каждого дня
+        for (let d = 1; d <= daysInMonth; d++) {
+            const date = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), d);
+            // Для оси X оставляем только номер дня
+            labels.push(date.getDate().toString());
+            // Полная дата для tooltip
+            const fullDate = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'long' })}`;
+            fullDates.push(fullDate);
 
-            const label = date.toLocaleDateString('en-US', { weekday: 'short' }); // Mon, Tue, ...
-            labels.push(label);
-
-            const dateStr = date.toISOString().split('T')[0]; // YYYY-MM-DD
-
+            const dateStr = date.toISOString().split('T')[0]; // Формат "YYYY-MM-DD"
             const upload = dailyUploads.find(item => item.day === dateStr);
             uploadCounts.push(upload ? upload.count : 0);
         }
+
         const maxValue = Math.max(...uploadCounts);
-        const chartMax = maxValue < 10 ? 10 : maxValue + 1;
+        const chartMax = maxValue < 5 ? 5 : maxValue + 1;
 
         new Chart(ctx, {
             type: 'line',
@@ -55,12 +71,13 @@ export function initCompanyAnalytics() {
                     data: uploadCounts,
                     borderColor: '#b88cff',
                     backgroundColor: gradient,
-                    tension: 0.4,
+                    tension: 0.3,
                     borderWidth: 1,
-                    pointRadius: 5,
+                    pointRadius: 3,
                     pointBackgroundColor: '#b88cff',
                     pointBorderColor: '#ffffff',
-                    fill: true
+                    fill: true,
+                    clip: false  // Отключаем обрезание элементов
                 }]
             },
             options: {
@@ -76,6 +93,13 @@ export function initCompanyAnalytics() {
                         borderWidth: 1,
                         displayColors: false,
                         callbacks: {
+                            // Заменяем заголовок tooltip на полную дату
+                            title: function(context) {
+                                // Используем индекс точки для получения полного значения из массива fullDates
+                                const index = context[0].dataIndex;
+                                return fullDates[index];
+                            },
+                            // Оставляем отображение только количества файлов
                             label: context => `Files: ${context.parsed.y}`
                         }
                     }
@@ -83,7 +107,12 @@ export function initCompanyAnalytics() {
                 scales: {
                     x: {
                         grid: { display: false, drawBorder: false },
-                        ticks: { color: '#babcd2' }
+                        ticks: {
+                            color: '#babcd2',
+                            autoSkip: false,       // Показываем все метки
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
                     },
                     y: {
                         beginAtZero: true,
@@ -99,12 +128,10 @@ export function initCompanyAnalytics() {
                         }
                     }
                 }
-
             }
         });
     }
 
-// Goal Chart (Progress Circle)
     function drawSingleRing(canvasId, value, color, label = '') {
         const canvas = document.getElementById(canvasId);
         if (!canvas) return;
@@ -127,8 +154,8 @@ export function initCompanyAnalytics() {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { display: false },
-                    tooltip: { enabled: false }
+                    legend: {display: false},
+                    tooltip: {enabled: false}
                 }
             }
         });
@@ -154,19 +181,17 @@ export function initCompanyAnalytics() {
         const deletedRatio = deleted / total || 0;
 
 
-        // Base ring: always 100%
         drawSingleRing('chart-sent', 1, '#b88cff', 'Sent');
         drawSingleRing('chart-waiting', uploadedRatio, '#63e', 'Waiting');
         drawSingleRing('chart-downloaded', downloadedRatio, '#63eebb', 'Downloaded');
         drawSingleRing('chart-expired', expiredRatio, '#e02367', 'Expired');
         drawSingleRing('chart-deleted', deletedRatio, '#e02323', 'Deleted');
 
-        // center text update (optional)
         const percent = total > 0 ? ((downloaded / total) * 100).toFixed(1) : '0.0';
         const center = document.getElementById('goalPercentage');
         if (center) center.textContent = `${percent}%`;
     }
-// Sales Growth Chart (Circle)
+
     function initUsageChart() {
         const ctx = document.getElementById('salesGrowthChart').getContext('2d');
 
@@ -191,8 +216,8 @@ export function initCompanyAnalytics() {
                 datasets: [{
                     data: [percentUsed, 100 - percentUsed],
                     backgroundColor: [
-                        '#63e',                             // Прогресс
-                        'rgba(99, 102, 241, 0.2)'           // Фон
+                        '#63e',
+                        'rgba(99, 102, 241, 0.2)'
                     ],
                     borderWidth: 0,
                     cutout: '94%',
@@ -209,14 +234,13 @@ export function initCompanyAnalytics() {
                     easing: 'easeOutQuart'
                 },
                 plugins: {
-                    legend: { display: false },
-                    tooltip: { enabled: false }
+                    legend: {display: false},
+                    tooltip: {enabled: false}
                 }
             }
         });
     }
 
-// Profit Chart (Bar and Line)
     function initTopUsersChart() {
         const ctx = document.getElementById('topUsersChart').getContext('2d');
         const topUsersLabels = JSON.parse(document.getElementById('topUsersLabels').value);
@@ -275,46 +299,60 @@ export function initCompanyAnalytics() {
         });
     }
 
-// Initialize Calendar
-//     function initCalendar() {
-//         const calendarDays = document.querySelector('.calendar-days');
-//         const currentDate = new Date();
-//         const currentMonth = 3; // April (0-indexed)
-//         const currentYear = 2025;
-//         const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-//         const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-//
-//         // Adjust for Monday as first day (0 = Monday, 6 = Sunday)
-//         const firstDayAdjusted = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
-//
-//         // Create empty slots for days before first day of month
-//         for (let i = 0; i < firstDayAdjusted; i++) {
-//             const emptyDay = document.createElement('div');
-//             emptyDay.classList.add('calendar-day', 'empty');
-//             calendarDays.appendChild(emptyDay);
-//         }
-//
-//         // Create days of the month
-//         for (let day = 1; day <= daysInMonth; day++) {
-//             const dayElement = document.createElement('div');
-//             dayElement.classList.add('calendar-day');
-//             dayElement.textContent = day;
-//
-//             // Highlight current day (April 8, 2025)
-//             if (day === 8) {
-//                 dayElement.classList.add('current');
-//             }
-//
-//             calendarDays.appendChild(dayElement);
-//         }
-//
-//         // Add event listeners for calendar navigation
-//         document.querySelector('.calendar-nav-btn.prev').addEventListener('click', function () {
-//             // Navigation logic would go here
-//         });
-//
-//         document.querySelector('.calendar-nav-btn.next').addEventListener('click', function () {
-//             // Navigation logic would go here
-//         });
-//     }
+    function initCalendar() {
+        const monthNames = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        const calendarWidget = document.querySelector('.calendar-widget');
+        const calendarHeader = calendarWidget.querySelector('.calendar-header h3');
+        const prevButton = calendarWidget.querySelector('.calendar-nav .prev');
+        const nextButton = calendarWidget.querySelector('.calendar-nav .next');
+
+        let currentMonthStr = calendarWidget.getAttribute('data-current-month');
+        let [year, month] = currentMonthStr ? currentMonthStr.split('-') : [];
+        let currentDate = new Date();
+
+        if (year && month) {
+            currentDate = new Date(parseInt(year), parseInt(month) - 1, 1);
+        } else {
+            currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        }
+
+        function updateCalendarHeader() {
+            const displayMonth = monthNames[currentDate.getMonth()];
+            const displayYear = currentDate.getFullYear();
+            calendarHeader.textContent = displayMonth + ' ' + displayYear;
+        }
+
+        function formatYearMonth(date) {
+            let y = date.getFullYear();
+            let m = (date.getMonth() + 1).toString().padStart(2, '0');
+            return `${y}-${m}`;
+        }
+
+        function updateUrlParameter(url, param, paramVal) {
+            let [baseUrl, queryString] = url.split('?');
+            let params = new URLSearchParams(queryString || '');
+            params.set(param, paramVal);
+            return `${baseUrl}?${params.toString()}`;
+        }
+
+        updateCalendarHeader();
+
+        prevButton.addEventListener('click', function () {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            updateCalendarHeader();
+            const newMonth = formatYearMonth(currentDate);
+            window.location.href = updateUrlParameter(window.location.href, 'month', newMonth);
+        });
+
+        nextButton.addEventListener('click', function () {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            updateCalendarHeader();
+            const newMonth = formatYearMonth(currentDate);
+            window.location.href = updateUrlParameter(window.location.href, 'month', newMonth);
+        });
+    }
 }

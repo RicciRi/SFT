@@ -5,6 +5,15 @@
 
 {% block body %}
     <div class="analytics-dashboard" data-component="companyAnalyticsContainer">
+        <div class="calendar-widget" data-current-month="{{ selectedMonth|date('Y-m') }}">
+            <div class="calendar-header">
+                <div class="calendar-nav">
+                    <button class="calendar-nav-btn prev"><i class="fas fa-chevron-left"></i></button>
+                    <h3>{{ selectedMonth|date('F Y') }}</h3>
+                    <button class="calendar-nav-btn next"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
         <div class="dashboard-grid">
             <!-- Top row stats -->
             <div class="stat-card">
@@ -29,27 +38,27 @@
                 <div class="stat-change decrease">-2.7% <i class="fas fa-arrow-down"></i> going down</div>
             </div>
 
-{#            <div class="calendar-widget">#}
-{#                <div class="calendar-header">#}
-{#                    <h3>April 2025</h3>#}
-{#                    <div class="calendar-nav">#}
-{#                        <button class="calendar-nav-btn prev"><i class="fas fa-chevron-left"></i></button>#}
-{#                        <button class="calendar-nav-btn next"><i class="fas fa-chevron-right"></i></button>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="calendar-grid">#}
-{#                    <div class="calendar-weekdays">#}
-{#                        <span>M</span>#}
-{#                        <span>T</span>#}
-{#                        <span>W</span>#}
-{#                        <span>T</span>#}
-{#                        <span>F</span>#}
-{#                        <span>S</span>#}
-{#                        <span>S</span>#}
-{#                    </div>#}
-{#                    <div class="calendar-days"></div>#}
-{#                </div>#}
-{#            </div>#}
+            {#            <div class="calendar-widget"> #}
+            {#                <div class="calendar-header"> #}
+            {#                    <h3>April 2025</h3> #}
+            {#                    <div class="calendar-nav"> #}
+            {#                        <button class="calendar-nav-btn prev"><i class="fas fa-chevron-left"></i></button> #}
+            {#                        <button class="calendar-nav-btn next"><i class="fas fa-chevron-right"></i></button> #}
+            {#                    </div> #}
+            {#                </div> #}
+            {#                <div class="calendar-grid"> #}
+            {#                    <div class="calendar-weekdays"> #}
+            {#                        <span>M</span> #}
+            {#                        <span>T</span> #}
+            {#                        <span>W</span> #}
+            {#                        <span>T</span> #}
+            {#                        <span>F</span> #}
+            {#                        <span>S</span> #}
+            {#                        <span>S</span> #}
+            {#                    </div> #}
+            {#                    <div class="calendar-days"></div> #}
+            {#                </div> #}
+            {#            </div> #}
 
 
             <div class="user-profile-card">
@@ -105,16 +114,20 @@
                             <canvas style="width: 100% !important; height: 100% !important;" id="chart-sent"></canvas>
                         </div>
                         <div class="goal-row downloaded">
-                            <canvas style="width: 100% !important; height: 100% !important;" id="chart-downloaded"></canvas>
+                            <canvas style="width: 100% !important; height: 100% !important;"
+                                    id="chart-downloaded"></canvas>
                         </div>
                         <div class="goal-row waiting">
-                            <canvas style="width: 100% !important; height: 100% !important;" id="chart-waiting"></canvas>
+                            <canvas style="width: 100% !important; height: 100% !important;"
+                                    id="chart-waiting"></canvas>
                         </div>
                         <div class="goal-row expired">
-                            <canvas style="width: 100% !important; height: 100% !important;" id="chart-expired"></canvas>
+                            <canvas style="width: 100% !important; height: 100% !important;"
+                                    id="chart-expired"></canvas>
                         </div>
                         <div class="goal-row deleted">
-                            <canvas style="width: 100% !important; height: 100% !important;" id="chart-deleted"></canvas>
+                            <canvas style="width: 100% !important; height: 100% !important;"
+                                    id="chart-deleted"></canvas>
                         </div>
                     </div>
                     <div class="goal-stats">
@@ -184,32 +197,8 @@
             </div>
         </div>
 
-        <!-- Right sidebar -->
-{#        <div class="dashboard-sidebar">#}
-            <!-- Calendar widget -->
-{#            <div class="calendar-widget">#}
-{#                <div class="calendar-header">#}
-{#                    <h3>April 2025</h3>#}
-{#                    <div class="calendar-nav">#}
-{#                        <button class="calendar-nav-btn prev"><i class="fas fa-chevron-left"></i></button>#}
-{#                        <button class="calendar-nav-btn next"><i class="fas fa-chevron-right"></i></button>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="calendar-grid">#}
-{#                    <div class="calendar-weekdays">#}
-{#                        <span>M</span>#}
-{#                        <span>T</span>#}
-{#                        <span>W</span>#}
-{#                        <span>T</span>#}
-{#                        <span>F</span>#}
-{#                        <span>S</span>#}
-{#                        <span>S</span>#}
-{#                    </div>#}
-{#                    <div class="calendar-days"></div>#}
-{#                </div>#}
-{#            </div>#}
-
-        <input type="hidden" id="topUsersLabels" value='{{ topFiveUsers|map(u => u.user.firstName ~ " " ~ u.user.lastName)|json_encode|raw }}'>
+        <input type="hidden" id="topUsersLabels"
+               value='{{ topFiveUsers|map(u => u.user.firstName ~ " " ~ u.user.lastName)|json_encode|raw }}'>
         <input type="hidden" id="topUsersData" value='{{ topFiveUsers|map(u => u.transferCount)|json_encode|raw }}'>
 
         <input type="hidden" id="analytics-total" value="{{ totalTransfers }}">

@@ -24,7 +24,7 @@ final class AnalyticsController extends AbstractController
         $user = $this->getUser();
         $company = $user->getCompany();
 
-        [$startDate, $endDate] = $this->getCurrentMonthRange();
+        [$startDate, $endDate] = $this->getMonthRange($request);
 
         return $this->render('analytics/index.html.twig', [
             'totalTransferredSize' => $this->analyticsService->getTotalTransferredSize($company, $startDate, $endDate) ?? 0,
@@ -35,12 +35,23 @@ final class AnalyticsController extends AbstractController
             'dailyTransfers' => $this->analyticsService->getDailyTransfers($company, $startDate, $endDate),
             'expiredFiles' => $this->analyticsService->getExpiringFiles($company, $startDate, $endDate),
             'topFiveUsers' => $this->analyticsService->getTopFiveUsers($company, $startDate, $endDate),
+            'selectedMonth' => $startDate,
         ]);
     }
 
-    private function getCurrentMonthRange(): array
+    private function getMonthRange(Request $request): array
     {
-        $startDate = new \DateTimeImmutable('first day of this month midnight');
+        $month = $request->query->get('month'); // формат: YYYY-MM
+        if ($month) {
+            try {
+                $startDate = new \DateTimeImmutable($month.'-01');
+            } catch (\Exception $e) {
+                $startDate = new \DateTimeImmutable('first day of this month midnight');
+            }
+        } else {
+            $startDate = new \DateTimeImmutable('first day of this month midnight');
+        }
+
         $endDate = $startDate->modify('last day of this month')->setTime(23, 59, 59);
 
         return [$startDate, $endDate];

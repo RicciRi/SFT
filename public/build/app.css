@@ -5241,34 +5241,20 @@ body {
   color: var(--color-text-secondary);
   font-size: 0.875rem;
 }
-.analytics-dashboard .dashboard-sidebar {
-  grid-column: 2/3;
-  grid-row: 1/4;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.analytics-dashboard .calendar-widget,
 .analytics-dashboard .followers-widget,
 .analytics-dashboard .notifications-widget {
   border-radius: var(--base-border-radius);
   padding: 20px;
   box-shadow: var(--base-box-shadow);
 }
-.analytics-dashboard .calendar-widget h3,
 .analytics-dashboard .followers-widget h3,
 .analytics-dashboard .notifications-widget h3 {
   font-size: 1.25rem;
   margin-bottom: 20px;
 }
-.analytics-dashboard .calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
 .analytics-dashboard .calendar-header .calendar-nav {
   display: flex;
+  align-items: center;
   gap: 5px;
 }
 .analytics-dashboard .calendar-header .calendar-nav .calendar-nav-btn {

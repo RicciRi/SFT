@@ -330,19 +330,8 @@
     }
   }
 
-  // Sidebar styles
-  .dashboard-sidebar {
-    grid-column: 2 / 3;
-    grid-row: 1 / 4;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .calendar-widget,
   .followers-widget,
   .notifications-widget {
-    //background-color: var(--color-panel);
     border-radius: var(--base-border-radius);
     padding: 20px;
     box-shadow: var(--base-box-shadow);
@@ -354,13 +343,9 @@
   }
 
   .calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-
     .calendar-nav {
       display: flex;
+      align-items: center;
       gap: 5px;
 
       .calendar-nav-btn {

@@ -27,13 +27,14 @@ class FileActionService
 
     public function deactivateTransfer(FileTransfer $transfer, $files)
     {
-        $transfer->setStatus(TransferStatus::DELETED);
+//        $transfer->setStatus(TransferStatus::DELETED);
         $transfer->setIsExpired(true);
+        $transfer->setIsDeleted(true);
         $filesystem = new Filesystem();
 
 
         foreach ($files as $file) {
-            $file->setStatus(FileStatus::DELETED);
+//            $file->setStatus(FileStatus::DELETED);
 
             $filePath = $this->tempDir.'/'.$file->getStoredFilename();
             if ($filesystem->exists($filePath)) {

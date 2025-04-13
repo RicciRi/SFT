@@ -48,4 +48,10 @@ class AnalyticsService
     {
         return $this->fileTransferRepository->getDailyTransfers($company, $startDate, $endDate);
     }
+
+    public function getDeletedTransfers(Company $company, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
+    {
+        return $this->fileTransferRepository->getDeletedTransfers($company, $startDate, $endDate);
+
+    }
 }

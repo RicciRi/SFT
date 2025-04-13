@@ -298,6 +298,7 @@ final class SendFileController extends AbstractController
             $fileTransfer->setCreatedAt(new \DateTimeImmutable());
             $fileTransfer->setCompany($company);
             $fileTransfer->setIsExpired(false);
+            $fileTransfer->setIsDeleted(false);
 
             $expDate = $data['expirationAt'];
 

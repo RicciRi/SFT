@@ -34,10 +34,13 @@ final class AnalyticsController extends AbstractController
         $totalTransfers = $this->analyticsService->getTotalTransfers($company, $startDate, $endDate);
         $downloadedTransfers = $this->analyticsService->getDownloadedTransfers($company, $startDate, $endDate);
         $expiredFiles = $this->analyticsService->getExpiringFiles($company, $startDate, $endDate);
+        $deletedTransfers = $this->analyticsService->getDeletedTransfers($company, $startDate, $endDate);
         $topFiveUsers = $this->analyticsService->getTopFiveUsers($company, $startDate, $endDate);
         $uploadedTransfers = $this->analyticsService->getUploadedTransfers($company, $startDate, $endDate);
 
         $dailyTransfers = $this->analyticsService->getDailyTransfers($company, $startDate, $endDate);
+
+
 
         return $this->render('analytics/index.html.twig', [
             'totalTransferredSize' => $totalTransferredSize ?? 0,
@@ -46,6 +49,7 @@ final class AnalyticsController extends AbstractController
             'downloadedTransfers' => $downloadedTransfers,
             'uploadedTransfers' => $uploadedTransfers,
             'expiredFiles' => $expiredFiles,
+            'deletedTransfers' => $deletedTransfers,
             'dailyTransfers' => $dailyTransfers,
 
             'topFiveUsers' => $topFiveUsers,

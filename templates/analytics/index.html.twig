@@ -113,6 +113,9 @@
                         <div class="goal-row expired">
                             <canvas style="width: 100% !important; height: 100% !important;" id="chart-expired"></canvas>
                         </div>
+                        <div class="goal-row deleted">
+                            <canvas style="width: 100% !important; height: 100% !important;" id="chart-deleted"></canvas>
+                        </div>
                     </div>
                     <div class="goal-stats">
                         <div class="total-percentage">
@@ -138,6 +141,10 @@
                     <div class="goal-detail">
                         <span class="label">Expired</span>
                         <span class="value text-expired">{{ expiredFiles }}</span>
+                    </div>
+                    <div class="goal-detail">
+                        <span class="label">Deleted</span>
+                        <span class="value text-deleted">{{ deletedTransfers }}</span>
                     </div>
                 </div>
             </div>
@@ -209,6 +216,7 @@
         <input type="hidden" id="analytics-downloaded" value="{{ downloadedTransfers }}">
         <input type="hidden" id="analytics-uploaded" value="{{ uploadedTransfers }}">
         <input type="hidden" id="analytics-expired" value="{{ expiredFiles }}">
+        <input type="hidden" id="analytics-deleted" value="{{ deletedTransfers }}">
 
         <input type="hidden" id="uploadedTransfers" value='{{ dailyTransfers|json_encode()|e('html_attr') }}'>
 

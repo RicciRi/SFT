@@ -57,6 +57,9 @@ class FileTransfer
     #[ORM\Column]
     private ?bool $IsExpired = null;
 
+    #[ORM\Column]
+    private ?bool $isDeleted = false;
+
     public function __construct()
     {
         $this->transferredFiles = new ArrayCollection();
@@ -236,6 +239,18 @@ class FileTransfer
     public function setIsExpired(bool $IsExpired): static
     {
         $this->IsExpired = $IsExpired;
+
+        return $this;
+    }
+
+    public function isDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(?bool $isDeleted): static
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }

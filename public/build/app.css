@@ -5184,7 +5184,7 @@ body {
 .analytics-dashboard .goal-details .goal-detail .label {
   display: block;
   color: var(--color-text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.675rem;
   margin-bottom: 5px;
 }
 .analytics-dashboard .goal-details .goal-detail .value {
@@ -5358,6 +5358,9 @@ body {
 .analytics-dashboard .text-expired {
   color: var(--color-cherry);
 }
+.analytics-dashboard .text-deleted {
+  color: #e02323;
+}
 
 .goal-stats {
   position: absolute;
@@ -5392,7 +5395,11 @@ body {
   transform: scale(0.8);
 }
 .goal-chart-grid .expired {
-  padding-top: 60px;
+  padding-top: 58px;
+  transform: scale(0.7);
+}
+.goal-chart-grid .deleted {
+  padding-top: 82px;
   transform: scale(0.7);
 }
 

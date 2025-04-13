@@ -258,7 +258,7 @@
       .label {
         display: block;
         color: var(--color-text-secondary);
-        font-size: 0.875rem;
+        font-size: 0.675rem;
         margin-bottom: 5px;
       }
 
@@ -475,6 +475,10 @@
     color: var(--color-cherry);
   }
 
+  .text-deleted {
+    color: #e02323;
+  }
+
 
 
 }
@@ -515,7 +519,11 @@
   }
 
   .expired {
-    padding-top: 60px;
+    padding-top: 58px;
+    transform: scale(0.7);
+  }
+  .deleted {
+    padding-top: 82px;
     transform: scale(0.7);
   }
 }

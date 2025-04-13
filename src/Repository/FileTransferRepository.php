@@ -80,9 +80,11 @@ class FileTransferRepository extends ServiceEntityRepository
                     ->select('COUNT(t.id)')
                     ->where('t.company = :company')
                     ->andWhere('t.status = :status')
+                    ->andWhere('t.isDeleted = :isDeleted')
                     ->andWhere('t.createdAt BETWEEN :start AND :end')
                     ->setParameter('company', $company)
                     ->setParameter('status', $status)
+                    ->setParameter('isDeleted', false)
                     ->setParameter('start', $startDate)
                     ->setParameter('end', $endDate)
                     ->getQuery()
@@ -98,9 +100,11 @@ class FileTransferRepository extends ServiceEntityRepository
                     ->select('COUNT(t.id)')
                     ->where('t.company = :company')
                     ->andWhere('t.status = :status')
+                    ->andWhere('t.isDeleted = :isDeleted')
                     ->andWhere('t.createdAt BETWEEN :start AND :end')
                     ->setParameter('company', $company)
                     ->setParameter('status', $status)
+                    ->setParameter('isDeleted', false)
                     ->setParameter('start', $startDate)
                     ->setParameter('end', $endDate)
                     ->getQuery()
@@ -129,5 +133,20 @@ class FileTransferRepository extends ServiceEntityRepository
         ]);
 
         return $result->fetchAllAssociative(); // вернёт массив вида [['day' => '2025-04-01', 'count' => 3], ...]
+    }
+
+    public function getDeletedTransfers($company, $startDate, $endDate)
+    {
+        return $this->createQueryBuilder('t')
+                    ->select('COUNT(t.id)')
+                    ->where('t.company = :company')
+                    ->andWhere('t.isDeleted = true')
+                    ->andWhere('t.createdAt BETWEEN :start AND :end')
+                    ->setParameter('company', $company)
+                    ->setParameter('start', $startDate)
+                    ->setParameter('end', $endDate)
+                    ->getQuery()
+                    ->getSingleScalarResult()
+            ;
     }
 }

@@ -139,21 +139,27 @@ export function initCompanyAnalytics() {
         const downloaded = parseInt(document.getElementById('analytics-downloaded').value, 10);
         const uploaded = parseInt(document.getElementById('analytics-uploaded').value, 10);
         const expired = parseInt(document.getElementById('analytics-expired').value, 10);
+        const deleted = parseInt(document.getElementById('analytics-deleted').value, 10);
 
         // const total = 100
         // const downloaded = 100
         // const uploaded = 100
-        // const expired = 154
+        // const expired = 100
+        // const deleted = 100
+
         //
         const downloadedRatio = downloaded / total || 0;
         const uploadedRatio = uploaded / total || 0;
         const expiredRatio = expired / total || 0;
+        const deletedRatio = deleted / total || 0;
+
 
         // Base ring: always 100%
         drawSingleRing('chart-sent', 1, '#b88cff', 'Sent');
         drawSingleRing('chart-waiting', uploadedRatio, '#63e', 'Waiting');
         drawSingleRing('chart-downloaded', downloadedRatio, '#63eebb', 'Downloaded');
         drawSingleRing('chart-expired', expiredRatio, '#e02367', 'Expired');
+        drawSingleRing('chart-deleted', deletedRatio, '#e02323', 'Deleted');
 
         // center text update (optional)
         const percent = total > 0 ? ((downloaded / total) * 100).toFixed(1) : '0.0';

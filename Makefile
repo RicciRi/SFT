@@ -5,8 +5,8 @@ SYMFONY = docker compose exec app php bin/console
 #	make fixtures                # Загрузить фикстуры
 #	make fixtures-load           # Загрузить фикстуры + удаление
 #	make fix                     # Применить php-cs-fixer
+#   make cleanup-files  		 # Команда для очистки просроченых файлов и обозначения этого в db
 
-# 🔧 Открыть bash внутри PHP-контейнера
 bash:
 	docker compose exec app bash
 

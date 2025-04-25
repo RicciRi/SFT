@@ -1,5 +1,8 @@
 TODO
 
+
+Set mailer for each event
+
 Translate
 
 Download info about your transfers
